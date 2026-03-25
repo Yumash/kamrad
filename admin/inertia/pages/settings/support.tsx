@@ -67,7 +67,7 @@ export default function SupportPage() {
             <ul className="space-y-2 text-text-muted">
               <li>
                 <a
-                  href="https://github.com/Crosstalk-Solutions/project-nomad"
+                  href="https://github.com/Yumash/kamrad"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
@@ -78,7 +78,7 @@ export default function SupportPage() {
               </li>
               <li>
                 <a
-                  href="https://github.com/Crosstalk-Solutions/project-nomad/issues"
+                  href="https://github.com/Yumash/kamrad/issues"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"

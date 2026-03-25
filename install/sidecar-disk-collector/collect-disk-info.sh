@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Project N.O.M.A.D. - Disk Info Collector Sidecar
+# КАМРАД - Disk Info Collector Sidecar
 #
 # Reads host block device and filesystem info via the /:/host:ro,rslave bind-mount.
-# No special capabilities required. Writes JSON to /storage/nomad-disk-info.json, which is read by the admin container.
+# No special capabilities required. Writes JSON to /storage/kamrad-disk-info.json, which is read by the admin container.
 # Runs continually and updates the JSON data every 2 minutes.
 
 log() {
@@ -15,8 +15,8 @@ log "disk-collector sidecar starting..."
 # Write a valid placeholder immediately so admin has something to parse if the
 # file is missing (first install, user deleted it, etc.). The real data from the
 # first full collection cycle below will overwrite this within seconds.
-if [[ ! -f /storage/nomad-disk-info.json ]]; then
-    echo '{"diskLayout":{"blockdevices":[]},"fsSize":[]}' > /storage/nomad-disk-info.json
+if [[ ! -f /storage/kamrad-disk-info.json ]]; then
+    echo '{"diskLayout":{"blockdevices":[]},"fsSize":[]}' > /storage/kamrad-disk-info.json
     log "Created initial placeholder — will be replaced after first collection."
 fi
 
@@ -73,17 +73,17 @@ while true; do
     FS_JSON+="]"
 
     # Use a tmp file for atomic update
-    cat > /storage/nomad-disk-info.json.tmp << EOF
+    cat > /storage/kamrad-disk-info.json.tmp << EOF
 {
 "diskLayout": ${DISK_LAYOUT},
 "fsSize": ${FS_JSON}
 }
 EOF
 
-    if mv /storage/nomad-disk-info.json.tmp /storage/nomad-disk-info.json; then
+    if mv /storage/kamrad-disk-info.json.tmp /storage/kamrad-disk-info.json; then
         log "Disk info updated successfully."
     else
-        log "ERROR: Failed to move temp file to /storage/nomad-disk-info.json"
+        log "ERROR: Failed to move temp file to /storage/kamrad-disk-info.json"
     fi
 
     sleep 120

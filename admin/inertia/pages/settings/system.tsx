@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import SettingsLayout from '~/layouts/SettingsLayout'
 import { SystemInformationResponse } from '../../../types/system'
 import { formatBytes } from '~/lib/util'
@@ -21,6 +21,7 @@ export default function SettingsPage(props: {
   system: { info: SystemInformationResponse | undefined }
 }) {
   const { t } = useTranslation()
+  const { aiAssistantName } = usePage<{ aiAssistantName: string }>().props
   const { data: info } = useSystemInfo({
     initialData: props.system.info,
   })
@@ -29,7 +30,7 @@ export default function SettingsPage(props: {
 
   const [gpuBannerDismissed, setGpuBannerDismissed] = useState(() => {
     try {
-      return localStorage.getItem('nomad:gpu-banner-dismissed') === 'true'
+      return localStorage.getItem('kamrad:gpu-banner-dismissed') === 'true'
     } catch {
       return false
     }
@@ -39,7 +40,7 @@ export default function SettingsPage(props: {
   const handleDismissGpuBanner = () => {
     setGpuBannerDismissed(true)
     try {
-      localStorage.setItem('nomad:gpu-banner-dismissed', 'true')
+      localStorage.setItem('kamrad:gpu-banner-dismissed', 'true')
     } catch {}
   }
 
@@ -56,10 +57,10 @@ export default function SettingsPage(props: {
               throw new Error(response?.message || 'Force reinstall failed')
             }
             addNotification({
-              message: 'AI Assistant is being reinstalled with GPU support. This page will reload shortly.',
+              message: t('settings.models.reinstallAIMsg', { name: aiAssistantName }),
               type: 'success',
             })
-            try { localStorage.removeItem('nomad:gpu-banner-dismissed') } catch {}
+            try { localStorage.removeItem('kamrad:gpu-banner-dismissed') } catch {}
             setTimeout(() => window.location.reload(), 5000)
           } catch (error) {
             addNotification({
@@ -75,7 +76,7 @@ export default function SettingsPage(props: {
         cancelText={t('common.cancel')}
       >
         <p className="text-text-primary">
-          {t('settings.models.reinstallAIMsg', { name: 'AI Assistant' })}
+          {t('settings.models.reinstallAIMsg', { name: aiAssistantName })}
         </p>
       </StyledModal>,
       'gpu-health-force-reinstall-modal'
@@ -208,11 +209,11 @@ export default function SettingsPage(props: {
                     type="warning"
                     variant="bordered"
                     title={t('settings.system.gpuNotAccessibleAI')}
-                    message={t('settings.models.gpuNotAccessibleMsg', { name: 'AI Assistant' })}
+                    message={t('settings.models.gpuNotAccessibleMsg', { name: aiAssistantName })}
                     dismissible={true}
                     onDismiss={handleDismissGpuBanner}
                     buttonProps={{
-                      children: t('settings.models.fixReinstall', { name: 'AI Assistant' }),
+                      children: t('settings.models.fixReinstall', { name: aiAssistantName }),
                       icon: 'IconRefresh',
                       variant: 'action',
                       size: 'sm',

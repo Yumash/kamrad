@@ -39,7 +39,7 @@ export default function ModelsPage(props: {
 
   const [gpuBannerDismissed, setGpuBannerDismissed] = useState(() => {
     try {
-      return localStorage.getItem('nomad:gpu-banner-dismissed') === 'true'
+      return localStorage.getItem('kamrad:gpu-banner-dismissed') === 'true'
     } catch {
       return false
     }
@@ -49,7 +49,7 @@ export default function ModelsPage(props: {
   const handleDismissGpuBanner = () => {
     setGpuBannerDismissed(true)
     try {
-      localStorage.setItem('nomad:gpu-banner-dismissed', 'true')
+      localStorage.setItem('kamrad:gpu-banner-dismissed', 'true')
     } catch {}
   }
 
@@ -69,7 +69,7 @@ export default function ModelsPage(props: {
               message: `${aiAssistantName} is being reinstalled with GPU support. This page will reload shortly.`,
               type: 'success',
             })
-            try { localStorage.removeItem('nomad:gpu-banner-dismissed') } catch {}
+            try { localStorage.removeItem('kamrad:gpu-banner-dismissed') } catch {}
             setTimeout(() => window.location.reload(), 5000)
           } catch (error) {
             addNotification({

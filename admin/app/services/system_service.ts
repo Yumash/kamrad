@@ -382,31 +382,12 @@ export class SystemService {
     }
   }
 
-  async subscribeToReleaseNotes(email: string): Promise<{ success: boolean; message: string }> {
-    try {
-      const response = await axios.post(
-        'https://api.projectnomad.us/api/v1/lists/release-notes/subscribe',
-        { email },
-        { timeout: 5000 }
-      )
-
-      if (response.status === 200) {
-        return {
-          success: true,
-          message: 'Successfully subscribed to release notes',
-        }
-      }
-
-      return {
-        success: false,
-        message: `Failed to subscribe: ${response.statusText}`,
-      }
-    } catch (error) {
-      logger.error('Error subscribing to release notes:', error)
-      return {
-        success: false,
-        message: `Failed to subscribe: ${error instanceof Error ? error.message : error}`,
-      }
+  async subscribeToReleaseNotes(_email: string): Promise<{ success: boolean; message: string }> {
+    // Newsletter subscription is disabled in КАМРАД.
+    // Watch releases at https://github.com/Yumash/kamrad/releases instead.
+    return {
+      success: false,
+      message: 'Newsletter is not available. Watch releases at https://github.com/Yumash/kamrad/releases',
     }
   }
 

@@ -45,9 +45,10 @@ export default class OllamaController {
       // If there are no system messages in the chat inject system prompts
       const hasSystemMessage = reqData.messages.some((msg) => msg.role === 'system')
       if (!hasSystemMessage) {
-        // Check for preferred language setting
+        // Check for preferred language setting (validated against whitelist to prevent prompt injection)
+        const ALLOWED_AI_LANGUAGES = ['en', 'ru', 'de', 'kz', 'auto'] as const
         const preferredLang = await KVStore.getValue('ai.preferredLanguage')
-        const langInstruction = preferredLang && preferredLang !== 'auto'
+        const langInstruction = preferredLang && preferredLang !== 'auto' && ALLOWED_AI_LANGUAGES.includes(preferredLang as any)
           ? `\nIMPORTANT: Always respond in ${preferredLang}. The user prefers responses in this language.`
           : ''
         const systemPrompt = {

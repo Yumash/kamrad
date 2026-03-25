@@ -199,7 +199,7 @@ export class CollectionManifestService {
     let zimCount = 0
     let mapCount = 0
 
-    console.log("RECONCILING FILESYSTEM MANIFESTS...")
+    logger.debug("RECONCILING FILESYSTEM MANIFESTS...")
 
     // Reconcile ZIM files
     try {
@@ -208,7 +208,7 @@ export class CollectionManifestService {
       const zimItems = await listDirectoryContents(zimDir)
       const zimFiles = zimItems.filter((f) => f.name.endsWith('.zim'))
 
-      console.log(`Found ${zimFiles.length} ZIM files on disk. Reconciling with database...`)
+      logger.debug(`Found ${zimFiles.length} ZIM files on disk. Reconciling with database...`)
 
       // Get spec for URL lookup
       const zimSpec = await this.getCachedSpec<ZimCategoriesSpec>('zim_categories')
@@ -226,12 +226,12 @@ export class CollectionManifestService {
       const seenZimIds = new Set<string>()
 
       for (const file of zimFiles) {
-        console.log(`Processing ZIM file: ${file.name}`)
+        logger.debug(`Processing ZIM file: ${file.name}`)
         // Skip Wikipedia files (managed by WikipediaSelection model)
         if (file.name.startsWith('wikipedia_en_')) continue
 
         const parsed = CollectionManifestService.parseZimFilename(file.name)
-        console.log(`Parsed ZIM filename:`, parsed)
+        logger.debug(`Parsed ZIM filename:`, parsed)
         if (!parsed) continue
 
         seenZimIds.add(parsed.resource_id)

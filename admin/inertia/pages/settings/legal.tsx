@@ -89,9 +89,9 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">{t('settings.legal.contentDisclaimer')}</h2>
             <p className="text-text-primary mb-3">
-              Project N.O.M.A.D. provides tools to download and access content from third-party sources
+              КАМРАД provides tools to download and access content from third-party sources
               including Wikipedia, Wikibooks, medical references, educational platforms, and other
-              publicly available resources.
+              publicly available resources. Based on Project N.O.M.A.D. by Crosstalk Solutions LLC.
             </p>
             <p className="text-text-primary mb-3">
               Crosstalk Solutions, LLC does not create, control, verify, or guarantee the accuracy,
@@ -108,7 +108,7 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">{t('settings.legal.medicalDisclaimer')}</h2>
             <p className="text-text-primary mb-3">
-              Some content available through N.O.M.A.D. includes medical references, first aid guides,
+              Some content available through КАМРАД includes medical references, first aid guides,
               and emergency preparedness information. This content is provided for general
               informational purposes only.
             </p>
@@ -127,15 +127,15 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">{t('settings.legal.dataStorage')}</h2>
             <p className="text-text-primary mb-3">
-              All data associated with Project N.O.M.A.D. is stored locally on your device:
+              All data associated with КАМРАД is stored locally on your device:
             </p>
             <ul className="list-disc list-inside space-y-2 text-text-primary">
-              <li><strong>Installation Directory:</strong> /opt/project-nomad</li>
-              <li><strong>Downloaded Content:</strong> /opt/project-nomad/storage</li>
+              <li><strong>Installation Directory:</strong> /opt/kamrad</li>
+              <li><strong>Downloaded Content:</strong> /opt/kamrad/storage</li>
               <li><strong>Application Data:</strong> Stored in Docker volumes on your local system</li>
             </ul>
             <p className="text-text-primary mt-3">
-              You maintain full control over your data. Uninstalling N.O.M.A.D. or deleting these
+              You maintain full control over your data. Uninstalling КАМРАД or deleting these
               directories will permanently remove all associated data.
             </p>
           </section>

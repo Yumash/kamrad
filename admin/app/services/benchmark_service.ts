@@ -3,10 +3,7 @@ import logger from '@adonisjs/core/services/logger'
 import transmit from '@adonisjs/transmit/services/main'
 import si from 'systeminformation'
 import axios from 'axios'
-import { DateTime } from 'luxon'
 import BenchmarkResult from '#models/benchmark_result'
-import BenchmarkSetting from '#models/benchmark_setting'
-import { SystemService } from '#services/system_service'
 import type {
   BenchmarkType,
   BenchmarkStatus,
@@ -18,21 +15,14 @@ import type {
   SysbenchCpuResult,
   SysbenchMemoryResult,
   SysbenchDiskResult,
-  RepositorySubmission,
   RepositorySubmitResponse,
   RepositoryStats,
 } from '../../types/benchmark.js'
-import { randomUUID, createHmac } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import { DockerService } from './docker_service.js'
 import { SERVICE_NAMES } from '../../constants/service_names.js'
 import { BROADCAST_CHANNELS } from '../../constants/broadcast.js'
 import Dockerode from 'dockerode'
-
-// HMAC secret for signing submissions to the benchmark repository
-// This provides basic protection against casual API abuse.
-// Note: Since NOMAD is open source, a determined attacker could extract this.
-// For stronger protection, see challenge-response authentication.
-const BENCHMARK_HMAC_SECRET = '778ba65d0bc0e23119e5ffce4b3716648a7d071f0a47ec3f'
 
 // Re-export default weights for use in service
 const SCORE_WEIGHTS = {
@@ -113,104 +103,19 @@ export class BenchmarkService {
   }
 
   /**
-   * Submit benchmark results to central repository
+   * Submit benchmark results to central repository.
+   * Disabled in КАМРАД — results are stored locally only.
    */
-  async submitToRepository(benchmarkId?: string, anonymous?: boolean): Promise<RepositorySubmitResponse> {
-    const result = benchmarkId
-      ? await this.getResultById(benchmarkId)
-      : await this.getLatestResult()
-
-    if (!result) {
-      throw new Error('No benchmark result found to submit')
-    }
-
-    // Only allow full benchmarks with AI data to be submitted to repository
-    if (result.benchmark_type !== 'full') {
-      throw new Error('Only full benchmarks can be shared with the community. Run a Full Benchmark to share your results.')
-    }
-
-    if (!result.ai_tokens_per_second || result.ai_tokens_per_second <= 0) {
-      throw new Error('Benchmark must include AI performance data. Ensure AI Assistant is installed and run a Full Benchmark.')
-    }
-
-    if (result.submitted_to_repository) {
-      throw new Error('Benchmark result has already been submitted')
-    }
-
-    const submission: RepositorySubmission = {
-      cpu_model: result.cpu_model,
-      cpu_cores: result.cpu_cores,
-      cpu_threads: result.cpu_threads,
-      ram_gb: Math.round(result.ram_bytes / (1024 * 1024 * 1024)),
-      disk_type: result.disk_type,
-      gpu_model: result.gpu_model,
-      cpu_score: result.cpu_score,
-      memory_score: result.memory_score,
-      disk_read_score: result.disk_read_score,
-      disk_write_score: result.disk_write_score,
-      ai_tokens_per_second: result.ai_tokens_per_second,
-      ai_time_to_first_token: result.ai_time_to_first_token,
-      nomad_score: result.nomad_score,
-      nomad_version: SystemService.getAppVersion(),
-      benchmark_version: '1.0.0',
-      builder_tag: anonymous ? null : result.builder_tag,
-    }
-
-    try {
-      // Generate HMAC signature for submission verification
-      const timestamp = Date.now().toString()
-      const payload = timestamp + JSON.stringify(submission)
-      const signature = createHmac('sha256', BENCHMARK_HMAC_SECRET)
-        .update(payload)
-        .digest('hex')
-
-      const response = await axios.post(
-        'https://benchmark.projectnomad.us/api/v1/submit',
-        submission,
-        {
-          timeout: 30000,
-          headers: {
-            'X-NOMAD-Timestamp': timestamp,
-            'X-NOMAD-Signature': signature,
-          },
-        }
-      )
-
-      if (response.data.success) {
-        result.submitted_to_repository = true
-        result.submitted_at = DateTime.now()
-        result.repository_id = response.data.repository_id
-        await result.save()
-
-        await BenchmarkSetting.setValue('last_benchmark_run', new Date().toISOString())
-      }
-
-      return response.data as RepositorySubmitResponse
-    } catch (error) {
-      const detail = error.response?.data?.error || error.message || 'Unknown error'
-      const statusCode = error.response?.status
-      logger.error(`Failed to submit benchmark to repository: ${detail} (Status: ${statusCode})`)
-      
-      // Create an error with the status code attached for proper handling upstream
-      const err: any = new Error(`Failed to submit benchmark: ${detail}`)
-      err.statusCode = statusCode
-      throw err
-    }
+  async submitToRepository(_benchmarkId?: string, _anonymous?: boolean): Promise<RepositorySubmitResponse> {
+    throw new Error('Benchmark submission to external leaderboard is not available in КАМРАД. Results are saved locally.')
   }
 
   /**
-   * Get comparison stats from central repository
+   * Get comparison stats from central repository.
+   * Disabled in КАМРАД — no external leaderboard.
    */
   async getComparisonStats(): Promise<RepositoryStats | null> {
-    try {
-      const response = await axios.get('https://benchmark.projectnomad.us/api/v1/stats', {
-        timeout: 10000,
-      })
-      return response.data as RepositoryStats
-    } catch (error) {
-      logger.warn(`Failed to fetch comparison stats: ${error.message}`)
-      return null
-    }
+    return null
   }
 
   /**

@@ -2,7 +2,7 @@
 /// <reference path="../../config/inertia.ts" />
 
 import '../css/app.css'
-import '~/lib/i18n'
+import i18n from '~/lib/i18n'
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
@@ -36,8 +36,15 @@ createInertiaApp({
   },
 
   setup({ el, App, props }) {
-    const environment = (props.initialPage.props as unknown as UsePageProps).environment
+    const pageProps = props.initialPage.props as unknown as UsePageProps
+    const environment = pageProps.environment
     const showDevtools = ['development', 'staging'].includes(environment)
+
+    // Sync i18n locale from server-stored preference (highest priority)
+    const serverLocale = (pageProps as any).locale
+    if (serverLocale && serverLocale !== i18n.language) {
+      i18n.changeLanguage(serverLocale)
+    }
     createRoot(el).render(
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>

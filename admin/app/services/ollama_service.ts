@@ -12,9 +12,9 @@ import transmit from '@adonisjs/transmit/services/main'
 import Fuse, { IFuseOptions } from 'fuse.js'
 import { BROADCAST_CHANNELS } from '../../constants/broadcast.js'
 import env from '#start/env'
-import { NOMAD_API_DEFAULT_BASE_URL } from '../../constants/misc.js'
+import { KAMRAD_API_DEFAULT_BASE_URL } from '../../constants/misc.js'
 
-const NOMAD_MODELS_API_PATH = '/api/v1/ollama/models'
+const KAMRAD_MODELS_API_PATH = '/api/v1/ollama/models'
 const MODELS_CACHE_FILE = path.join(process.cwd(), 'storage', 'ollama-models-cache.json')
 const CACHE_MAX_AGE_MS = 24 * 60 * 60 * 1000 // 24 hours
 
@@ -260,8 +260,12 @@ export class OllamaService {
 
       logger.info('[OllamaService] Fetching fresh available models from API')
 
-      const baseUrl = env.get('NOMAD_API_URL') || NOMAD_API_DEFAULT_BASE_URL
-      const fullUrl = new URL(NOMAD_MODELS_API_PATH, baseUrl).toString()
+      const baseUrl = env.get('KAMRAD_API_URL') || KAMRAD_API_DEFAULT_BASE_URL
+      if (!baseUrl) {
+        logger.info('[OllamaService] No API URL configured, using fallback models')
+        return null
+      }
+      const fullUrl = new URL(KAMRAD_MODELS_API_PATH, baseUrl).toString()
 
       const response = await axios.get(fullUrl)
       if (!response.data || !Array.isArray(response.data.models)) {
