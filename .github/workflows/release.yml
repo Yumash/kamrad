@@ -17,7 +17,7 @@ jobs:
       pull-requests: write
     outputs:
       new_release: ${{ steps.semver.outputs.new_release_published }}
-      version: ${{ steps.semver.outputs.new_release_version }}
+      new_version: ${{ steps.semver.outputs.new_release_version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +36,19 @@ jobs:
         id: semver
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
+        run: |
+          OUTPUT=$(npx semantic-release 2>&1) || true
+          echo "$OUTPUT"
+          # Parse version from semantic-release output
+          VERSION=$(echo "$OUTPUT" | grep -oP 'Published release \K[0-9]+\.[0-9]+\.[0-9]+' || echo "")
+          if [ -n "$VERSION" ]; then
+            echo "new_release_published=true" >> $GITHUB_OUTPUT
+            echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
+            echo "::notice::Released v$VERSION"
+          else
+            echo "new_release_published=false" >> $GITHUB_OUTPUT
+            echo "::notice::No new release"
+          fi
 
   build:
     name: Build and Push Docker Images
@@ -62,7 +74,7 @@ jobs:
       - name: Determine tags
         id: tags
         run: |
-          VERSION="${{ needs.release.outputs.version }}"
+          VERSION="${{ needs.release.outputs.new_version }}"
           if [[ "$VERSION" == *"-"* ]]; then
             echo "is_latest=false" >> $GITHUB_OUTPUT
           else
