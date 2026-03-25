@@ -1,0 +1,37 @@
+{
+  "spec_version": "2026-03-25",
+  "options": [
+    {
+      "id": "none",
+      "name": "Kein Wikipedia",
+      "description": "Wikipedia-Installation überspringen",
+      "size_mb": 0,
+      "url": null,
+      "version": null
+    },
+    {
+      "id": "top-mini",
+      "name": "Kurzreferenz",
+      "description": "Top 100.000 Artikel mit minimalen Bildern.",
+      "size_mb": 280,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_de_top_mini_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "all-mini",
+      "name": "Vollständiges Wikipedia (kompakt)",
+      "description": "Alle 2.8+ Millionen Artikel im komprimierten Format.",
+      "size_mb": 7800,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_mini_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "all-maxi",
+      "name": "Vollständiges Wikipedia (mit Bildern)",
+      "description": "Die vollständige Version mit allen Bildern und Medien.",
+      "size_mb": 55000,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_de_all_maxi_2025-12.zim",
+      "version": "2025-12"
+    }
+  ]
+}

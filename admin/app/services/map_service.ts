@@ -37,7 +37,7 @@ interface IMapService {
 
 export class MapService implements IMapService {
   private readonly mapStoragePath = '/storage/maps'
-  private readonly baseStylesFile = 'nomad-base-styles.json'
+  private readonly baseStylesFile = 'kamrad-base-styles.json'
   private readonly basemapsAssetsDir = 'basemaps-assets'
   private readonly baseAssetsTarFile = 'base-assets.tar.gz'
   private readonly baseDirPath = join(process.cwd(), this.mapStoragePath)
@@ -58,7 +58,7 @@ export class MapService implements IMapService {
 
     const defaultTarFileURL = new URL(
       this.baseAssetsTarFile,
-      'https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/'
+      'https://github.com/Yumash/kamrad/raw/refs/heads/main/maps/'
     )
 
     const resolvedURL = url ? new URL(url) : defaultTarFileURL

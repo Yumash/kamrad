@@ -1,0 +1,53 @@
+{
+  "spec_version": "2026-03-25",
+  "options": [
+    {
+      "id": "none",
+      "name": "Без Википедии",
+      "description": "Пропустить установку Википедии",
+      "size_mb": 0,
+      "url": null,
+      "version": null
+    },
+    {
+      "id": "top-mini",
+      "name": "Краткий справочник",
+      "description": "Топ-100 000 статей с минимальными изображениями. Для быстрого поиска.",
+      "size_mb": 225,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_top_mini_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "top-nopic",
+      "name": "Популярные статьи",
+      "description": "Топ статей без изображений. Хороший баланс контента и размера.",
+      "size_mb": 1500,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_top_nopic_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "all-mini",
+      "name": "Полная Википедия (компактная)",
+      "description": "Все 1.9+ миллионов статей в сжатом формате.",
+      "size_mb": 5600,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_all_mini_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "all-nopic",
+      "name": "Полная Википедия (без изображений)",
+      "description": "Все статьи без изображений. Полный оффлайн-справочник.",
+      "size_mb": 12000,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_all_nopic_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "all-maxi",
+      "name": "Полная Википедия (с изображениями)",
+      "description": "Полная версия со всеми изображениями и медиа.",
+      "size_mb": 45000,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_all_maxi_2025-12.zim",
+      "version": "2025-12"
+    }
+  ]
+}

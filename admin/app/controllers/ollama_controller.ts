@@ -1,6 +1,7 @@
 import { ChatService } from '#services/chat_service'
 import { OllamaService } from '#services/ollama_service'
 import { RagService } from '#services/rag_service'
+import KVStore from '#models/kv_store'
 import { modelNameSchema } from '#validators/download'
 import { chatSchema, getAvailableModelsSchema } from '#validators/ollama'
 import { inject } from '@adonisjs/core'
@@ -44,9 +45,14 @@ export default class OllamaController {
       // If there are no system messages in the chat inject system prompts
       const hasSystemMessage = reqData.messages.some((msg) => msg.role === 'system')
       if (!hasSystemMessage) {
+        // Check for preferred language setting
+        const preferredLang = await KVStore.getValue('ai.preferredLanguage')
+        const langInstruction = preferredLang && preferredLang !== 'auto'
+          ? `\nIMPORTANT: Always respond in ${preferredLang}. The user prefers responses in this language.`
+          : ''
         const systemPrompt = {
           role: 'system' as const,
-          content: SYSTEM_PROMPTS.default,
+          content: SYSTEM_PROMPTS.default + langInstruction,
         }
         logger.debug('[OllamaController] Injecting system prompt')
         reqData.messages.unshift(systemPrompt)

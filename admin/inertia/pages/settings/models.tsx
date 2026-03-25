@@ -20,6 +20,7 @@ import { IconSearch, IconRefresh } from '@tabler/icons-react'
 import useDebounce from '~/hooks/useDebounce'
 import ActiveModelDownloads from '~/components/ActiveModelDownloads'
 import { useSystemInfo } from '~/hooks/useSystemInfo'
+import { useTranslation } from 'react-i18next'
 
 export default function ModelsPage(props: {
   models: {
@@ -28,6 +29,7 @@ export default function ModelsPage(props: {
     settings: { chatSuggestionsEnabled: boolean; aiAssistantCustomName: string }
   }
 }) {
+  const { t } = useTranslation()
   const { aiAssistantName } = usePage<{ aiAssistantName: string }>().props
   const { isInstalled } = useServiceInstalledStatus(SERVICE_NAMES.OLLAMA)
   const { addNotification } = useNotifications()
@@ -54,7 +56,7 @@ export default function ModelsPage(props: {
   const handleForceReinstallOllama = () => {
     openModal(
       <StyledModal
-        title="Reinstall AI Assistant?"
+        title={t('settings.models.reinstallAI')}
         onConfirm={async () => {
           closeAllModals()
           setReinstalling(true)
@@ -79,13 +81,11 @@ export default function ModelsPage(props: {
         }}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Reinstall"
-        cancelText="Cancel"
+        confirmText={t('common.restart')}
+        cancelText={t('common.cancel')}
       >
         <p className="text-text-primary">
-          This will recreate the {aiAssistantName} container with GPU support enabled.
-          Your downloaded models will be preserved. The service will be briefly
-          unavailable during reinstall.
+          {t('settings.models.reinstallAIMsg', { name: aiAssistantName })}
         </p>
       </StyledModal>,
       'gpu-health-force-reinstall-modal'
@@ -136,7 +136,7 @@ export default function ModelsPage(props: {
     setIsForceRefreshing(true)
     await refetch()
     setIsForceRefreshing(false)
-    addNotification({ message: 'Model list refreshed from remote.', type: 'success' })
+    addNotification({ message: t('settings.models.modelListRefreshed'), type: 'success' })
   }
 
   async function handleInstallModel(modelName: string) {
@@ -144,14 +144,14 @@ export default function ModelsPage(props: {
       const res = await api.downloadModel(modelName)
       if (res.success) {
         addNotification({
-          message: `Model download initiated for ${modelName}. It may take some time to complete.`,
+          message: t('settings.models.modelDownloadStarted', { model: modelName }),
           type: 'success',
         })
       }
     } catch (error) {
       console.error('Error installing model:', error)
       addNotification({
-        message: `There was an error installing the model: ${modelName}. Please try again.`,
+        message: t('settings.models.modelInstallError', { model: modelName }),
         type: 'error',
       })
     }
@@ -162,7 +162,7 @@ export default function ModelsPage(props: {
       const res = await api.deleteModel(modelName)
       if (res.success) {
         addNotification({
-          message: `Model deleted: ${modelName}.`,
+          message: t('settings.models.modelDeleted', { model: modelName }),
           type: 'success',
         })
       }
@@ -171,7 +171,7 @@ export default function ModelsPage(props: {
     } catch (error) {
       console.error('Error deleting model:', error)
       addNotification({
-        message: `There was an error deleting the model: ${modelName}. Please try again.`,
+        message: t('settings.models.modelDeleteError', { model: modelName }),
         type: 'error',
       })
     }
@@ -180,19 +180,18 @@ export default function ModelsPage(props: {
   async function confirmDeleteModel(model: string) {
     openModal(
       <StyledModal
-        title="Delete Model?"
+        title={t('settings.models.deleteModel')}
         onConfirm={() => {
           handleDeleteModel(model)
         }}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Delete"
-        cancelText="Cancel"
+        confirmText={t('common.delete')}
+        cancelText={t('common.cancel')}
         confirmVariant="primary"
       >
         <p className="text-text-primary">
-          Are you sure you want to delete this model? You will need to download it again if you want
-          to use it in the future.
+          {t('settings.models.deleteModelMsg')}
         </p>
       </StyledModal>,
       'confirm-delete-model-modal'
@@ -205,14 +204,14 @@ export default function ModelsPage(props: {
     },
     onSuccess: () => {
       addNotification({
-        message: 'Setting updated successfully.',
+        message: t('settings.models.settingUpdated'),
         type: 'success',
       })
     },
     onError: (error) => {
       console.error('Error updating setting:', error)
       addNotification({
-        message: 'There was an error updating the setting. Please try again.',
+        message: t('settings.models.settingUpdateError'),
         type: 'error',
       })
     },
@@ -220,18 +219,16 @@ export default function ModelsPage(props: {
 
   return (
     <SettingsLayout>
-      <Head title={`${aiAssistantName} Settings | Project N.O.M.A.D.`} />
+      <Head title={t('settings.models.title', { name: aiAssistantName })} />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
           <h1 className="text-4xl font-semibold mb-4">{aiAssistantName}</h1>
           <p className="text-text-muted mb-4">
-            Easily manage the {aiAssistantName}'s settings and installed models. We recommend
-            starting with smaller models first to see how they perform on your system before moving
-            on to larger ones.
+            {t('settings.models.description', { name: aiAssistantName })}
           </p>
           {!isInstalled && (
             <Alert
-              title={`${aiAssistantName}'s dependencies are not installed. Please install them to manage AI models.`}
+              title={t('settings.models.depsNotInstalled', { name: aiAssistantName })}
               type="warning"
               variant="solid"
               className="!mt-6"
@@ -241,13 +238,13 @@ export default function ModelsPage(props: {
             <Alert
               type="warning"
               variant="bordered"
-              title="GPU Not Accessible"
-              message={`Your system has an NVIDIA GPU, but ${aiAssistantName} can't access it. AI is running on CPU only, which is significantly slower.`}
+              title={t('settings.models.gpuNotAccessible')}
+              message={t('settings.models.gpuNotAccessibleMsg', { name: aiAssistantName })}
               className="!mt-6"
               dismissible={true}
               onDismiss={handleDismissGpuBanner}
               buttonProps={{
-                children: `Fix: Reinstall ${aiAssistantName}`,
+                children: t('settings.models.fixReinstall', { name: aiAssistantName }),
                 icon: 'IconRefresh',
                 variant: 'action',
                 size: 'sm',
@@ -258,7 +255,7 @@ export default function ModelsPage(props: {
             />
           )}
 
-          <StyledSectionHeader title="Settings" className="mt-8 mb-4" />
+          <StyledSectionHeader title={t('common.settings')} className="mt-8 mb-4" />
           <div className="bg-surface-primary rounded-lg border-2 border-border-subtle p-6">
             <div className="space-y-4">
               <Switch
@@ -267,14 +264,14 @@ export default function ModelsPage(props: {
                   setChatSuggestionsEnabled(newVal)
                   updateSettingMutation.mutate({ key: 'chat.suggestionsEnabled', value: newVal })
                 }}
-                label="Chat Suggestions"
-                description="Display AI-generated conversation starters in the chat interface"
+                label={t('settings.models.chatSuggestions')}
+                description={t('settings.models.chatSuggestionsDesc')}
               />
               <Input
                 name="aiAssistantCustomName"
-                label="Assistant Name"
-                helpText='Give your AI assistant a custom name that will be used in the chat interface and other areas of the application.'
-                placeholder="AI Assistant"
+                label={t('settings.models.assistantName')}
+                helpText={t('settings.models.assistantNameDesc')}
+                placeholder={t('settings.models.assistantNamePlaceholder')}
                 value={aiAssistantCustomName}
                 onChange={(e) => setAiAssistantCustomName(e.target.value)}
                 onBlur={() =>
@@ -288,12 +285,12 @@ export default function ModelsPage(props: {
           </div>
           <ActiveModelDownloads withHeader />
 
-          <StyledSectionHeader title="Models" className="mt-12 mb-4" />
+          <StyledSectionHeader title={t('settings.models.models')} className="mt-12 mb-4" />
           <div className="flex justify-start items-center gap-3 mt-4">
             <Input
               name="search"
               label=""
-              placeholder="Search language models.."
+              placeholder={t('settings.models.searchModels')}
               value={queryUI}
               onChange={(e) => {
                 setQueryUI(e.target.value)
@@ -309,7 +306,7 @@ export default function ModelsPage(props: {
               loading={isForceRefreshing}
               className='mt-1'
             >
-              Refresh Models
+              {t('settings.models.refreshModels')}
             </StyledButton>
           </div>
           <StyledTable<NomadOllamaModel>
@@ -318,7 +315,7 @@ export default function ModelsPage(props: {
             columns={[
               {
                 accessor: 'name',
-                title: 'Name',
+                title: t('common.name'),
                 render(record) {
                   return (
                     <div className="flex flex-col">
@@ -330,11 +327,11 @@ export default function ModelsPage(props: {
               },
               {
                 accessor: 'estimated_pulls',
-                title: 'Estimated Pulls',
+                title: t('settings.models.estimatedPulls'),
               },
               {
                 accessor: 'model_last_updated',
-                title: 'Last Updated',
+                title: t('settings.models.lastUpdated'),
               },
             ]}
             data={availableModelData?.models || []}
@@ -347,19 +344,19 @@ export default function ModelsPage(props: {
                       <thead className="bg-surface-primary">
                         <tr>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Tag
+                            {t('settings.models.tag')}
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Input Type
+                            {t('settings.models.inputType')}
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Context Size
+                            {t('settings.models.contextSize')}
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Model Size
+                            {t('settings.models.modelSize')}
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
-                            Action
+                            {t('settings.models.action')}
                           </th>
                         </tr>
                       </thead>
@@ -376,15 +373,15 @@ export default function ModelsPage(props: {
                                 </span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="text-sm text-text-secondary">{tag.input || 'N/A'}</span>
+                                <span className="text-sm text-text-secondary">{tag.input || t('common.na')}</span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span className="text-sm text-text-secondary">
-                                  {tag.context || 'N/A'}
+                                  {tag.context || t('common.na')}
                                 </span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="text-sm text-text-secondary">{tag.size || 'N/A'}</span>
+                                <span className="text-sm text-text-secondary">{tag.size || t('common.na')}</span>
                               </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <StyledButton
@@ -398,7 +395,7 @@ export default function ModelsPage(props: {
                                   }}
                                   icon={isInstalled ? 'IconTrash' : 'IconDownload'}
                                 >
-                                  {isInstalled ? 'Delete' : 'Install'}
+                                  {isInstalled ? t('common.delete') : t('common.install')}
                                 </StyledButton>
                               </td>
                             </tr>
@@ -419,7 +416,7 @@ export default function ModelsPage(props: {
                   setLimit((prev) => prev + 15)
                 }}
               >
-                Load More
+                {t('common.loadMore')}
               </StyledButton>
             )}
           </div>

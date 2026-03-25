@@ -1,0 +1,44 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "confirm": "Bestätigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "close": "Schließen",
+    "search": "Suche",
+    "download": "Herunterladen",
+    "install": "Installieren",
+    "uninstall": "Deinstallieren",
+    "update": "Aktualisieren",
+    "settings": "Einstellungen",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "warning": "Warnung",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "nav": {
+    "home": "Startseite",
+    "chat": "Chat",
+    "maps": "Karten",
+    "settings": "Einstellungen",
+    "about": "Über",
+    "docs": "Dokumentation"
+  },
+  "footer": {
+    "commandCenter": "KAMRAD Kommandozentrale v{{version}}",
+    "debugInfo": "Debug-Info",
+    "dayOps": "Tagmodus",
+    "nightOps": "Nachtmodus"
+  },
+  "language": {
+    "label": "Sprache",
+    "en": "English",
+    "ru": "Русский",
+    "de": "Deutsch",
+    "kz": "Қазақша"
+  }
+}

@@ -31,11 +31,13 @@ import type { CategoryWithStatus, SpecTier } from '../../../../types/collections
 import useDownloads from '~/hooks/useDownloads'
 import ActiveDownloads from '~/components/ActiveDownloads'
 import { SERVICE_NAMES } from '../../../../constants/service_names'
+import { useTranslation } from 'react-i18next'
 
 const CURATED_CATEGORIES_KEY = 'curated-categories'
 const WIKIPEDIA_STATE_KEY = 'wikipedia-state'
 
 export default function ZimRemoteExplorer() {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const tableParentRef = useRef<HTMLDivElement>(null)
 
@@ -148,22 +150,19 @@ export default function ZimRemoteExplorer() {
   async function confirmDownload(record: RemoteZimFileEntry) {
     openModal(
       <StyledModal
-        title="Confirm Download?"
+        title={t('settings.zim.explorer.confirmDownload')}
         onConfirm={() => {
           downloadFile(record)
           closeAllModals()
         }}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Download"
-        cancelText="Cancel"
+        confirmText={t('common.download')}
+        cancelText={t('common.cancel')}
         confirmVariant="primary"
       >
         <p className="text-text-primary">
-          Are you sure you want to download{' '}
-          <strong>{record.title}</strong>? It may take some time for it
-          to be available depending on the file size and your internet connection. The Kiwix
-          application will be restarted after the download is complete.
+          {t('settings.zim.explorer.confirmDownloadMsg', { title: record.title })}
         </p>
       </StyledModal>,
       'confirm-download-file-modal'
@@ -196,7 +195,7 @@ export default function ZimRemoteExplorer() {
       await api.downloadCategoryTier(category.slug, tier.slug)
 
       addNotification({
-        message: `Started downloading "${category.name} - ${tier.name}"`,
+        message: t('settings.zim.explorer.startedDownloading', { category: category.name, tier: tier.name }),
         type: 'success',
       })
       invalidateDownloads()
@@ -206,7 +205,7 @@ export default function ZimRemoteExplorer() {
     } catch (error) {
       console.error('Error downloading tier resources:', error)
       addNotification({
-        message: 'An error occurred while starting downloads.',
+        message: t('settings.zim.explorer.downloadError'),
         type: 'error',
       })
     }
@@ -261,7 +260,7 @@ export default function ZimRemoteExplorer() {
     mutationFn: () => api.refreshManifests(),
     onSuccess: () => {
       addNotification({
-        message: 'Successfully refreshed content collections.',
+        message: t('settings.zim.explorer.collectionsRefreshed'),
         type: 'success',
       })
       queryClient.invalidateQueries({ queryKey: [CURATED_CATEGORIES_KEY] })
@@ -271,18 +270,18 @@ export default function ZimRemoteExplorer() {
 
   return (
     <SettingsLayout>
-      <Head title="Content Explorer | Project N.O.M.A.D." />
+      <Head title={t('settings.zim.explorer.title')} />
       <div className="xl:pl-72 w-full">
         <main className="px-12 py-6">
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
-              <h1 className="text-4xl font-semibold mb-2">Content Explorer</h1>
-              <p className="text-text-muted">Browse and download content for offline reading!</p>
+              <h1 className="text-4xl font-semibold mb-2">{t('settings.zim.explorer.heading')}</h1>
+              <p className="text-text-muted">{t('settings.zim.explorer.description')}</p>
             </div>
           </div>
           {!isOnline && (
             <Alert
-              title="No internet connection. You may not be able to download files."
+              title={t('settings.zim.explorer.noInternet')}
               message=""
               type="warning"
               variant="solid"
@@ -291,20 +290,20 @@ export default function ZimRemoteExplorer() {
           )}
           {!isInstalled && (
             <Alert
-              title="The Kiwix application is not installed. Please install it to view downloaded content files."
+              title={t('settings.zim.explorer.kiwixNotInstalled')}
               type="warning"
               variant="solid"
               className="!mt-6"
             />
           )}
           <div className="mt-8 mb-6 flex items-center justify-between">
-            <StyledSectionHeader title="Curated Content" className="!mb-0" />
+            <StyledSectionHeader title={t('settings.zim.explorer.curatedContent')} className="!mb-0" />
             <StyledButton
               onClick={() => refreshManifests.mutate()}
               disabled={refreshManifests.isPending || !isOnline}
               icon="IconRefresh"
             >
-              Force Refresh Collections
+              {t('common.forceRefreshCollections')}
             </StyledButton>
           </div>
           
@@ -336,8 +335,8 @@ export default function ZimRemoteExplorer() {
               <IconBooks className="w-6 h-6 text-text-primary" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-text-primary">Additional Content</h3>
-              <p className="text-sm text-text-muted">Curated collections for offline reference</p>
+              <h3 className="text-xl font-semibold text-text-primary">{t('settings.zim.explorer.additionalContent')}</h3>
+              <p className="text-sm text-text-muted">{t('settings.zim.explorer.curatedCollectionsDesc')}</p>
             </div>
           </div>
           {categories && categories.length > 0 ? (
@@ -363,14 +362,14 @@ export default function ZimRemoteExplorer() {
               />
             </>
           ) : (
-            <p className="text-text-muted mt-4">No curated content categories available.</p>
+            <p className="text-text-muted mt-4">{t('settings.zim.explorer.noCuratedContent')}</p>
           )}
-          <StyledSectionHeader title="Browse the Kiwix Library" className="mt-12 mb-4" />
+          <StyledSectionHeader title={t('settings.zim.explorer.browseKiwix')} className="mt-12 mb-4" />
           <div className="flex justify-start mt-4">
             <Input
               name="search"
               label=""
-              placeholder="Search available ZIM files..."
+              placeholder={t('settings.zim.explorer.searchZim')}
               value={queryUI}
               onChange={(e) => {
                 setQueryUI(e.target.value)
@@ -427,7 +426,7 @@ export default function ZimRemoteExplorer() {
                           confirmDownload(record)
                         }}
                       >
-                        Download
+                        {t('common.download')}
                       </StyledButton>
                     </div>
                   )

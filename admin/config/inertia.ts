@@ -19,6 +19,10 @@ const inertiaConfig = defineConfig({
       const customName = await KVStore.getValue('ai.assistantCustomName')
       return (customName && customName.trim()) ? customName : 'AI Assistant'
     },
+    locale: async () => {
+      const lang = await KVStore.getValue('ui.language')
+      return lang || 'ru'
+    },
   },
 
   /**

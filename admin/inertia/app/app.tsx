@@ -2,6 +2,7 @@
 /// <reference path="../../config/inertia.ts" />
 
 import '../css/app.css'
+import '~/lib/i18n'
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
@@ -14,7 +15,7 @@ import NotificationsProvider from '~/providers/NotificationProvider'
 import { ThemeProvider } from '~/providers/ThemeProvider'
 import { UsePageProps } from '../../types/system'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Project N.O.M.A.D.'
+const appName = import.meta.env.VITE_APP_NAME || 'КАМРАД'
 const queryClient = new QueryClient()
 
 // Patch the global crypto object for non-HTTPS/localhost contexts

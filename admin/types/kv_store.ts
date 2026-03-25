@@ -8,6 +8,8 @@ export const KV_STORE_SCHEMA = {
   'system.earlyAccess':         'boolean',
   'ui.hasVisitedEasySetup':     'boolean',
   'ui.theme':                   'string',
+  'ui.language':                'string',
+  'ai.preferredLanguage':       'string',
   'ai.assistantCustomName':     'string',
   'gpu.type':                   'string',
 } as const

@@ -1,8 +1,12 @@
+import { useTranslation } from 'react-i18next'
+
 const ProgressBar = ({ progress, speed }: { progress: number; speed?: string }) => {
+  const { t } = useTranslation()
+
   if (progress >= 100) {
     return (
       <div className="flex items-center justify-between">
-        <span className="text-sm text-desert-green">Download complete</span>
+        <span className="text-sm text-desert-green">{t('components.downloadComplete', 'Download complete')}</span>
       </div>
     )
   }
@@ -17,7 +21,7 @@ const ProgressBar = ({ progress, speed }: { progress: number; speed?: string }) 
       </div>
       {speed && (
         <div className="mt-1 text-sm text-text-muted">
-          Est. Speed: {speed}
+          {t('components.estSpeed', 'Est. Speed: {{speed}}', { speed })}
         </div>
       )}
     </div>

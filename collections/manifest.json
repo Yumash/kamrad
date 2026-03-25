@@ -1,0 +1,36 @@
+{
+  "spec_version": "2026-03-25",
+  "languages": {
+    "ru": {
+      "name": "Русский",
+      "flag": "🇷🇺",
+      "has_wikipedia": true,
+      "has_kiwix_categories": true,
+      "has_education": false
+    },
+    "en": {
+      "name": "English",
+      "flag": "🇬🇧",
+      "has_wikipedia": true,
+      "has_kiwix_categories": true,
+      "has_education": true
+    },
+    "de": {
+      "name": "Deutsch",
+      "flag": "🇩🇪",
+      "has_wikipedia": true,
+      "has_kiwix_categories": false,
+      "has_education": false
+    },
+    "kz": {
+      "name": "Қазақша",
+      "flag": "🇰🇿",
+      "has_wikipedia": true,
+      "has_kiwix_categories": false,
+      "has_education": false
+    }
+  },
+  "global": {
+    "maps": "maps.json"
+  }
+}

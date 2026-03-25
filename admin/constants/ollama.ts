@@ -2,12 +2,40 @@ import { NomadOllamaModel } from '../types/ollama.js'
 
 /**
  * Fallback basic recommended Ollama models in case fetching from the service fails.
+ * Prioritized for multilingual support (Russian, Kazakh, German, English).
  */
 export const FALLBACK_RECOMMENDED_OLLAMA_MODELS: NomadOllamaModel[] = [
   {
+    name: 'qwen2.5',
+    description:
+      'Qwen 2.5 — мультиязычная модель от Alibaba с отличной поддержкой русского, казахского, немецкого и английского. Рекомендуется для КАМРАД.',
+    estimated_pulls: '45.2M',
+    id: 'qwen2.5-recommended',
+    first_seen: '2026-01-28T23:37:31.000+00:00',
+    model_last_updated: '6 months ago',
+    tags: [
+      {
+        name: 'qwen2.5:3b',
+        size: '1.9 GB',
+        context: '128k',
+        input: 'Text',
+        cloud: false,
+        thinking: false
+      },
+      {
+        name: 'qwen2.5:7b',
+        size: '4.7 GB',
+        context: '128k',
+        input: 'Text',
+        cloud: false,
+        thinking: false
+      },
+    ],
+  },
+  {
     name: 'llama3.1',
     description:
-      'Llama 3.1 is a new state-of-the-art model from Meta available in 8B, 70B and 405B parameter sizes.',
+      'Llama 3.1 is a state-of-the-art model from Meta available in 8B, 70B and 405B parameter sizes.',
     estimated_pulls: '109.3M',
     id: '9fe9c575-e77e-4a51-a743-07359458ee71',
     first_seen: '2026-01-28T23:37:31.000+00:00',
@@ -39,24 +67,6 @@ export const FALLBACK_RECOMMENDED_OLLAMA_MODELS: NomadOllamaModel[] = [
         input: 'Text',
         cloud: false,
         thinking: true
-      },
-    ],
-  },
-  {
-    name: 'llama3.2',
-    description: "Meta's Llama 3.2 goes small with 1B and 3B models.",
-    estimated_pulls: '54.7M',
-    id: 'c9a1bc23-b290-4501-a913-f7c9bb39c3ad',
-    first_seen: '2026-01-28T23:37:31.000+00:00',
-    model_last_updated: '1 year ago',
-    tags: [
-      {
-        name: 'llama3.2:1b-text-q2_K',
-        size: '581 MB',
-        context: '128k',
-        input: 'Text',
-        cloud: false,
-        thinking: false
       },
     ],
   },

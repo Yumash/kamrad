@@ -1,0 +1,63 @@
+{
+  "spec_version": "2026-03-25",
+  "categories": [
+    {
+      "name": "Медицина",
+      "slug": "medicine-ru",
+      "icon": "IconStethoscope",
+      "description": "Медицинские справочники и руководства по оказанию первой помощи.",
+      "language": "ru",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "medicine-ru-essential",
+          "description": "Основные медицинские справочники. Начните здесь.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "wikipedia_ru_medicine",
+              "version": "2025-12",
+              "title": "Медицинские статьи Википедии",
+              "description": "Медицинские и фармакологические статьи русской Википедии",
+              "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_medicine_mini_2025-12.zim",
+              "size_mb": 45
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Справочники",
+      "slug": "reference-ru",
+      "icon": "IconBook",
+      "description": "Энциклопедии и справочные материалы на русском языке.",
+      "language": "ru",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "reference-ru-essential",
+          "description": "Основные справочные материалы.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "wikiquote_ru",
+              "version": "2025-12",
+              "title": "Викицитатник",
+              "description": "Коллекция цитат на русском языке",
+              "url": "https://download.kiwix.org/zim/wikiquote/wikiquote_ru_all_nopic_2025-12.zim",
+              "size_mb": 15
+            },
+            {
+              "id": "wiktionary_ru",
+              "version": "2025-12",
+              "title": "Викисловарь",
+              "description": "Русский толковый и переводной словарь",
+              "url": "https://download.kiwix.org/zim/wiktionary/wiktionary_ru_all_nopic_2025-12.zim",
+              "size_mb": 250
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "spec_version": "2026-03-25",
+  "options": [
+    {
+      "id": "none",
+      "name": "Уикипедиясыз",
+      "description": "Уикипедия орнатуды өткізіп жіберу",
+      "size_mb": 0,
+      "url": null,
+      "version": null
+    },
+    {
+      "id": "all-nopic",
+      "name": "Толық Уикипедия (суретсіз)",
+      "description": "Барлық мақалалар суретсіз.",
+      "size_mb": 350,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_kk_all_nopic_2025-12.zim",
+      "version": "2025-12"
+    },
+    {
+      "id": "all-maxi",
+      "name": "Толық Уикипедия (суреттермен)",
+      "description": "Толық нұсқа барлық суреттер мен медиамен.",
+      "size_mb": 1200,
+      "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_kk_all_maxi_2025-12.zim",
+      "version": "2025-12"
+    }
+  ]
+}

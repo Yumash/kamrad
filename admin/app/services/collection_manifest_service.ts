@@ -22,10 +22,17 @@ import type {
   SpecTier,
 } from '../../types/collections.js'
 
+const GITHUB_BASE = 'https://raw.githubusercontent.com/Yumash/kamrad/refs/heads/main/collections'
+
 const SPEC_URLS: Record<ManifestType, string> = {
-  zim_categories: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/kiwix-categories.json',
-  maps: 'https://github.com/Crosstalk-Solutions/project-nomad/raw/refs/heads/main/collections/maps.json',
-  wikipedia: 'https://raw.githubusercontent.com/Crosstalk-Solutions/project-nomad/refs/heads/main/collections/wikipedia.json',
+  zim_categories: `${GITHUB_BASE}/kiwix-categories.json`,
+  maps: `${GITHUB_BASE}/maps.json`,
+  wikipedia: `${GITHUB_BASE}/wikipedia.json`,
+}
+
+// Language-specific collection URLs
+export function getLanguageSpecUrl(lang: string, type: 'wikipedia' | 'kiwix-categories'): string {
+  return `${GITHUB_BASE}/${lang}/${type}.json`
 }
 
 const VALIDATORS: Record<ManifestType, any> = {

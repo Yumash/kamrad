@@ -3,7 +3,7 @@ import api from '~/lib/api'
 
 export type Theme = 'light' | 'dark'
 
-const STORAGE_KEY = 'nomad:theme'
+const STORAGE_KEY = 'kamrad:theme'
 
 function getInitialTheme(): Theme {
   try {

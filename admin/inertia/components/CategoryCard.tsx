@@ -3,6 +3,7 @@ import DynamicIcon, { DynamicIconName } from './DynamicIcon'
 import type { CategoryWithStatus, SpecTier } from '../../types/collections'
 import classNames from 'classnames'
 import { IconChevronRight, IconCircleCheck } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 
 export interface CategoryCardProps {
   category: CategoryWithStatus
@@ -11,6 +12,7 @@ export interface CategoryCardProps {
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onClick }) => {
+  const { t } = useTranslation()
   // Calculate total size range across all tiers
   const getTierTotalSize = (tier: SpecTier, allTiers: SpecTier[]): number => {
     let total = tier.resources.reduce((acc, r) => acc + r.size_mb * 1024 * 1024, 0)
@@ -61,10 +63,10 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
 
       <div className="mt-4 pt-4 border-t border-white/20">
         <p className="text-sm text-gray-300 mb-2">
-          {category.tiers.length} tiers available
-          {!highlightedTierSlug && (
-            <span className="text-gray-400"> - Click to choose</span>
-          )}
+          {!highlightedTierSlug
+            ? t('settings.zim.explorer.tiersAvailableClick', '{{count}} tiers available - Click to choose', { count: category.tiers.length })
+            : t('settings.zim.explorer.tiersAvailable', '{{count}} tiers available', { count: category.tiers.length })
+          }
         </p>
         <div className="flex flex-wrap gap-2">
           {category.tiers.map((tier) => {

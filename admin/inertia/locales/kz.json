@@ -1,0 +1,44 @@
+{
+  "common": {
+    "loading": "Жүктелуде...",
+    "save": "Сақтау",
+    "cancel": "Бас тарту",
+    "delete": "Жою",
+    "confirm": "Растау",
+    "back": "Артқа",
+    "next": "Келесі",
+    "close": "Жабу",
+    "search": "Іздеу",
+    "download": "Жүктеп алу",
+    "install": "Орнату",
+    "uninstall": "Жою",
+    "update": "Жаңарту",
+    "settings": "Параметрлер",
+    "error": "Қате",
+    "success": "Сәтті",
+    "warning": "Ескерту",
+    "yes": "Иә",
+    "no": "Жоқ"
+  },
+  "nav": {
+    "home": "Басты бет",
+    "chat": "Чат",
+    "maps": "Карталар",
+    "settings": "Параметрлер",
+    "about": "Жоба туралы",
+    "docs": "Құжаттама"
+  },
+  "footer": {
+    "commandCenter": "КАМРАД Басқару Орталығы v{{version}}",
+    "debugInfo": "Жөндеу",
+    "dayOps": "Күндізгі режим",
+    "nightOps": "Түнгі режим"
+  },
+  "language": {
+    "label": "Тіл",
+    "en": "English",
+    "ru": "Русский",
+    "de": "Deutsch",
+    "kz": "Қазақша"
+  }
+}
