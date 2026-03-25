@@ -7,6 +7,7 @@ import { formatBytes } from '~/lib/util'
 import classNames from 'classnames'
 import DynamicIcon, { DynamicIconName } from './DynamicIcon'
 import { useTranslation } from 'react-i18next'
+import StyledButton from './StyledButton'
 
 interface TierSelectionModalProps {
   isOpen: boolean
@@ -215,18 +216,14 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
 
                 {/* Footer */}
                 <div className="bg-surface-secondary px-6 py-4 flex justify-end gap-3">
-                  <button
+                  <StyledButton
+                    variant='primary'
+                    size='lg'
                     onClick={handleSubmit}
                     disabled={!localSelectedSlug}
-                    className={classNames(
-                      'px-4 py-2 rounded-md font-medium transition-colors',
-                      localSelectedSlug
-                        ? 'bg-desert-green text-white hover:bg-desert-green/90'
-                        : 'bg-border-default text-text-muted cursor-not-allowed'
-                    )}
                   >
                     {t('components.downloadSelectedTier')}
-                  </button>
+                  </StyledButton>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
