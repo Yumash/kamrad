@@ -46,7 +46,7 @@ export const mapsSpecSchema = vine.object({
       name: vine.string(),
       description: vine.string(),
       icon: vine.string(),
-      language: vine.string().minLength(2).maxLength(5),
+      language: vine.string().minLength(2).maxLength(10),
       resources: vine.array(specResourceValidator).minLength(1),
     })
   ).minLength(1),
