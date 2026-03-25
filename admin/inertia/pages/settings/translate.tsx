@@ -29,7 +29,8 @@ export default function TranslatePage() {
   return (
     <SettingsLayout>
       <Head title={t('settings.translate.title')} />
-      <div className="flex-1 p-6 max-w-4xl">
+      <div className="xl:pl-72 w-full">
+      <div className="px-12 py-6 max-w-4xl">
         <h1 className="text-2xl font-bold text-text-primary mb-2">{t('settings.translate.heading')}</h1>
         <p className="text-text-secondary mb-6">{t('settings.translate.description')}</p>
 
@@ -99,6 +100,7 @@ export default function TranslatePage() {
             </div>
           )}
         </div>
+      </div>
       </div>
     </SettingsLayout>
   )

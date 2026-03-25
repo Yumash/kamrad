@@ -7,6 +7,7 @@ import { UsePageProps } from '../../types/system'
 import { IconMenu2, IconX } from '@tabler/icons-react'
 import ThemeToggle from '~/components/ThemeToggle'
 import DebugInfoModal from './DebugInfoModal'
+import { useTranslation } from 'react-i18next'
 
 type SidebarItem = {
   name: string
@@ -25,6 +26,7 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [debugModalOpen, setDebugModalOpen] = useState(false)
   const { appVersion } = usePage().props as unknown as UsePageProps
+  const { t } = useTranslation()
 
   const currentPath = useMemo(() => {
     if (typeof window === 'undefined') return ''
@@ -71,7 +73,7 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
                     className="flex flex-row items-center gap-x-3 text-desert-green text-sm font-semibold"
                   >
                     <IconArrowLeft aria-hidden="true" className="size-6 shrink-0" />
-                    Back to Home
+                    {t('common.backToHome')}
                   </a>
                 </li>
               </ul>
@@ -85,7 +87,7 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
             className="mt-1 text-gray-500 hover:text-desert-green inline-flex items-center gap-1 cursor-pointer"
           >
             <IconBug className="size-3.5" />
-            Debug Info
+            {t('footer.debugInfo')}
           </button>
           <ThemeToggle />
         </div>

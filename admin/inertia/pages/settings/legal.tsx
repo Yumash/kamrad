@@ -17,17 +17,13 @@ export default function LegalPage() {
             <p className="text-text-primary mb-3">{t('settings.legal.copyright')}</p>
             <p className="text-text-primary mb-3">
               {t('settings.legal.licenseText')}{' '}
-              You may obtain a copy of the License at
+              {t('settings.legal.licenseObtainCopy')}
             </p>
             <p className="text-text-primary mb-3">
               <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://www.apache.org/licenses/LICENSE-2.0</a>
             </p>
             <p className="text-text-primary">
-              Unless required by applicable law or agreed to in writing, software
-              distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-              See the License for the specific language governing permissions and
-              limitations under the License.
+              {t('settings.legal.licenseDisclaimer')}
             </p>
           </section>
 
@@ -39,32 +35,32 @@ export default function LegalPage() {
             </p>
             <ul className="space-y-3 text-text-primary">
               <li>
-                <strong>Kiwix</strong> - Offline Wikipedia and content reader (GPL-3.0 License)
+                <strong>Kiwix</strong> - {t('settings.legal.kiwixDesc')}
                 <br />
                 <a href="https://kiwix.org" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://kiwix.org</a>
               </li>
               <li>
-                <strong>Kolibri</strong> - Offline learning platform by Learning Equality (MIT License)
+                <strong>Kolibri</strong> - {t('settings.legal.kolibriDesc')}
                 <br />
                 <a href="https://learningequality.org/kolibri" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://learningequality.org/kolibri</a>
               </li>
               <li>
-                <strong>Ollama</strong> - Local large language model runtime (MIT License)
+                <strong>Ollama</strong> - {t('settings.legal.ollamaDesc')}
                 <br />
                 <a href="https://ollama.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://ollama.com</a>
               </li>
               <li>
-                <strong>CyberChef</strong> - Data analysis and encoding toolkit by GCHQ (Apache 2.0 License)
+                <strong>CyberChef</strong> - {t('settings.legal.cyberchefDesc')}
                 <br />
                 <a href="https://github.com/gchq/CyberChef" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://github.com/gchq/CyberChef</a>
               </li>
               <li>
-                <strong>FlatNotes</strong> - Self-hosted note-taking application (MIT License)
+                <strong>FlatNotes</strong> - {t('settings.legal.flatnotesDesc')}
                 <br />
                 <a href="https://github.com/dullage/flatnotes" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://github.com/dullage/flatnotes</a>
               </li>
               <li>
-                <strong>Qdrant</strong> - Vector search engine for AI knowledge base (Apache 2.0 License)
+                <strong>Qdrant</strong> - {t('settings.legal.qdrantDesc')}
                 <br />
                 <a href="https://github.com/qdrant/qdrant" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">https://github.com/qdrant/qdrant</a>
               </li>
@@ -89,18 +85,13 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">{t('settings.legal.contentDisclaimer')}</h2>
             <p className="text-text-primary mb-3">
-              КАМРАД provides tools to download and access content from third-party sources
-              including Wikipedia, Wikibooks, medical references, educational platforms, and other
-              publicly available resources. Based on Project N.O.M.A.D. by Crosstalk Solutions LLC.
+              {t('settings.legal.contentDisclaimerText1')}
             </p>
             <p className="text-text-primary mb-3">
-              Crosstalk Solutions, LLC does not create, control, verify, or guarantee the accuracy,
-              completeness, or reliability of any third-party content. The inclusion of any content
-              does not constitute an endorsement.
+              {t('settings.legal.contentDisclaimerText2')}
             </p>
             <p className="text-text-primary">
-              Users are responsible for evaluating the appropriateness and accuracy of any content
-              they download and use.
+              {t('settings.legal.contentDisclaimerText3')}
             </p>
           </section>
 
@@ -108,18 +99,16 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">{t('settings.legal.medicalDisclaimer')}</h2>
             <p className="text-text-primary mb-3">
-              Some content available through КАМРАД includes medical references, first aid guides,
-              and emergency preparedness information. This content is provided for general
-              informational purposes only.
+              {t('settings.legal.medicalDisclaimerText')}
             </p>
             <p className="text-text-primary mb-3 font-semibold">
               {t('settings.legal.medicalNotSubstitute')}
             </p>
             <ul className="list-disc list-inside space-y-2 text-text-primary mb-3">
-              <li>Always seek the advice of qualified health providers with questions about medical conditions.</li>
-              <li>Never disregard professional medical advice or delay seeking it because of something you read in offline content.</li>
-              <li>In a medical emergency, call emergency services immediately if available.</li>
-              <li>Medical information may become outdated. Verify critical information with current professional sources when possible.</li>
+              <li>{t('settings.legal.medicalAdvice1')}</li>
+              <li>{t('settings.legal.medicalAdvice2')}</li>
+              <li>{t('settings.legal.medicalAdvice3')}</li>
+              <li>{t('settings.legal.medicalAdvice4')}</li>
             </ul>
           </section>
 
@@ -127,16 +116,15 @@ export default function LegalPage() {
           <section className="mb-10">
             <h2 className="text-2xl font-semibold mb-4">{t('settings.legal.dataStorage')}</h2>
             <p className="text-text-primary mb-3">
-              All data associated with КАМРАД is stored locally on your device:
+              {t('settings.legal.dataStorageText')}
             </p>
             <ul className="list-disc list-inside space-y-2 text-text-primary">
-              <li><strong>Installation Directory:</strong> /opt/kamrad</li>
-              <li><strong>Downloaded Content:</strong> /opt/kamrad/storage</li>
-              <li><strong>Application Data:</strong> Stored in Docker volumes on your local system</li>
+              <li><strong>{t('settings.legal.installDir')}:</strong> /opt/kamrad</li>
+              <li><strong>{t('settings.legal.downloadedContent')}:</strong> /opt/kamrad/storage</li>
+              <li><strong>{t('settings.legal.appData')}:</strong> {t('settings.legal.appDataDesc')}</li>
             </ul>
             <p className="text-text-primary mt-3">
-              You maintain full control over your data. Uninstalling КАМРАД or deleting these
-              directories will permanently remove all associated data.
+              {t('settings.legal.dataControlNotice')}
             </p>
           </section>
 
