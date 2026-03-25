@@ -1,6 +1,7 @@
 import { Head, router, usePage } from '@inertiajs/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import AppLayout from '~/layouts/AppLayout'
 import StyledButton from '~/components/StyledButton'
 import api from '~/lib/api'
@@ -33,33 +34,32 @@ interface Capability {
   icon: string
 }
 
-function buildCoreCapabilities(aiAssistantName: string): Capability[] {
+function buildCoreCapabilities(aiAssistantName: string, t: (key: string) => string): Capability[] {
   return [
     {
       id: 'information',
-      name: 'Information Library',
+      name: t('easySetup.infoLibrary'),
       technicalName: 'Kiwix',
-      description:
-        'Offline access to Wikipedia, medical references, how-to guides, and encyclopedias',
+      description: t('easySetup.infoLibraryDesc'),
       features: [
-        'Complete Wikipedia offline',
-        'Medical references and first aid guides',
-        'DIY repair guides and how-to content',
-        'Project Gutenberg books and literature',
+        t('easySetup.infoLibraryFeature1'),
+        t('easySetup.infoLibraryFeature2'),
+        t('easySetup.infoLibraryFeature3'),
+        t('easySetup.infoLibraryFeature4'),
       ],
       services: [SERVICE_NAMES.KIWIX],
       icon: 'IconBooks',
     },
     {
       id: 'education',
-      name: 'Education Platform',
+      name: t('easySetup.educationPlatform'),
       technicalName: 'Kolibri',
-      description: 'Interactive learning platform with video courses and exercises',
+      description: t('easySetup.educationPlatformDesc'),
       features: [
-        'Khan Academy math and science courses',
-        'K-12 curriculum content',
-        'Interactive exercises and quizzes',
-        'Progress tracking for learners',
+        t('easySetup.educationFeature1'),
+        t('easySetup.educationFeature2'),
+        t('easySetup.educationFeature3'),
+        t('easySetup.educationFeature4'),
       ],
       services: [SERVICE_NAMES.KOLIBRI],
       icon: 'IconSchool',
@@ -68,12 +68,12 @@ function buildCoreCapabilities(aiAssistantName: string): Capability[] {
       id: 'ai',
       name: aiAssistantName,
       technicalName: 'Ollama',
-      description: 'Local AI chat that runs entirely on your hardware - no internet required',
+      description: t('easySetup.aiAssistantDesc'),
       features: [
-        'Private conversations that never leave your device',
-        'No internet connection needed after setup',
-        'Ask questions, get help with writing, brainstorm ideas',
-        'Runs on your own hardware with local AI models',
+        t('easySetup.aiFeature1'),
+        t('easySetup.aiFeature2'),
+        t('easySetup.aiFeature3'),
+        t('easySetup.aiFeature4'),
       ],
       services: [SERVICE_NAMES.OLLAMA],
       icon: 'IconRobot',
@@ -81,30 +81,36 @@ function buildCoreCapabilities(aiAssistantName: string): Capability[] {
   ]
 }
 
-const ADDITIONAL_TOOLS: Capability[] = [
-  {
-    id: 'notes',
-    name: 'Notes',
-    technicalName: 'FlatNotes',
-    description: 'Simple note-taking app with local storage',
-    features: ['Markdown support', 'All notes stored locally', 'No account required'],
-    services: [SERVICE_NAMES.FLATNOTES],
-    icon: 'IconNotes',
-  },
-  {
-    id: 'datatools',
-    name: 'Data Tools',
-    technicalName: 'CyberChef',
-    description: 'Swiss Army knife for data encoding, encryption, and analysis',
-    features: [
-      'Encode/decode data (Base64, hex, etc.)',
-      'Encryption and hashing tools',
-      'Data format conversion',
-    ],
-    services: [SERVICE_NAMES.CYBERCHEF],
-    icon: 'IconChefHat',
-  },
-]
+function buildAdditionalTools(t: (key: string) => string): Capability[] {
+  return [
+    {
+      id: 'notes',
+      name: t('easySetup.notes'),
+      technicalName: 'FlatNotes',
+      description: t('easySetup.notesDesc'),
+      features: [
+        t('easySetup.notesFeature1'),
+        t('easySetup.notesFeature2'),
+        t('easySetup.notesFeature3'),
+      ],
+      services: [SERVICE_NAMES.FLATNOTES],
+      icon: 'IconNotes',
+    },
+    {
+      id: 'datatools',
+      name: t('easySetup.dataTools'),
+      technicalName: 'CyberChef',
+      description: t('easySetup.dataToolsDesc'),
+      features: [
+        t('easySetup.dataToolsFeature1'),
+        t('easySetup.dataToolsFeature2'),
+        t('easySetup.dataToolsFeature3'),
+      ],
+      services: [SERVICE_NAMES.CYBERCHEF],
+      icon: 'IconChefHat',
+    },
+  ]
+}
 
 type WizardStep = 1 | 2 | 3 | 4
 
@@ -113,8 +119,10 @@ const CURATED_CATEGORIES_KEY = 'curated-categories'
 const WIKIPEDIA_STATE_KEY = 'wikipedia-state'
 
 export default function EasySetupWizard(props: { system: { services: ServiceSlim[] } }) {
+  const { t } = useTranslation()
   const { aiAssistantName } = usePage<{ aiAssistantName: string }>().props
-  const CORE_CAPABILITIES = buildCoreCapabilities(aiAssistantName)
+  const CORE_CAPABILITIES = buildCoreCapabilities(aiAssistantName, t)
+  const ADDITIONAL_TOOLS = buildAdditionalTools(t)
 
   const [currentStep, setCurrentStep] = useState<WizardStep>(1)
   const [selectedServices, setSelectedServices] = useState<string[]>([])
@@ -323,7 +331,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     if (!isOnline) {
       addNotification({
         type: 'error',
-        message: 'You must have an internet connection to complete the setup.',
+        message: t('easySetup.internetRequired'),
       })
       return
     }
@@ -357,7 +365,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
       addNotification({
         type: 'success',
-        message: 'Setup wizard completed! Your selections are being processed.',
+        message: t('easySetup.setupCompleted'),
       })
 
       router.visit('/easy-setup/complete')
@@ -365,7 +373,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
       console.error('Error during setup:', error)
       addNotification({
         type: 'error',
-        message: 'An error occurred during setup. Some items may not have been processed.',
+        message: t('easySetup.setupError'),
       })
     } finally {
       setIsProcessing(false)
@@ -408,10 +416,10 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
   const renderStepIndicator = () => {
     const steps = [
-      { number: 1, label: 'Apps' },
-      { number: 2, label: 'Maps' },
-      { number: 3, label: 'Content' },
-      { number: 4, label: 'Review' },
+      { number: 1, label: t('easySetup.stepApps') },
+      { number: 2, label: t('easySetup.stepMaps') },
+      { number: 3, label: t('easySetup.stepContent') },
+      { number: 4, label: t('easySetup.stepReview') },
     ]
 
     return (
@@ -555,7 +563,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
               </h3>
               {installed && (
                 <span className="text-xs bg-desert-green text-white px-2 py-0.5 rounded-full">
-                  Installed
+                  {t('settings.apps.installed')}
                 </span>
               )}
             </div>
@@ -565,7 +573,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                 installed ? 'text-text-muted' : selected ? 'text-green-100' : 'text-text-muted'
               )}
             >
-              Powered by {capability.technicalName}
+              {t('common.poweredBy', { name: capability.technicalName })}
             </p>
             <p
               className={classNames(
@@ -635,23 +643,23 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     return (
       <div className="space-y-8">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-text-primary mb-2">What do you want NOMAD to do?</h2>
+          <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step1Title')}</h2>
           <p className="text-text-secondary">
-            Select the capabilities you need. You can always add more later.
+            {t('easySetup.step1Desc')}
           </p>
         </div>
 
         {allInstalled ? (
           <div className="text-center py-12">
             <p className="text-text-secondary text-lg">
-              All available capabilities are already installed!
+              {t('easySetup.allInstalled')}
             </p>
             <StyledButton
               variant="primary"
               className="mt-4"
               onClick={() => router.visit('/settings/apps')}
             >
-              Manage Apps
+              {t('easySetup.manageApps')}
             </StyledButton>
           </div>
         ) : (
@@ -659,7 +667,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
             {/* Core Capabilities */}
             {existingCoreCapabilities.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-text-primary mb-4">Core Capabilities</h3>
+                <h3 className="text-lg font-semibold text-text-primary mb-4">{t('easySetup.coreCapabilities')}</h3>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                   {existingCoreCapabilities.map((capability) =>
                     renderCapabilityCard(capability, true)
@@ -675,7 +683,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                   onClick={() => setShowAdditionalTools(!showAdditionalTools)}
                   className="flex items-center justify-between w-full text-left"
                 >
-                  <h3 className="text-md font-medium text-text-muted">Additional Tools</h3>
+                  <h3 className="text-md font-medium text-text-muted">{t('easySetup.additionalTools')}</h3>
                   {showAdditionalTools ? (
                     <IconChevronUp size={20} className="text-text-muted" />
                   ) : (
@@ -700,10 +708,9 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   const renderStep2 = () => (
     <div className="space-y-6">
       <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold text-text-primary mb-2">Choose Map Regions</h2>
+        <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step2Title')}</h2>
         <p className="text-text-secondary">
-          Select map region collections to download for offline use. You can always download more
-          regions later.
+          {t('easySetup.step2Desc')}
         </p>
       </div>
       {isLoadingMaps ? (
@@ -737,7 +744,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-text-secondary text-lg">No map collections available at this time.</p>
+          <p className="text-text-secondary text-lg">{t('easySetup.noMapCollections')}</p>
         </div>
       )}
     </div>
@@ -753,15 +760,15 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     return (
       <div className="space-y-6">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-text-primary mb-2">Choose Content</h2>
+          <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step3Title')}</h2>
           <p className="text-text-secondary">
             {isAiSelected && isInformationSelected
-              ? 'Select AI models and content categories for offline use.'
+              ? t('easySetup.step3DescBoth')
               : isAiSelected
-                ? 'Select AI models to download for offline use.'
+                ? t('easySetup.step3DescAi')
                 : isInformationSelected
-                  ? 'Select content categories for offline knowledge.'
-                  : 'Configure content for your selected capabilities.'}
+                  ? t('easySetup.step3DescInfo')
+                  : t('easySetup.step3DescDefault')}
           </p>
         </div>
 
@@ -773,8 +780,8 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                 <IconCpu className="w-6 h-6 text-text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-text-primary">AI Models</h3>
-                <p className="text-sm text-text-muted">Select models to download for offline AI</p>
+                <h3 className="text-xl font-semibold text-text-primary">{t('easySetup.aiModels')}</h3>
+                <p className="text-sm text-text-muted">{t('easySetup.aiModelsDesc')}</p>
               </div>
             </div>
 
@@ -823,7 +830,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                                 : 'text-text-muted'
                             )}
                           >
-                            Size: {model.tags[0].size}
+                            {t('easySetup.size')}: {model.tags[0].size}
                           </div>
                         )}
                       </div>
@@ -845,7 +852,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
               </div>
             ) : (
               <div className="text-center py-8 bg-surface-secondary rounded-lg">
-                <p className="text-text-secondary">No recommended AI models available at this time.</p>
+                <p className="text-text-secondary">{t('easySetup.noRecommendedModels')}</p>
               </div>
             )}
           </div>
@@ -886,8 +893,8 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                 <IconBooks className="w-6 h-6 text-text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-text-primary">Additional Content</h3>
-                <p className="text-sm text-text-muted">Curated collections for offline reference</p>
+                <h3 className="text-xl font-semibold text-text-primary">{t('easySetup.additionalContent')}</h3>
+                <p className="text-sm text-text-muted">{t('easySetup.additionalContentDesc')}</p>
               </div>
             </div>
 
@@ -930,8 +937,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
         {!isAiSelected && !isInformationSelected && (
           <div className="text-center py-12">
             <p className="text-text-secondary text-lg">
-              No content-based capabilities selected. You can skip this step or go back to select
-              capabilities that require content.
+              {t('easySetup.noContentCapabilities')}
             </p>
           </div>
         )}
@@ -950,14 +956,14 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     return (
       <div className="space-y-6">
         <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold text-text-primary mb-2">Review Your Selections</h2>
-          <p className="text-text-secondary">Review your choices before starting the setup process.</p>
+          <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step4Title')}</h2>
+          <p className="text-text-secondary">{t('easySetup.step4Desc')}</p>
         </div>
 
         {!hasSelections ? (
           <Alert
-            title="No Selections Made"
-            message="You haven't selected anything to install or download. You can go back to make selections or go back to the home page."
+            title={t('easySetup.noSelections')}
+            message={t('easySetup.noSelectionsMsg')}
             type="info"
             variant="bordered"
           />
@@ -966,7 +972,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
             {selectedServices.length > 0 && (
               <div className="bg-surface-primary rounded-lg border-2 border-desert-stone-light p-6">
                 <h3 className="text-xl font-semibold text-text-primary mb-4">
-                  Capabilities to Install
+                  {t('easySetup.capabilitiesToInstall')}
                 </h3>
                 <ul className="space-y-2">
                   {[...CORE_CAPABILITIES, ...ADDITIONAL_TOOLS]
@@ -989,7 +995,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
             {selectedMapCollections.length > 0 && (
               <div className="bg-surface-primary rounded-lg border-2 border-desert-stone-light p-6">
                 <h3 className="text-xl font-semibold text-text-primary mb-4">
-                  Map Collections to Download ({selectedMapCollections.length})
+                  {t('easySetup.mapCollectionsToDownload')} ({selectedMapCollections.length})
                 </h3>
                 <ul className="space-y-2">
                   {selectedMapCollections.map((slug) => {
@@ -1008,7 +1014,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
             {selectedTiers.size > 0 && (
               <div className="bg-surface-primary rounded-lg border-2 border-desert-stone-light p-6">
                 <h3 className="text-xl font-semibold text-text-primary mb-4">
-                  Content Categories ({selectedTiers.size})
+                  {t('easySetup.contentCategories')} ({selectedTiers.size})
                 </h3>
                 {Array.from(selectedTiers.entries()).map(([categorySlug, tier]) => {
                   const category = categories?.find((c) => c.slug === categorySlug)
@@ -1022,7 +1028,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                           {category.name} - {tier.name}
                         </span>
                         <span className="text-text-muted text-sm ml-2">
-                          ({resources.length} files)
+                          ({t('easySetup.filesCount', { count: resources.length })})
                         </span>
                       </div>
                       <ul className="ml-7 space-y-1">
@@ -1040,7 +1046,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
             {selectedWikipedia && selectedWikipedia !== 'none' && (
               <div className="bg-surface-primary rounded-lg border-2 border-desert-stone-light p-6">
-                <h3 className="text-xl font-semibold text-text-primary mb-4">Wikipedia</h3>
+                <h3 className="text-xl font-semibold text-text-primary mb-4">{t('components.wikipedia')}</h3>
                 {(() => {
                   const option = wikipediaState?.options.find((o) => o.id === selectedWikipedia)
                   return option ? (
@@ -1052,7 +1058,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                       <span className="text-text-muted text-sm">
                         {option.size_mb > 0
                           ? `${(option.size_mb / 1024).toFixed(1)} GB`
-                          : 'No download'}
+                          : t('components.noDownload')}
                       </span>
                     </div>
                   ) : null
@@ -1063,7 +1069,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
             {selectedAiModels.length > 0 && (
               <div className="bg-surface-primary rounded-lg border-2 border-desert-stone-light p-6">
                 <h3 className="text-xl font-semibold text-text-primary mb-4">
-                  AI Models to Download ({selectedAiModels.length})
+                  {t('easySetup.aiModelsToDownload')} ({selectedAiModels.length})
                 </h3>
                 <ul className="space-y-2">
                   {selectedAiModels.map((modelName) => {
@@ -1085,8 +1091,8 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
             )}
 
             <Alert
-              title="Ready to Start"
-              message="Click 'Complete Setup' to begin installing apps and downloading content. This may take some time depending on your internet connection and the size of the downloads."
+              title={t('easySetup.readyToStart')}
+              message={t('easySetup.readyToStartMsg')}
               type="info"
               variant="solid"
             />
@@ -1098,11 +1104,11 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
   return (
     <AppLayout>
-      <Head title="Easy Setup Wizard" />
+      <Head title={t('easySetup.title')} />
       {!isOnline && (
         <Alert
-          title="No Internet Connection"
-          message="You'll need an internet connection to proceed. Please connect to the internet and try again."
+          title={t('easySetup.noInternet')}
+          message={t('easySetup.noInternetProceed')}
           type="warning"
           variant="solid"
           className="mb-8"
@@ -1135,21 +1141,19 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                     variant="outline"
                     icon="IconChevronLeft"
                   >
-                    Back
+                    {t('common.back')}
                   </StyledButton>
                 )}
 
                 <p className="text-sm text-text-secondary">
-                  {(() => {
-                    const count = [...CORE_CAPABILITIES, ...ADDITIONAL_TOOLS].filter((cap) =>
+                  {t('easySetup.selectionSummary', {
+                    capabilities: [...CORE_CAPABILITIES, ...ADDITIONAL_TOOLS].filter((cap) =>
                       cap.services.some((s) => selectedServices.includes(s))
-                    ).length
-                    return `${count} ${count === 1 ? 'capability' : 'capabilities'}`
-                  })()}
-                  , {selectedMapCollections.length} map region
-                  {selectedMapCollections.length !== 1 && 's'}, {selectedTiers.size}{' '}
-                  content categor{selectedTiers.size !== 1 ? 'ies' : 'y'},{' '}
-                  {selectedAiModels.length} AI model{selectedAiModels.length !== 1 && 's'} selected
+                    ).length,
+                    maps: selectedMapCollections.length,
+                    categories: selectedTiers.size,
+                    models: selectedAiModels.length,
+                  })}
                 </p>
               </div>
 
@@ -1159,7 +1163,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                   disabled={isProcessing}
                   variant="outline"
                 >
-                  Cancel & Go to Home
+                  {t('easySetup.cancelGoHome')}
                 </StyledButton>
 
                 {currentStep < 4 ? (
@@ -1169,7 +1173,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                     variant="primary"
                     icon="IconChevronRight"
                   >
-                    Next
+                    {t('common.next')}
                   </StyledButton>
                 ) : (
                   <StyledButton
@@ -1179,7 +1183,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                     variant="success"
                     icon="IconCheck"
                   >
-                    Complete Setup
+                    {t('easySetup.completeSetup')}
                   </StyledButton>
                 )}
               </div>

@@ -25,7 +25,7 @@ const DownloadURLModal: React.FC<DownloadURLModalProps> = ({
   async function runPreflightCheck(downloadUrl: string) {
     try {
       setLoading(true)
-      setMessages([t('components.preflightRunning', 'Running preflight check for URL: {{url}}', { url: downloadUrl })])
+      setMessages([t('components.preflightRunning', { url: downloadUrl })])
       const res = await api.downloadRemoteMapRegionPreflight(downloadUrl)
       if (!res) {
         throw new Error('An unknown error occurred during the preflight check.')
@@ -37,7 +37,7 @@ const DownloadURLModal: React.FC<DownloadURLModalProps> = ({
 
       setMessages((prev) => [
         ...prev,
-        t('components.preflightPassed', 'Preflight check passed. Filename: {{filename}}, Size: {{size}} MB', { filename: res.filename, size: (res.size / (1024 * 1024)).toFixed(2) }),
+        t('components.preflightPassed', { filename: res.filename, size: (res.size / (1024 * 1024)).toFixed(2) }),
       ])
 
       if (onPreflightSuccess) {
@@ -45,7 +45,7 @@ const DownloadURLModal: React.FC<DownloadURLModalProps> = ({
       }
     } catch (error) {
       console.error('Preflight check failed:', error)
-      setMessages((prev) => [...prev, t('components.preflightFailed', 'Preflight check failed: {{error}}', { error: error.message })])
+      setMessages((prev) => [...prev, t('components.preflightFailed', { error: error.message })])
     } finally {
       setLoading(false)
     }
@@ -56,9 +56,9 @@ const DownloadURLModal: React.FC<DownloadURLModalProps> = ({
       {...modalProps}
       onConfirm={() => runPreflightCheck(url)}
       open={true}
-      confirmText={t('common.download', 'Download')}
+      confirmText={t('common.download')}
       confirmIcon="IconDownload"
-      cancelText={t('common.cancel', 'Cancel')}
+      cancelText={t('common.cancel')}
       confirmVariant="primary"
       confirmLoading={loading}
       cancelLoading={loading}
@@ -71,7 +71,7 @@ const DownloadURLModal: React.FC<DownloadURLModalProps> = ({
         <Input
           name="download-url"
           label=""
-          placeholder={suggestedURL || t('components.enterDownloadUrl', 'Enter download URL...')}
+          placeholder={suggestedURL || t('components.enterDownloadUrl')}
           className="mb-4"
           value={url}
           onChange={(e) => setUrl(e.target.value)}

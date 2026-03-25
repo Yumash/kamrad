@@ -52,21 +52,21 @@ export default function UpdateServiceModal({
 
     return (
         <StyledModal
-            title={t('components.updateService', 'Update Service')}
+            title={t('components.updateService')}
             onConfirm={() => onUpdate(selectedVersion)}
             onCancel={onCancel}
             open={true}
-            confirmText={t('common.update', 'Update')}
-            cancelText={t('common.cancel', 'Cancel')}
+            confirmText={t('common.update')}
+            cancelText={t('common.cancel')}
             confirmVariant="primary"
             icon={<IconArrowUp className="h-12 w-12 text-desert-green" />}
         >
             <div className="space-y-4">
                 <p className="text-text-primary">
-                    {t('components.updateServiceMsg', 'Update {{name}} from {{current}} to {{selected}}?', { name: record.friendly_name || record.service_name, current: currentTag, selected: selectedVersion })}
+                    {t('components.updateServiceMsg', { name: record.friendly_name || record.service_name, current: currentTag, selected: selectedVersion })}
                 </p>
                 <p className="text-sm text-text-muted">
-                    {t('components.dataPreserved', 'Your data and configuration will be preserved during the update.')}
+                    {t('components.dataPreserved')}
                     {versions.find((v) => v.tag === selectedVersion)?.releaseUrl && (
                         <>
                             {' '}
@@ -76,7 +76,7 @@ export default function UpdateServiceModal({
                                 rel="noopener noreferrer"
                                 className="text-desert-green hover:underline"
                             >
-                                {t('components.viewReleaseNotes', 'View release notes')}
+                                {t('components.viewReleaseNotes')}
                             </a>
                         </>
                     )}
@@ -88,16 +88,16 @@ export default function UpdateServiceModal({
                         onClick={handleToggleAdvanced}
                         className="text-sm text-desert-green hover:underline font-medium"
                     >
-                        {showAdvanced ? t('components.hideVersions', 'Hide available versions') : t('components.showVersions', 'Show available versions')}
+                        {showAdvanced ? t('components.hideVersions') : t('components.showVersions')}
                     </button>
 
                     {showAdvanced && (
                         <>
                             <div className="mt-3 max-h-48 overflow-y-auto border rounded-lg divide-y">
                                 {loadingVersions ? (
-                                    <div className="p-4 text-center text-text-muted text-sm">{t('components.loadingVersions', 'Loading versions...')}</div>
+                                    <div className="p-4 text-center text-text-muted text-sm">{t('components.loadingVersions')}</div>
                                 ) : versions.length === 0 ? (
-                                    <div className="p-4 text-center text-text-muted text-sm">{t('components.noOtherVersions', 'No other versions available')}</div>
+                                    <div className="p-4 text-center text-text-muted text-sm">{t('components.noOtherVersions')}</div>
                                 ) : (
                                     versions.map((v) => (
                                         <label
@@ -115,7 +115,7 @@ export default function UpdateServiceModal({
                                             <span className="text-sm font-medium text-text-primary">{v.tag}</span>
                                             {v.isLatest && (
                                                 <span className="text-xs bg-desert-green/10 text-desert-green px-2 py-0.5 rounded-full">
-                                                    {t('components.latest', 'Latest')}
+                                                    {t('components.latest')}
                                                 </span>
                                             )}
                                             {v.releaseUrl && (
@@ -126,7 +126,7 @@ export default function UpdateServiceModal({
                                                     className="ml-auto text-xs text-desert-green hover:underline"
                                                     onClick={(e) => e.stopPropagation()}
                                                 >
-                                                    {t('components.viewReleaseNotes', 'View release notes')}
+                                                    {t('components.viewReleaseNotes')}
                                                 </a>
                                             )}
                                         </label>

@@ -34,7 +34,7 @@ const InstallActivityFeed: React.FC<InstallActivityFeedProps> = ({ activity, cla
   const { t } = useTranslation()
   return (
     <div className={classNames('bg-surface-primary shadow-sm rounded-lg p-6', className)}>
-      {withHeader && <h2 className="text-lg font-semibold text-text-primary">{t('components.installationActivity', 'Installation Activity')}</h2>}
+      {withHeader && <h2 className="text-lg font-semibold text-text-primary">{t('components.installationActivity')}</h2>}
       <ul role="list" className={classNames("space-y-6 text-desert-green", withHeader ? 'mt-6' : '')}>
         {activity.map((activityItem, activityItemIdx) => (
           <li key={activityItem.timestamp} className="relative flex gap-x-4">

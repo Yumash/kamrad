@@ -64,8 +64,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
       <div className="mt-4 pt-4 border-t border-white/20">
         <p className="text-sm text-gray-300 mb-2">
           {!highlightedTierSlug
-            ? t('settings.zim.explorer.tiersAvailableClick', '{{count}} tiers available - Click to choose', { count: category.tiers.length })
-            : t('settings.zim.explorer.tiersAvailable', '{{count}} tiers available', { count: category.tiers.length })
+            ? t('settings.zim.explorer.tiersAvailableClick', { count: category.tiers.length })
+            : t('settings.zim.explorer.tiersAvailable', { count: category.tiers.length })
           }
         </p>
         <div className="flex flex-wrap gap-2">

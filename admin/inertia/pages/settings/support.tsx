@@ -34,7 +34,7 @@ export default function SupportPage() {
 
           {/* Rogue Support */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-3">{t('settings.support.rogueTitle', 'Need Help With Your Home Network?')}</h2>
+            <h2 className="text-2xl font-semibold mb-3">{t('settings.support.rogueTitle')}</h2>
             <a
               href="https://roguesupport.com"
               target="_blank"
@@ -48,7 +48,7 @@ export default function SupportPage() {
               />
             </a>
             <p className="text-text-muted mb-4">
-              {t('settings.support.rogueDesc', 'Rogue Support is a networking consultation service for home users. Think of it as Uber for computer networking — expert help when you need it.')}
+              {t('settings.support.rogueDesc')}
             </p>
             <a
               href="https://roguesupport.com"
@@ -56,7 +56,7 @@ export default function SupportPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-blue-600 hover:underline font-medium"
             >
-              {t('settings.support.visitRogue', 'Visit RogueSupport.com')}
+              {t('settings.support.visitRogue')}
               <IconExternalLink size={16} />
             </a>
           </section>

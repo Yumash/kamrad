@@ -22,7 +22,7 @@ const ActiveDownloads = ({ filetype, withHeader = false }: ActiveDownloadProps) 
 
   return (
     <>
-      {withHeader && <StyledSectionHeader title={t('components.activeDownloads', 'Active Downloads')} className="mt-12 mb-4" />}
+      {withHeader && <StyledSectionHeader title={t('components.activeDownloads')} className="mt-12 mb-4" />}
       <div className="space-y-4">
         {downloads && downloads.length > 0 ? (
           downloads.map((download) => (
@@ -42,13 +42,13 @@ const ActiveDownloads = ({ filetype, withHeader = false }: ActiveDownloadProps) 
                       {extractFileName(download.filepath) || download.url}
                     </p>
                     <p className="text-xs text-red-600 mt-0.5">
-                      {t('components.downloadFailed', 'Download failed')}{download.failedReason ? `: ${download.failedReason}` : ''}
+                      {t('components.downloadFailed')}{download.failedReason ? `: ${download.failedReason}` : ''}
                     </p>
                   </div>
                   <button
                     onClick={() => handleDismiss(download.jobId)}
                     className="flex-shrink-0 p-1 rounded hover:bg-red-100 transition-colors"
-                    title={t('components.dismissAlert', 'Dismiss alert')}
+                    title={t('components.dismissAlert')}
                   >
                     <IconX className="w-4 h-4 text-red-400 hover:text-red-600" />
                   </button>
@@ -69,7 +69,7 @@ const ActiveDownloads = ({ filetype, withHeader = false }: ActiveDownloadProps) 
             </div>
           ))
         ) : (
-          <p className="text-text-muted">{t('components.noActiveDownloads', 'No active downloads')}</p>
+          <p className="text-text-muted">{t('components.noActiveDownloads')}</p>
         )}
       </div>
     </>

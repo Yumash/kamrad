@@ -43,16 +43,16 @@ const CuratedCollectionCard: React.FC<CuratedCollectionCardProps> = ({ collectio
             <div className="flex items-center">
               <IconCircleCheck
                 className="w-5 h-5 text-lime-400 ml-2"
-                title={t('components.allItemsDownloaded', 'All items downloaded')}
+                title={t('components.allItemsDownloaded')}
               />
-              <p className="text-lime-400 text-sm ml-1">{t('components.allItemsDownloaded', 'All items downloaded')}</p>
+              <p className="text-lime-400 text-sm ml-1">{t('components.allItemsDownloaded')}</p>
             </div>
           )}
         </div>
       </div>
       <p className="text-gray-200 grow">{collection.description}</p>
       <p className="text-gray-200 text-xs mt-2">
-        {t('components.collectionInfo', 'Items: {{count}} | Size: {{size}}', { count: collection.resources?.length, size: formatBytes(totalSizeBytes, 0) })}
+        {t('components.collectionInfo', { count: collection.resources?.length, size: formatBytes(totalSizeBytes, 0) })}
       </p>
     </div>
   )

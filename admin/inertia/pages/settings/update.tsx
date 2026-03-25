@@ -620,7 +620,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
             <div className="flex flex-col md:flex-row justify-between items-center p-8 gap-y-8 md:gap-y-0 gap-x-8">
               <div>
                 <h2 className="max-w-xl text-lg font-bold text-desert-green sm:text-xl lg:col-span-7">
-                  {t('settings.update.subscribeHeading', 'Want to stay updated with the latest from КАМРАД? Subscribe to receive release notes directly to your inbox. Unsubscribe anytime.')}
+                  {t('settings.update.subscribeHeading')}
                 </h2>
               </div>
               <div className="flex flex-col">
@@ -629,7 +629,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     name="email"
                     label=""
                     type="email"
-                    placeholder={t('settings.update.emailPlaceholder', 'Your email address')}
+                    placeholder={t('settings.update.emailPlaceholder')}
                     disabled={false}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -642,11 +642,11 @@ export default function SystemUpdatePage(props: { system: Props }) {
                     onClick={() => subscribeToReleaseNotesMutation.mutateAsync(email)}
                     loading={subscribeToReleaseNotesMutation.isPending}
                   >
-                    {t('settings.update.subscribe', 'Subscribe')}
+                    {t('settings.update.subscribe')}
                   </StyledButton>
                 </div>
                 <p className="mt-2 text-sm text-desert-stone-dark">
-                  {t('settings.update.privacyNote', 'We care about your privacy. КАМРАД will never share your email with third parties or send you spam.')}
+                  {t('settings.update.privacyNote')}
                 </p>
               </div>
             </div>

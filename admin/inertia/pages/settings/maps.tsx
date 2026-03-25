@@ -118,7 +118,7 @@ export default function MapsManager(props: {
     const isCollection = 'resources' in record
     openModal(
       <StyledModal
-        title={t('maps.confirmDownload', 'Confirm Download?')}
+        title={t('maps.confirmDownload')}
         onConfirm={() => {
           if (isCollection) {
             if (record.all_installed) {
@@ -139,7 +139,7 @@ export default function MapsManager(props: {
         confirmVariant="primary"
       >
         <p className="text-text-secondary">
-          {t('maps.confirmDownloadMsg', 'Are you sure you want to download {{filename}}? It may take some time for it to be available depending on the file size and your internet connection.', { filename: isCollection ? record.name : record })}
+          {t('maps.confirmDownloadMsg', { filename: isCollection ? record.name : record })}
         </p>
       </StyledModal>,
       'confirm-download-file-modal'

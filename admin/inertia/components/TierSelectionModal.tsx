@@ -118,7 +118,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                 {/* Content */}
                 <div className="p-6">
                   <p className="text-text-secondary mb-6">
-                    {t('components.selectTierDesc', 'Select a tier based on your storage capacity and needs. Higher tiers include all content from lower tiers.')}
+                    {t('components.selectTierDesc')}
                   </p>
 
                   <div className="space-y-4">
@@ -151,7 +151,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                                 </h3>
                                 {includedTierName && (
                                   <span className="text-xs text-text-muted">
-                                    ({t('components.includedIn', 'Included in {{tier}}', { tier: includedTierName })})
+                                    ({t('components.includedIn', { tier: includedTierName })})
                                   </span>
                                 )}
                               </div>
@@ -162,11 +162,11 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                                 <p className="text-xs text-text-muted mb-2 font-medium">
                                   {includedTierName ? (
                                     <>
-                                      {t('components.additionalResources', '{{count}} additional resource(s)', { count: ownResourceCount })}
-                                      <span className="text-text-muted"> ({t('components.plusEverythingIn', 'plus everything in {{tier}}', { tier: includedTierName })})</span>
+                                      {t('components.additionalResources', { count: ownResourceCount })}
+                                      <span className="text-text-muted"> ({t('components.plusEverythingIn', { tier: includedTierName })})</span>
                                     </>
                                   ) : (
-                                    <>{t('components.resourcesIncluded', '{{count}} resource(s) included', { count: ownResourceCount })}</>
+                                    <>{t('components.resourcesIncluded', { count: ownResourceCount })}</>
                                   )}
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -208,7 +208,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                   <div className="mt-6 flex items-start gap-2 text-sm text-text-muted bg-blue-50 p-3 rounded">
                     <IconInfoCircle size={18} className="text-blue-500 flex-shrink-0 mt-0.5" />
                     <p>
-                      {t('components.tierInfoNote', 'You can change your selection at any time. Click Submit to confirm your choice.')}
+                      {t('components.tierInfoNote')}
                     </p>
                   </div>
                 </div>
@@ -225,7 +225,7 @@ const TierSelectionModal: React.FC<TierSelectionModalProps> = ({
                         : 'bg-border-default text-text-muted cursor-not-allowed'
                     )}
                   >
-                    {t('components.downloadSelectedTier', 'Download Selected Tier')}
+                    {t('components.downloadSelectedTier')}
                   </button>
                 </div>
               </Dialog.Panel>

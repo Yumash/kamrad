@@ -24,7 +24,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         ></div>
         {!iconOnly && (
           <div className={light ? 'text-white mt-2' : 'text-text-primary mt-2'}>
-            {text || t('common.loading', 'Loading...')}
+            {text || t('common.loading')}
           </div>
         )}
       </div>
@@ -34,7 +34,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return (
     <div className={className}>
       <div className="ui active inverted dimmer">
-        <div className="ui text loader">{!iconOnly && <span>{text || t('common.loading', 'Loading...')}</span>}</div>
+        <div className="ui text loader">{!iconOnly && <span>{text || t('common.loading')}</span>}</div>
       </div>
     </div>
   )

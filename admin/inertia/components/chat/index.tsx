@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import ChatSidebar from './ChatSidebar'
 import ChatInterface from './ChatInterface'
@@ -27,6 +28,7 @@ export default function Chat({
   suggestionsEnabled = false,
   streamingEnabled = true,
 }: ChatProps) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const { openModal, closeAllModals } = useModals()
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null)
@@ -151,17 +153,16 @@ export default function Chat({
   const handleClearHistory = useCallback(() => {
     openModal(
       <StyledModal
-        title="Clear All Chat History?"
+        title={t('chat.clearAllHistory')}
         onConfirm={() => deleteAllSessionsMutation.mutate()}
         onCancel={closeAllModals}
         open={true}
-        confirmText="Clear All"
-        cancelText="Cancel"
+        confirmText={t('chat.clearAll')}
+        cancelText={t('common.cancel')}
         confirmVariant="danger"
       >
         <p className="text-text-primary">
-          Are you sure you want to delete all chat sessions? This action cannot be undone and all
-          conversations will be permanently deleted.
+          {t('chat.clearAllHistoryMsg')}
         </p>
       </StyledModal>,
       'confirm-clear-history-modal'
@@ -360,17 +361,17 @@ export default function Chat({
       <div className="flex-1 flex flex-col min-h-0">
         <div className="px-6 py-3 border-b border-border-subtle bg-surface-secondary flex items-center justify-between h-[75px] flex-shrink-0">
           <h2 className="text-lg font-semibold text-text-primary">
-            {activeSession?.title || 'New Chat'}
+            {activeSession?.title || t('chat.newChat')}
           </h2>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <label htmlFor="model-select" className="text-sm text-text-secondary">
-                Model:
+                {t('chat.model')}
               </label>
               {isLoadingModels ? (
-                <div className="text-sm text-text-muted">Loading models...</div>
+                <div className="text-sm text-text-muted">{t('chat.loadingModels')}</div>
               ) : installedModels.length === 0 ? (
-                <div className="text-sm text-red-600">No models installed</div>
+                <div className="text-sm text-red-600">{t('chat.noModelsInstalled')}</div>
               ) : (
                 <select
                   id="model-select"
