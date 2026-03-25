@@ -1,5 +1,56 @@
 # Changelog / Журнал изменений
 
+## [0.2.0] - 2026-03-25
+
+### RU — Локальный переводчик, карты Европы, расширенные коллекции
+
+#### Новое
+- **Локальный переводчик** — Translation Service с двумя провайдерами:
+  - Ollama (по умолчанию) — качественный перевод через AI-модель
+  - LibreTranslate (опция) — быстрый перевод, устанавливается как Docker-сервис
+- **Страница переводчика** в Settings — вставьте текст, выберите язык, получите перевод
+- **Кеш переводов** в SQLite — повторный перевод мгновенный
+- **Автоопределение языка** — переводчик использует язык интерфейса пользователя
+- **Карты Германии** — все 16 федеральных земель (из whitespring/project-nomad-maps-europe)
+- **Карты Австрии и Швейцарии**
+- **Глобальная обзорная мини-карта** (~60 МБ)
+- **Stack Overflow EN** (95 ГБ) и **Stack Overflow RU** (2.1 ГБ) в коллекциях
+- **Base-assets карт** теперь в репо КАМРАД (не зависят от внешнего репо)
+
+#### Изменено
+- Имена Docker-контейнеров: `nomad_*` → `kamrad_*`
+- Переменная окружения: `KAMRAD_STORAGE_PATH` (по умолчанию `/opt/kamrad/storage`)
+- Quality gates: tsc (block) + eslint (warn) для TypeScript
+
+#### Инфраструктура
+- LibreTranslate как устанавливаемый сервис (порт 5050)
+- Миграция `translation_cache` для кеша переводов
+- API endpoint `POST /api/translate`
+
+---
+
+### EN — Local Translator, European Maps, Extended Collections
+
+#### Added
+- **Local Translator** — Translation Service with two providers:
+  - Ollama (default) — high-quality AI-powered translation
+  - LibreTranslate (optional) — fast translation, installed as Docker service
+- **Translator page** in Settings — paste text, choose language, get translation
+- **Translation cache** in SQLite — instant repeated translations
+- **Auto language detection** — translator uses user's UI language
+- **Germany maps** — all 16 federal states (from whitespring/project-nomad-maps-europe)
+- **Austria and Switzerland maps**
+- **Global overview mini-map** (~60 MB)
+- **Stack Overflow EN** (95 GB) and **Stack Overflow RU** (2.1 GB) in collections
+- **Map base-assets** now stored in KAMRAD repo (no external dependency)
+
+#### Changed
+- Docker container names: `nomad_*` → `kamrad_*`
+- Environment variable: `KAMRAD_STORAGE_PATH` (default `/opt/kamrad/storage`)
+- Quality gates: tsc (block) + eslint (warn) for TypeScript
+
+---
+
 ## [0.1.1] - 2026-03-25
 
 ### RU — Исправления безопасности и качества

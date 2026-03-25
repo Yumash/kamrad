@@ -485,75 +485,37 @@
     {
       "name": "Германия / Germany",
       "slug": "germany",
-      "description": "Карты федеральных земель Германии. Maps of German federal states.",
+      "description": "Все 16 федеральных земель Германии. All 16 German federal states.",
       "icon": "IconMap",
       "language": "global",
       "resources": [
-        {
-          "id": "de_bayern",
-          "version": "2026-03",
-          "title": "Bayern (Бавария)",
-          "description": "Bavaria / Бавария",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_bayern_20260320.pmtiles",
-          "size_mb": 800
-        },
-        {
-          "id": "de_nordrhein_westfalen",
-          "version": "2026-03",
-          "title": "Nordrhein-Westfalen (Северный Рейн — Вестфалия)",
-          "description": "North Rhine-Westphalia",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_nordrhein_westfalen_20260320.pmtiles",
-          "size_mb": 700
-        },
-        {
-          "id": "de_baden_wuerttemberg",
-          "version": "2026-03",
-          "title": "Baden-Württemberg (Баден-Вюртемберг)",
-          "description": "Baden-Württemberg",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_baden_wuerttemberg_20260320.pmtiles",
-          "size_mb": 600
-        },
-        {
-          "id": "de_berlin",
-          "version": "2026-03",
-          "title": "Berlin (Берлин)",
-          "description": "Berlin",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_berlin_20260320.pmtiles",
-          "size_mb": 150
-        },
-        {
-          "id": "de_hamburg",
-          "version": "2026-03",
-          "title": "Hamburg (Гамбург)",
-          "description": "Hamburg",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_hamburg_20260320.pmtiles",
-          "size_mb": 100
-        }
+        { "id": "de_baden_wuerttemberg", "version": "2026-03", "title": "Baden-Württemberg (Баден-Вюртемберг)", "description": "Baden-Württemberg", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_baden_wuerttemberg_20260320.pmtiles", "size_mb": 600 },
+        { "id": "de_bayern", "version": "2026-03", "title": "Bayern (Бавария)", "description": "Bavaria", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_bayern_20260320.pmtiles", "size_mb": 800 },
+        { "id": "de_berlin", "version": "2026-03", "title": "Berlin (Берлин)", "description": "Berlin", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_berlin_20260320.pmtiles", "size_mb": 150 },
+        { "id": "de_brandenburg", "version": "2026-03", "title": "Brandenburg (Бранденбург)", "description": "Brandenburg", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_brandenburg_20260320.pmtiles", "size_mb": 300 },
+        { "id": "de_bremen", "version": "2026-03", "title": "Bremen (Бремен)", "description": "Bremen", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_bremen_20260320.pmtiles", "size_mb": 50 },
+        { "id": "de_hamburg", "version": "2026-03", "title": "Hamburg (Гамбург)", "description": "Hamburg", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_hamburg_20260320.pmtiles", "size_mb": 100 },
+        { "id": "de_hessen", "version": "2026-03", "title": "Hessen (Гессен)", "description": "Hesse", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_hessen_20260320.pmtiles", "size_mb": 400 },
+        { "id": "de_mecklenburg_vorpommern", "version": "2026-03", "title": "Mecklenburg-Vorpommern (Мекленбург-Передняя Померания)", "description": "Mecklenburg-Western Pomerania", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_mecklenburg_vorpommern_20260320.pmtiles", "size_mb": 200 },
+        { "id": "de_niedersachsen", "version": "2026-03", "title": "Niedersachsen (Нижняя Саксония)", "description": "Lower Saxony", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_niedersachsen_20260320.pmtiles", "size_mb": 500 },
+        { "id": "de_nordrhein_westfalen", "version": "2026-03", "title": "Nordrhein-Westfalen (Северный Рейн — Вестфалия)", "description": "North Rhine-Westphalia", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_nordrhein_westfalen_20260320.pmtiles", "size_mb": 700 },
+        { "id": "de_rheinland_pfalz", "version": "2026-03", "title": "Rheinland-Pfalz (Рейнланд-Пфальц)", "description": "Rhineland-Palatinate", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_rheinland_pfalz_20260320.pmtiles", "size_mb": 300 },
+        { "id": "de_saarland", "version": "2026-03", "title": "Saarland (Саар)", "description": "Saarland", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_saarland_20260320.pmtiles", "size_mb": 80 },
+        { "id": "de_sachsen", "version": "2026-03", "title": "Sachsen (Саксония)", "description": "Saxony", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_sachsen_20260320.pmtiles", "size_mb": 350 },
+        { "id": "de_sachsen_anhalt", "version": "2026-03", "title": "Sachsen-Anhalt (Саксония-Анхальт)", "description": "Saxony-Anhalt", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_sachsen_anhalt_20260320.pmtiles", "size_mb": 250 },
+        { "id": "de_schleswig_holstein", "version": "2026-03", "title": "Schleswig-Holstein (Шлезвиг-Гольштейн)", "description": "Schleswig-Holstein", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_schleswig_holstein_20260320.pmtiles", "size_mb": 200 },
+        { "id": "de_thueringen", "version": "2026-03", "title": "Thüringen (Тюрингия)", "description": "Thuringia", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_thueringen_20260320.pmtiles", "size_mb": 250 }
       ]
     },
     {
-      "name": "Австрия и Швейцария / Austria & Switzerland",
-      "slug": "alps",
-      "description": "Карты Австрии и Швейцарии. Maps of Austria and Switzerland.",
+      "name": "Центральная Европа / Central Europe",
+      "slug": "central-europe",
+      "description": "Австрия и Швейцария. Austria and Switzerland.",
       "icon": "IconMap",
       "language": "global",
       "resources": [
-        {
-          "id": "austria",
-          "version": "2026-03",
-          "title": "Österreich (Австрия)",
-          "description": "Austria",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/at_austria_20260320.pmtiles",
-          "size_mb": 500
-        },
-        {
-          "id": "switzerland",
-          "version": "2026-03",
-          "title": "Schweiz (Швейцария)",
-          "description": "Switzerland",
-          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/ch_switzerland_20260320.pmtiles",
-          "size_mb": 400
-        }
+        { "id": "austria", "version": "2026-03", "title": "Österreich (Австрия)", "description": "Austria", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/at_austria_20260320.pmtiles", "size_mb": 500 },
+        { "id": "switzerland", "version": "2026-03", "title": "Schweiz (Швейцария)", "description": "Switzerland", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/ch_switzerland_20260320.pmtiles", "size_mb": 400 }
       ]
     },
     {
