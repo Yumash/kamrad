@@ -6,7 +6,6 @@
 | The routes file is used for defining the HTTP routes.
 |
 */
-import BenchmarkController from '#controllers/benchmark_controller'
 import { TranslationController } from '#controllers/translation_controller'
 import ChatsController from '#controllers/chats_controller'
 import DocsController from '#controllers/docs_controller'
@@ -54,7 +53,6 @@ router
     router.get('/update', [SettingsController, 'update'])
     router.get('/zim', [SettingsController, 'zim'])
     router.get('/zim/remote-explorer', [SettingsController, 'zimRemote'])
-    router.get('/benchmark', [SettingsController, 'benchmark'])
     router.get('/support', [SettingsController, 'support'])
     router.get('/translate', [SettingsController, 'translate'])
   })
@@ -181,19 +179,3 @@ router
   })
   .prefix('/api/zim')
 
-router
-  .group(() => {
-    router.post('/run', [BenchmarkController, 'run'])
-    router.post('/run/system', [BenchmarkController, 'runSystem'])
-    router.post('/run/ai', [BenchmarkController, 'runAI'])
-    router.get('/results', [BenchmarkController, 'results'])
-    router.get('/results/latest', [BenchmarkController, 'latest'])
-    router.get('/results/:id', [BenchmarkController, 'show'])
-    router.post('/submit', [BenchmarkController, 'submit'])
-    router.post('/builder-tag', [BenchmarkController, 'updateBuilderTag'])
-    router.get('/comparison', [BenchmarkController, 'comparison'])
-    router.get('/status', [BenchmarkController, 'status'])
-    router.get('/settings', [BenchmarkController, 'settings'])
-    router.post('/settings', [BenchmarkController, 'updateSettings'])
-  })
-  .prefix('/api/benchmark')

@@ -220,7 +220,7 @@ export default function ModelsPage(props: {
   return (
     <SettingsLayout>
       <Head title={t('settings.models.title', { name: aiAssistantName })} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
         <main className="px-12 py-6">
           <h1 className="text-4xl font-semibold mb-4">{aiAssistantName}</h1>
           <p className="text-text-muted mb-4">

@@ -112,7 +112,7 @@ export default function SettingsPage(props: {
   return (
     <SettingsLayout>
       <Head title={t('settings.system.title')} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
         <main className="px-6 lg:px-12 py-6 lg:py-8">
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-desert-green mb-2">{t('settings.system.title')}</h1>

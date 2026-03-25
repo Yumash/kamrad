@@ -1,0 +1,539 @@
+{
+  "spec_version": "2026-03-25",
+  "collections": [
+    {
+      "name": "Германия",
+      "slug": "germany",
+      "description": "Все 16 федеральных земель Германии.",
+      "icon": "IconMap",
+      "language": "mul",
+      "resources": [
+        { "id": "de_baden_wuerttemberg", "version": "2026-03", "title": "Баден-Вюртемберг (Baden-Württemberg)", "description": "Баден-Вюртемберг", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_baden_wuerttemberg_20260320.pmtiles", "size_mb": 600 },
+        { "id": "de_bayern", "version": "2026-03", "title": "Бавария (Bayern)", "description": "Бавария", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_bayern_20260320.pmtiles", "size_mb": 800 },
+        { "id": "de_berlin", "version": "2026-03", "title": "Берлин (Berlin)", "description": "Берлин", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_berlin_20260320.pmtiles", "size_mb": 150 },
+        { "id": "de_brandenburg", "version": "2026-03", "title": "Бранденбург (Brandenburg)", "description": "Бранденбург", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_brandenburg_20260320.pmtiles", "size_mb": 300 },
+        { "id": "de_bremen", "version": "2026-03", "title": "Бремен (Bremen)", "description": "Бремен", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_bremen_20260320.pmtiles", "size_mb": 50 },
+        { "id": "de_hamburg", "version": "2026-03", "title": "Гамбург (Hamburg)", "description": "Гамбург", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_hamburg_20260320.pmtiles", "size_mb": 100 },
+        { "id": "de_hessen", "version": "2026-03", "title": "Гессен (Hessen)", "description": "Гессен", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_hessen_20260320.pmtiles", "size_mb": 400 },
+        { "id": "de_mecklenburg_vorpommern", "version": "2026-03", "title": "Мекленбург-Передняя Померания (Mecklenburg-Vorpommern)", "description": "Мекленбург-Передняя Померания", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_mecklenburg_vorpommern_20260320.pmtiles", "size_mb": 200 },
+        { "id": "de_niedersachsen", "version": "2026-03", "title": "Нижняя Саксония (Niedersachsen)", "description": "Нижняя Саксония", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_niedersachsen_20260320.pmtiles", "size_mb": 500 },
+        { "id": "de_nordrhein_westfalen", "version": "2026-03", "title": "Северный Рейн — Вестфалия (Nordrhein-Westfalen)", "description": "Северный Рейн — Вестфалия", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_nordrhein_westfalen_20260320.pmtiles", "size_mb": 700 },
+        { "id": "de_rheinland_pfalz", "version": "2026-03", "title": "Рейнланд-Пфальц (Rheinland-Pfalz)", "description": "Рейнланд-Пфальц", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_rheinland_pfalz_20260320.pmtiles", "size_mb": 300 },
+        { "id": "de_saarland", "version": "2026-03", "title": "Саар (Saarland)", "description": "Саар", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_saarland_20260320.pmtiles", "size_mb": 80 },
+        { "id": "de_sachsen", "version": "2026-03", "title": "Саксония (Sachsen)", "description": "Саксония", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_sachsen_20260320.pmtiles", "size_mb": 350 },
+        { "id": "de_sachsen_anhalt", "version": "2026-03", "title": "Саксония-Анхальт (Sachsen-Anhalt)", "description": "Саксония-Анхальт", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_sachsen_anhalt_20260320.pmtiles", "size_mb": 250 },
+        { "id": "de_schleswig_holstein", "version": "2026-03", "title": "Шлезвиг-Гольштейн (Schleswig-Holstein)", "description": "Шлезвиг-Гольштейн", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_schleswig_holstein_20260320.pmtiles", "size_mb": 200 },
+        { "id": "de_thueringen", "version": "2026-03", "title": "Тюрингия (Thüringen)", "description": "Тюрингия", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_thueringen_20260320.pmtiles", "size_mb": 250 }
+      ]
+    },
+    {
+      "name": "Центральная Европа",
+      "slug": "central-europe",
+      "description": "Австрия и Швейцария.",
+      "icon": "IconMap",
+      "language": "mul",
+      "resources": [
+        { "id": "austria", "version": "2026-03", "title": "Австрия (Österreich)", "description": "Австрия", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/at_austria_20260320.pmtiles", "size_mb": 500 },
+        { "id": "switzerland", "version": "2026-03", "title": "Швейцария (Schweiz)", "description": "Швейцария", "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/ch_switzerland_20260320.pmtiles", "size_mb": 400 }
+      ]
+    },
+    {
+      "name": "Глобальная мини-карта",
+      "slug": "global",
+      "description": "Обзорная карта мира с минимальной детализацией.",
+      "icon": "IconWorld",
+      "language": "mul",
+      "resources": [
+        {
+          "id": "global-min",
+          "version": "2025-12",
+          "title": "Мир (обзорная)",
+          "description": "Глобальная карта с низким масштабом (0-6), ~60 МБ.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/global-min_2025-12.pmtiles",
+          "size_mb": 60
+        }
+      ]
+    },
+    {
+      "name": "Тихоокеанский регион",
+      "slug": "pacific",
+      "description": "Карты Тихоокеанского региона: Аляска, Калифорния, Гавайи, Орегон, Вашингтон.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "alaska",
+          "version": "2025-12",
+          "title": "Аляска",
+          "description": "Топографические карты штата Аляска.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/alaska_2025-12.pmtiles",
+          "size_mb": 684
+        },
+        {
+          "id": "california",
+          "version": "2025-12",
+          "title": "Калифорния",
+          "description": "Топографические карты штата Калифорния.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/california_2025-12.pmtiles",
+          "size_mb": 1100
+        },
+        {
+          "id": "hawaii",
+          "version": "2025-12",
+          "title": "Гавайи",
+          "description": "Топографические карты штата Гавайи.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/hawaii_2025-12.pmtiles",
+          "size_mb": 28
+        },
+        {
+          "id": "oregon",
+          "version": "2025-12",
+          "title": "Орегон",
+          "description": "Топографические карты штата Орегон.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/oregon_2025-12.pmtiles",
+          "size_mb": 379
+        },
+        {
+          "id": "washington",
+          "version": "2025-12",
+          "title": "Вашингтон",
+          "description": "Топографические карты штата Вашингтон.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/washington_2025-12.pmtiles",
+          "size_mb": 466
+        }
+      ]
+    },
+    {
+      "name": "Горный регион",
+      "slug": "mountain",
+      "description": "Карты Горного региона: Аризона, Колорадо, Айдахо, Монтана, Невада, Нью-Мексико, Юта, Вайоминг.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "arizona",
+          "version": "2025-12",
+          "title": "Аризона",
+          "description": "Топографические карты штата Аризона.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/arizona_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "colorado",
+          "version": "2025-12",
+          "title": "Колорадо",
+          "description": "Топографические карты штата Колорадо.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/colorado_2025-12.pmtiles",
+          "size_mb": 450
+        },
+        {
+          "id": "idaho",
+          "version": "2025-12",
+          "title": "Айдахо",
+          "description": "Топографические карты штата Айдахо.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/idaho_2025-12.pmtiles",
+          "size_mb": 220
+        },
+        {
+          "id": "montana",
+          "version": "2025-12",
+          "title": "Монтана",
+          "description": "Топографические карты штата Монтана.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/montana_2025-12.pmtiles",
+          "size_mb": 270
+        },
+        {
+          "id": "nevada",
+          "version": "2025-12",
+          "title": "Невада",
+          "description": "Топографические карты штата Невада.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/nevada_2025-12.pmtiles",
+          "size_mb": 200
+        },
+        {
+          "id": "new_mexico",
+          "version": "2025-12",
+          "title": "Нью-Мексико",
+          "description": "Топографические карты штата Нью-Мексико.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/new_mexico_2025-12.pmtiles",
+          "size_mb": 230
+        },
+        {
+          "id": "utah",
+          "version": "2025-12",
+          "title": "Юта",
+          "description": "Топографические карты штата Юта.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/utah_2025-12.pmtiles",
+          "size_mb": 240
+        },
+        {
+          "id": "wyoming",
+          "version": "2025-12",
+          "title": "Вайоминг",
+          "description": "Топографические карты штата Вайоминг.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/wyoming_2025-12.pmtiles",
+          "size_mb": 210
+        }
+      ]
+    },
+    {
+      "name": "Юго-Запад Центральный",
+      "slug": "west-south-central",
+      "description": "Карты Юго-Западного Центрального региона: Арканзас, Луизиана, Оклахома, Техас.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "arkansas",
+          "version": "2025-12",
+          "title": "Арканзас",
+          "description": "Топографические карты штата Арканзас.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/arkansas_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "oklahoma",
+          "version": "2025-12",
+          "title": "Оклахома",
+          "description": "Топографические карты штата Оклахома.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/oklahoma_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "louisiana",
+          "version": "2025-12",
+          "title": "Луизиана",
+          "description": "Топографические карты штата Луизиана.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/louisiana_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "texas",
+          "version": "2025-12",
+          "title": "Техас",
+          "description": "Топографические карты штата Техас.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/texas_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Юго-Восток Центральный",
+      "slug": "east-south-central",
+      "description": "Карты Юго-Восточного Центрального региона: Алабама, Кентукки, Миссисипи, Теннесси.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "alabama",
+          "version": "2025-12",
+          "title": "Алабама",
+          "description": "Топографические карты штата Алабама.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/alabama_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "kentucky",
+          "version": "2025-12",
+          "title": "Кентукки",
+          "description": "Топографические карты штата Кентукки.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/kentucky_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "mississippi",
+          "version": "2025-12",
+          "title": "Миссисипи",
+          "description": "Топографические карты штата Миссисипи.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/mississippi_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "tennessee",
+          "version": "2025-12",
+          "title": "Теннесси",
+          "description": "Топографические карты штата Теннесси.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/tennessee_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Южная Атлантика",
+      "slug": "south-atlantic",
+      "description": "Карты Южно-Атлантического региона: Делавэр, Флорида, Джорджия, Мэриленд, Северная Каролина, Южная Каролина, Вирджиния, Западная Вирджиния.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "delaware",
+          "version": "2025-12",
+          "title": "Делавэр",
+          "description": "Топографические карты штата Делавэр.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/delaware_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "florida",
+          "version": "2025-12",
+          "title": "Флорида",
+          "description": "Топографические карты штата Флорида.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/florida_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "georgia",
+          "version": "2025-12",
+          "title": "Джорджия",
+          "description": "Топографические карты штата Джорджия.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/georgia_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "maryland",
+          "version": "2025-12",
+          "title": "Мэриленд",
+          "description": "Топографические карты штата Мэриленд.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/maryland_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "north_carolina",
+          "version": "2025-12",
+          "title": "Северная Каролина",
+          "description": "Топографические карты штата Северная Каролина.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/north_carolina_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "south_carolina",
+          "version": "2025-12",
+          "title": "Южная Каролина",
+          "description": "Топографические карты штата Южная Каролина.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/south_carolina_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "virginia",
+          "version": "2025-12",
+          "title": "Вирджиния",
+          "description": "Топографические карты штата Вирджиния.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/virginia_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "west_virginia",
+          "version": "2025-12",
+          "title": "Западная Вирджиния",
+          "description": "Топографические карты штата Западная Вирджиния.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/west_virginia_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Северо-Запад Центральный",
+      "slug": "west-north-central",
+      "description": "Карты Северо-Западного Центрального региона: Айова, Канзас, Миннесота, Миссури, Небраска, Северная Дакота, Южная Дакота.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "iowa",
+          "version": "2025-12",
+          "title": "Айова",
+          "description": "Топографические карты штата Айова.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/iowa_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "kansas",
+          "version": "2025-12",
+          "title": "Канзас",
+          "description": "Топографические карты штата Канзас.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/kansas_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "minnesota",
+          "version": "2025-12",
+          "title": "Миннесота",
+          "description": "Топографические карты штата Миннесота.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/minnesota_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "missouri",
+          "version": "2025-12",
+          "title": "Миссури",
+          "description": "Топографические карты штата Миссури.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/missouri_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "nebraska",
+          "version": "2025-12",
+          "title": "Небраска",
+          "description": "Топографические карты штата Небраска.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/nebraska_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "north_dakota",
+          "version": "2025-12",
+          "title": "Северная Дакота",
+          "description": "Топографические карты штата Северная Дакота.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/north_dakota_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "south_dakota",
+          "version": "2025-12",
+          "title": "Южная Дакота",
+          "description": "Топографические карты штата Южная Дакота.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/south_dakota_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Северо-Восток Центральный",
+      "slug": "east-north-central",
+      "description": "Карты Северо-Восточного Центрального региона: Иллинойс, Индиана, Мичиган, Огайо, Висконсин.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "illinois",
+          "version": "2025-12",
+          "title": "Иллинойс",
+          "description": "Топографические карты штата Иллинойс.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/illinois_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "indiana",
+          "version": "2025-12",
+          "title": "Индиана",
+          "description": "Топографические карты штата Индиана.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/indiana_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "michigan",
+          "version": "2025-12",
+          "title": "Мичиган",
+          "description": "Топографические карты штата Мичиган.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/michigan_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "ohio",
+          "version": "2025-12",
+          "title": "Огайо",
+          "description": "Топографические карты штата Огайо.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/ohio_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "wisconsin",
+          "version": "2025-12",
+          "title": "Висконсин",
+          "description": "Топографические карты штата Висконсин.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/wisconsin_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Среднеатлантический регион",
+      "slug": "mid-atlantic",
+      "description": "Карты Среднеатлантического региона: Нью-Джерси, Нью-Йорк, Пенсильвания.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "new_jersey",
+          "version": "2025-12",
+          "title": "Нью-Джерси",
+          "description": "Топографические карты штата Нью-Джерси.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/new_jersey_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "new_york",
+          "version": "2025-12",
+          "title": "Нью-Йорк",
+          "description": "Топографические карты штата Нью-Йорк.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/new_york_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "pennsylvania",
+          "version": "2025-12",
+          "title": "Пенсильвания",
+          "description": "Топографические карты штата Пенсильвания.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/pennsylvania_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Новая Англия",
+      "slug": "new-england",
+      "description": "Карты региона Новая Англия: Коннектикут, Мэн, Массачусетс, Нью-Гэмпшир, Род-Айленд, Вермонт.",
+      "icon": "IconMap",
+      "language": "en",
+      "resources": [
+        {
+          "id": "connecticut",
+          "version": "2025-12",
+          "title": "Коннектикут",
+          "description": "Топографические карты штата Коннектикут.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/connecticut_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "maine",
+          "version": "2025-12",
+          "title": "Мэн",
+          "description": "Топографические карты штата Мэн.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/maine_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "massachusetts",
+          "version": "2025-12",
+          "title": "Массачусетс",
+          "description": "Топографические карты штата Массачусетс.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/massachusetts_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "new_hampshire",
+          "version": "2025-12",
+          "title": "Нью-Гэмпшир",
+          "description": "Топографические карты штата Нью-Гэмпшир.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/new_hampshire_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "rhode_island",
+          "version": "2025-12",
+          "title": "Род-Айленд",
+          "description": "Топографические карты штата Род-Айленд.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/rhode_island_2025-12.pmtiles",
+          "size_mb": 400
+        },
+        {
+          "id": "vermont",
+          "version": "2025-12",
+          "title": "Вермонт",
+          "description": "Топографические карты штата Вермонт.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/vermont_2025-12.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    }
+  ]
+}

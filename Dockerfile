@@ -52,8 +52,8 @@ COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
 # Copy pmtiles binary for map region extraction
 COPY --from=pmtiles-download /usr/local/bin/pmtiles /usr/local/bin/pmtiles
-# Copy root package.json for version info
-COPY package.json /app/version.json
+# Write version from build arg (semantic-release passes correct version)
+RUN echo "{\"version\":\"${VERSION}\"}" > /app/version.json
 
 # Copy docs and README for access within the container
 COPY admin/docs /app/docs

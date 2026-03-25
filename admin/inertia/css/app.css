@@ -66,12 +66,12 @@ body {
   --color-desert-green-darker: #f7eedc;
   --color-desert-green-dark: #e8dfc8;
 
-  /* Accent green: slightly brighter for dark bg visibility */
-  --color-desert-green: #525530;
+  /* Accent green: brighter for dark bg contrast (≥3:1 on #2a2918) */
+  --color-desert-green: #737645;
 
   /* Light variants → dark variants (hover bg, disabled states) */
-  --color-desert-green-light: #3a3c24;
-  --color-desert-green-lighter: #2d2e1c;
+  --color-desert-green-light: #4a4d2e;
+  --color-desert-green-lighter: #3a3c24;
 
   /* Orange: brighter for contrast on dark surfaces */
   --color-desert-orange-dark: #c85815;
@@ -109,13 +109,13 @@ body {
   --color-surface-elevated: #3d3c2a;
   --color-text-primary: #f7eedc;
   --color-text-secondary: #afafa5;
-  --color-text-muted: #8f8f82;
+  --color-text-muted: #a0a094;
   --color-border-default: #424420;
   --color-border-subtle: #353420;
 
-  /* Button interactive states: darker green for hover/active on dark bg */
-  --color-btn-green-hover: #474a28;
-  --color-btn-green-active: #3a3c24;
+  /* Button interactive states: brighter green for hover/active on dark bg */
+  --color-btn-green-hover: #5c5f35;
+  --color-btn-green-active: #4a4d2e;
 
   color-scheme: dark;
 }

@@ -176,7 +176,7 @@ export default function MapsManager(props: {
   return (
     <SettingsLayout>
       <Head title={t('maps.mapsManager')} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
         <main className="px-12 py-6">
           <div className="flex items-center justify-between">
             <div className="flex flex-col">

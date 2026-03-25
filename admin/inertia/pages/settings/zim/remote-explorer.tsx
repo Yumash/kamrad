@@ -232,8 +232,8 @@ export default function ZimRemoteExplorer() {
         addNotification({
           message:
             selectedWikipedia === 'none'
-              ? 'Wikipedia removed successfully'
-              : 'Wikipedia download started',
+              ? t('settings.zim.explorer.wikipediaRemoved')
+              : t('settings.zim.explorer.wikipediaDownloadStarted'),
           type: 'success',
         })
         invalidateDownloads()
@@ -271,7 +271,7 @@ export default function ZimRemoteExplorer() {
   return (
     <SettingsLayout>
       <Head title={t('settings.zim.explorer.title')} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
         <main className="px-12 py-6">
           <div className="flex justify-between items-center">
             <div className="flex flex-col">
@@ -403,14 +403,14 @@ export default function ZimRemoteExplorer() {
               {
                 accessor: 'updated',
                 render(record) {
-                  return new Intl.DateTimeFormat('en-US', {
+                  return new Intl.DateTimeFormat(undefined, {
                     dateStyle: 'medium',
                   }).format(new Date(record.updated))
                 },
               },
               {
                 accessor: 'size_bytes',
-                title: 'Size',
+                title: t('common.size'),
                 render(record) {
                   return formatBytes(record.size_bytes)
                 },

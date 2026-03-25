@@ -36,11 +36,19 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className={classNames(
-        'flex flex-col bg-desert-green rounded-lg p-6 text-white border shadow-sm hover:shadow-lg transition-shadow cursor-pointer h-80',
+        'flex flex-col bg-desert-green rounded-lg p-6 text-white border shadow-sm hover:shadow-lg transition-shadow cursor-pointer h-80 focus:outline-none focus:ring-2 focus:ring-desert-olive-light focus:ring-offset-2',
         selectedTier ? 'border-desert-olive-light border-2' : 'border-desert-green'
       )}
       onClick={() => onClick?.(category)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick?.(category)
+        }
+      }}
     >
       <div className="flex items-center mb-4">
         <div className="flex justify-between w-full items-center">
@@ -88,7 +96,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
           })}
         </div>
         <p className="text-gray-300 text-xs mt-3">
-          Size: {formatBytes(minSize, 1)} - {formatBytes(maxSize, 1)}
+          {t('common.size')}: {formatBytes(minSize, 1)} - {formatBytes(maxSize, 1)}
         </p>
       </div>
     </div>

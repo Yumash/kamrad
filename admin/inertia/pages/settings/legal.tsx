@@ -7,7 +7,7 @@ export default function LegalPage() {
   return (
     <SettingsLayout>
       <Head title={t('settings.legal.pageTitle')} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
         <main className="px-12 py-6 max-w-4xl">
           <h1 className="text-4xl font-semibold mb-8">{t('settings.legal.title')}</h1>
 

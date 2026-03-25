@@ -19,8 +19,11 @@ const CuratedCollectionCard: React.FC<CuratedCollectionCardProps> = ({ collectio
   )
   return (
     <div
+      role="button"
+      tabIndex={collection.all_installed ? -1 : 0}
+      aria-disabled={collection.all_installed ? true : undefined}
       className={classNames(
-        'flex flex-col bg-desert-green rounded-lg p-6 text-white border border-b-desert-green shadow-sm hover:shadow-lg transition-shadow cursor-pointer',
+        'flex flex-col bg-desert-green rounded-lg p-6 text-white border border-b-desert-green shadow-sm hover:shadow-lg transition-shadow cursor-pointer focus:outline-none focus:ring-2 focus:ring-desert-olive-light focus:ring-offset-2',
         { 'opacity-65 cursor-not-allowed !hover:shadow-sm': collection.all_installed },
         { 'h-56': size === 'small', 'h-80': size === 'large' }
       )}
@@ -30,6 +33,14 @@ const CuratedCollectionCard: React.FC<CuratedCollectionCardProps> = ({ collectio
         }
         if (onClick) {
           onClick(collection)
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          if (!collection.all_installed && onClick) {
+            onClick(collection)
+          }
         }
       }}
     >

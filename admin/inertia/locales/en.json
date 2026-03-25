@@ -9,6 +9,9 @@
     "backToHome": "Back to Home",
     "next": "Next",
     "close": "Close",
+    "closeSidebar": "Close sidebar",
+    "copy": "Copy",
+    "copied": "Copied!",
     "openMenu": "Open menu",
     "search": "Search",
     "download": "Download",
@@ -495,21 +498,20 @@
     "support": {
       "title": "Support the Project",
       "pageTitle": "Support the Project | KAMRAD",
-      "intro": "KAMRAD is 100% free and open source — no subscriptions, no paywalls, no catch. If you'd like to help keep the project going, here are a few ways to show your support.",
-      "buyCoffee": "Buy Us a Coffee",
-      "buyCoffeeDesc": "Every contribution helps fund development, server costs, and new content packs for KAMRAD. Even a small donation goes a long way.",
-      "supportOnKofi": "Support on Ko-fi",
+      "intro": "I build open-source tools and share knowledge freely. Your support helps me keep doing that.",
+      "usdtTitle": "USDT (TRC-20)",
+      "usdtNetwork": "Tron network",
+      "usdtWarning": "Only send USDT on the TRC-20 (Tron) network",
+      "openCollectiveTitle": "OpenCollective",
+      "openCollectiveDesc": "Recurring or one-time donation with full transparency.",
+      "donateOnOC": "Donate on OpenCollective",
       "otherWays": "Other Ways to Help",
       "starOnGithub": "Star the project on GitHub",
       "starOnGithubDesc": "— it helps more people discover KAMRAD",
       "reportBugs": "Report bugs and suggest features",
       "reportBugsDesc": "— every report makes KAMRAD better",
       "shareProject": "Share KAMRAD with someone who'd use it — word of mouth is the best marketing",
-      "joinDiscord": "Join the Discord community",
-      "joinDiscordDesc": "— hang out, share your build, help other users",
-      "rogueTitle": "Need Help With Your Home Network?",
-      "rogueDesc": "Rogue Support is a networking consultation service for home users. Think of it as Uber for computer networking — expert help when you need it.",
-      "visitRogue": "Visit RogueSupport.com"
+      "thanks": "Thank you for supporting independent engineering & open source."
     },
     "zim": {
       "title": "Content Manager | KAMRAD",
@@ -535,7 +537,9 @@
         "confirmDownloadMsg": "Are you sure you want to download {{title}}? It may take some time for it to be available depending on the file size and your internet connection. The Kiwix application will be restarted after the download is complete.",
         "collectionsRefreshed": "Successfully refreshed content collections.",
         "downloadError": "An error occurred while starting downloads.",
-        "startedDownloading": "Started downloading \"{{category}} - {{tier}}\""
+        "startedDownloading": "Started downloading \"{{category}} - {{tier}}\"",
+        "wikipediaRemoved": "Wikipedia removed successfully",
+        "wikipediaDownloadStarted": "Wikipedia download started"
       }
     },
     "nav": {
@@ -563,7 +567,9 @@
       "translateButton": "Translate",
       "resultLabel": "Translation",
       "copy": "Copy",
-      "clear": "Clear"
+      "clear": "Clear",
+      "notInstalled": "LibreTranslate is not installed. Install it from the Apps page to use the translator.",
+      "installButton": "Go to Apps"
     }
   },
   "chat": {

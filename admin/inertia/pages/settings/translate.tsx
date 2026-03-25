@@ -7,11 +7,14 @@ import Alert from '~/components/Alert'
 import LoadingSpinner from '~/components/LoadingSpinner'
 import { useContentTranslation } from '~/hooks/useTranslation'
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '~/lib/i18n'
+import useServiceInstalledStatus from '~/hooks/useServiceInstalledStatus'
+import { SERVICE_NAMES } from '../../../constants/service_names'
 
 export default function TranslatePage() {
   const { t, i18n } = useTranslation()
   const [inputText, setInputText] = useState('')
   const [fromLang, setFromLang] = useState<string>('en')
+  const libreTranslateStatus = useServiceInstalledStatus(SERVICE_NAMES.LIBRETRANSLATE)
   const {
     translating,
     translatedText,
@@ -29,10 +32,25 @@ export default function TranslatePage() {
   return (
     <SettingsLayout>
       <Head title={t('settings.translate.title')} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
       <div className="px-12 py-6 max-w-4xl">
         <h1 className="text-2xl font-bold text-text-primary mb-2">{t('settings.translate.heading')}</h1>
         <p className="text-text-secondary mb-6">{t('settings.translate.description')}</p>
+
+        {!libreTranslateStatus.isInstalled && (
+          <Alert
+            title={t('settings.translate.notInstalled')}
+            type="warning"
+            variant="solid"
+            className="mb-6"
+            buttonProps={{
+              variant: 'primary',
+              children: t('settings.translate.installButton'),
+              icon: 'IconDownload',
+              onClick: () => { window.location.href = '/settings/apps' },
+            }}
+          />
+        )}
 
         <div className="space-y-4">
           <div className="flex gap-4 items-center">

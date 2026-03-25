@@ -32,7 +32,7 @@ const SPEC_URLS: Record<ManifestType, string> = {
 }
 
 // Language-specific collection URLs
-export function getLanguageSpecUrl(lang: string, type: 'wikipedia' | 'kiwix-categories'): string {
+export function getLanguageSpecUrl(lang: string, type: 'wikipedia' | 'kiwix-categories' | 'maps'): string {
   return `${GITHUB_BASE}/${lang}/${type}.json`
 }
 
@@ -101,9 +101,9 @@ export class CollectionManifestService {
    * Fetch a locale-specific spec, falling back to base EN spec.
    * Does not cache locale-specific specs (they overlay the base).
    */
-  async getLocaleSpec<T>(type: 'wikipedia' | 'kiwix-categories', validator: any): Promise<T | null> {
+  async getLocaleSpec<T>(type: 'wikipedia' | 'kiwix-categories' | 'maps', validator: any): Promise<T | null> {
     const locale = await KvStore.getValue('ui.language') || 'en'
-    const manifestType: ManifestType = type === 'kiwix-categories' ? 'zim_categories' : 'wikipedia'
+    const manifestType: ManifestType = type === 'kiwix-categories' ? 'zim_categories' : type === 'maps' ? 'maps' : 'wikipedia'
 
     if (locale !== 'en') {
       try {
@@ -135,7 +135,7 @@ export class CollectionManifestService {
   }
 
   async getMapCollectionsWithStatus(): Promise<CollectionWithStatus[]> {
-    const spec = await this.getSpecWithFallback<MapsSpec>('maps')
+    const spec = await this.getLocaleSpec<MapsSpec>('maps', mapsSpecSchema)
     if (!spec) return []
 
     const installedResources = await InstalledResource.query().where('resource_type', 'map')

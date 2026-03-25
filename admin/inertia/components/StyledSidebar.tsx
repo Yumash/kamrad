@@ -56,28 +56,25 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
   const Sidebar = () => {
     return (
       <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-desert-sand px-6 ring-1 ring-white/5 pt-4 shadow-md">
-        <div className="flex h-16 shrink-0 items-center">
-          <img src="/kamrad_logo.png" alt="KAMRAD Logo" className="h-16 w-16" />
-          <h1 className="ml-3 text-xl font-semibold text-text-primary">{title}</h1>
+        {/* Header with logo and back-to-home */}
+        <div className="flex shrink-0 items-center justify-between">
+          <div className="flex items-center">
+            <img src="/kamrad_logo.png" alt="KAMRAD Logo" className="h-12 w-12" />
+            <h1 className="ml-3 text-lg font-semibold text-text-primary">{title}</h1>
+          </div>
+          <a
+            href="/home"
+            className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-desert-green hover:bg-desert-green hover:text-white transition-colors"
+            title={t('common.backToHome')}
+          >
+            <IconArrowLeft aria-hidden="true" className="size-5" />
+          </a>
         </div>
         <nav className="flex flex-1 flex-col">
-          <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li>
-              <ul role="list" className="-mx-2 space-y-1">
-                {items.map((item) => (
-                  <ListItem key={item.name} {...item} current={currentPath === item.href} />
-                ))}
-                <li className="ml-2 mt-4">
-                  <a
-                    href="/home"
-                    className="flex flex-row items-center gap-x-3 text-desert-green text-sm font-semibold"
-                  >
-                    <IconArrowLeft aria-hidden="true" className="size-6 shrink-0" />
-                    {t('common.backToHome')}
-                  </a>
-                </li>
-              </ul>
-            </li>
+          <ul role="list" className="-mx-2 space-y-1">
+            {items.map((item) => (
+              <ListItem key={item.name} {...item} current={currentPath === item.href} />
+            ))}
           </ul>
         </nav>
         <div className="mb-4 flex flex-col items-center gap-1 text-sm text-text-secondary">
@@ -124,7 +121,7 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
                   onClick={() => setSidebarOpen(false)}
                   className="-m-2.5 p-2.5"
                 >
-                  <span className="sr-only">Close sidebar</span>
+                  <span className="sr-only">{t('common.closeSidebar')}</span>
                   <IconX aria-hidden="true" className="size-6 text-white" />
                 </button>
               </div>

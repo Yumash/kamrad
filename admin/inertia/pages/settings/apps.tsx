@@ -330,7 +330,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
   return (
     <SettingsLayout>
       <Head title={t('settings.apps.title')} />
-      <div className="xl:pl-72 w-full">
+      <div className="w-full">
         <main className="px-12 py-6">
           <div className="flex items-center justify-between mb-4">
             <div>

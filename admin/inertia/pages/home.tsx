@@ -12,6 +12,7 @@ import AppLayout from '~/layouts/AppLayout'
 import { getServiceLink } from '~/lib/navigation'
 import { ServiceSlim } from '../../types/services'
 import DynamicIcon, { DynamicIconName } from '~/components/DynamicIcon'
+import classNames from 'classnames'
 import { useUpdateAvailable } from '~/hooks/useUpdateAvailable'
 import { useSystemSetting } from '~/hooks/useSystemSetting'
 import Alert from '~/components/Alert'
@@ -162,10 +163,16 @@ export default function Home(props: {
         {items.map((item) => {
           const isEasySetup = item.to === '/easy-setup'
           const shouldHighlight = isEasySetup && shouldHighlightEasySetup
+          const isSystemUtility = item.displayOrder >= 50
 
           return (
             <a key={item.to} href={item.to} target={item.target}>
-              <div className="relative rounded-lg border-desert-green border-2 bg-desert-green text-white transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 min-h-48 py-6 flex flex-col items-center justify-center cursor-pointer text-center px-4">
+              <div className={classNames(
+                "relative rounded-lg border-2 transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 min-h-40 py-6 flex flex-col items-center justify-center cursor-pointer text-center px-4",
+                isSystemUtility
+                  ? "bg-surface-elevated border-border-default text-text-primary"
+                  : "bg-desert-green border-desert-green text-white"
+              )}>
                 {shouldHighlight && (
                   <span className="absolute top-2 right-2 flex items-center justify-center">
                     <span
@@ -177,7 +184,7 @@ export default function Home(props: {
                     </span>
                   </span>
                 )}
-                <div className="flex items-center justify-center mb-2">{item.icon}</div>
+                <div className={classNames("flex items-center justify-center mb-2", isSystemUtility && "text-desert-green")}>{item.icon}</div>
                 <h3 className="font-bold text-2xl">{item.label}</h3>
                 {item.poweredBy && <p className="text-sm opacity-80">{t('common.poweredBy', { name: item.poweredBy })}</p>}
                 <p className="xl:text-lg mt-2">{item.description}</p>

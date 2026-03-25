@@ -1,6 +1,6 @@
 import {
   IconArrowBigUpLines,
-  IconChartBar,
+  IconArrowLeft,
   IconDashboard,
   IconFolder,
   IconLanguage,
@@ -27,7 +27,6 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
   const navigation = [
     ...(aiAssistantInstallStatus.isInstalled ? [{ name: aiAssistantName, href: '/settings/models', icon: IconWand, current: false }] : []),
     { name: t('settings.nav.apps'), href: '/settings/apps', icon: IconTerminal2, current: false },
-    { name: t('settings.nav.benchmark'), href: '/settings/benchmark', icon: IconChartBar, current: false },
     { name: t('settings.nav.contentExplorer'), href: '/settings/zim/remote-explorer', icon: IconZoom, current: false },
     { name: t('settings.nav.contentManager'), href: '/settings/zim', icon: IconFolder, current: false },
     { name: t('settings.nav.mapsManager'), href: '/settings/maps', icon: IconMapRoute, current: false },
@@ -53,7 +52,17 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
   return (
     <div className="min-h-screen flex flex-row bg-surface-secondary/90">
       <StyledSidebar title={t('settings.title')} items={navigation} />
-      {children}
+      <div className="flex-1 xl:pl-72">
+        <div className="px-4 pt-4 pb-2 xl:hidden">
+          <a href="/home" className="inline-flex items-center gap-1.5 text-sm font-medium text-desert-green hover:text-desert-green-dark transition-colors">
+            <IconArrowLeft className="size-4" />
+            {t('common.backToHome')}
+          </a>
+        </div>
+        <main className="flex-1">
+          {children}
+        </main>
+      </div>
     </div>
   )
 }
