@@ -58,7 +58,7 @@ export class MapService implements IMapService {
 
     const defaultTarFileURL = new URL(
       this.baseAssetsTarFile,
-      'https://github.com/Yumash/kamrad/raw/refs/heads/main/maps/'
+      'https://github.com/Yumash/kamrad/raw/refs/heads/main/install/'
     )
 
     const resolvedURL = url ? new URL(url) : defaultTarFileURL

@@ -1,5 +1,5 @@
 {
-  "spec_version": "2026-02-11",
+  "spec_version": "2026-03-25",
   "collections": [
     {
       "name": "Pacific Region",
@@ -479,6 +479,97 @@
           "description": "Topographic maps for the state of Vermont",
           "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/vermont_2025-12.pmtiles",
           "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Германия / Germany",
+      "slug": "germany",
+      "description": "Карты федеральных земель Германии. Maps of German federal states.",
+      "icon": "IconMap",
+      "language": "global",
+      "resources": [
+        {
+          "id": "de_bayern",
+          "version": "2026-03",
+          "title": "Bayern (Бавария)",
+          "description": "Bavaria / Бавария",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_bayern_20260320.pmtiles",
+          "size_mb": 800
+        },
+        {
+          "id": "de_nordrhein_westfalen",
+          "version": "2026-03",
+          "title": "Nordrhein-Westfalen (Северный Рейн — Вестфалия)",
+          "description": "North Rhine-Westphalia",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_nordrhein_westfalen_20260320.pmtiles",
+          "size_mb": 700
+        },
+        {
+          "id": "de_baden_wuerttemberg",
+          "version": "2026-03",
+          "title": "Baden-Württemberg (Баден-Вюртемберг)",
+          "description": "Baden-Württemberg",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_baden_wuerttemberg_20260320.pmtiles",
+          "size_mb": 600
+        },
+        {
+          "id": "de_berlin",
+          "version": "2026-03",
+          "title": "Berlin (Берлин)",
+          "description": "Berlin",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_berlin_20260320.pmtiles",
+          "size_mb": 150
+        },
+        {
+          "id": "de_hamburg",
+          "version": "2026-03",
+          "title": "Hamburg (Гамбург)",
+          "description": "Hamburg",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/de_hamburg_20260320.pmtiles",
+          "size_mb": 100
+        }
+      ]
+    },
+    {
+      "name": "Австрия и Швейцария / Austria & Switzerland",
+      "slug": "alps",
+      "description": "Карты Австрии и Швейцарии. Maps of Austria and Switzerland.",
+      "icon": "IconMap",
+      "language": "global",
+      "resources": [
+        {
+          "id": "austria",
+          "version": "2026-03",
+          "title": "Österreich (Австрия)",
+          "description": "Austria",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/at_austria_20260320.pmtiles",
+          "size_mb": 500
+        },
+        {
+          "id": "switzerland",
+          "version": "2026-03",
+          "title": "Schweiz (Швейцария)",
+          "description": "Switzerland",
+          "url": "https://github.com/whitespring/project-nomad-maps-europe/releases/download/v1/ch_switzerland_20260320.pmtiles",
+          "size_mb": 400
+        }
+      ]
+    },
+    {
+      "name": "Глобальная мини-карта / Global Overview",
+      "slug": "global",
+      "description": "Обзорная карта мира с минимальной детализацией. Global overview map with minimal zoom levels.",
+      "icon": "IconWorld",
+      "language": "global",
+      "resources": [
+        {
+          "id": "global-min",
+          "version": "2025-12",
+          "title": "Мир (обзорная) / World Overview",
+          "description": "Global map at low zoom levels (0-6). Good for overview, ~60 MB.",
+          "url": "https://github.com/Crosstalk-Solutions/project-nomad-maps/raw/refs/heads/master/pmtiles/global-min_2025-12.pmtiles",
+          "size_mb": 60
         }
       ]
     }
