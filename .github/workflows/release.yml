@@ -1,4 +1,4 @@
-name: Release SemVer
+name: Release and Build
 
 on:
   push:
@@ -12,8 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
       issues: write
       pull-requests: write
+    outputs:
+      new_release: ${{ steps.semver.outputs.new_release_published }}
+      version: ${{ steps.semver.outputs.new_release_version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,3 +37,65 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+
+  build:
+    name: Build and Push Docker Images
+    needs: release
+    if: needs.release.outputs.new_release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine tags
+        id: tags
+        run: |
+          VERSION="${{ needs.release.outputs.version }}"
+          if [[ "$VERSION" == *"-"* ]]; then
+            echo "is_latest=false" >> $GITHUB_OUTPUT
+          else
+            echo "is_latest=true" >> $GITHUB_OUTPUT
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build and push primary image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ghcr.io/yumash/kamrad:${{ steps.tags.outputs.version }}
+            ghcr.io/yumash/kamrad:v${{ steps.tags.outputs.version }}
+            ${{ steps.tags.outputs.is_latest == 'true' && 'ghcr.io/yumash/kamrad:latest' || '' }}
+          build-args: |
+            VERSION=${{ steps.tags.outputs.version }}
+            VCS_REF=${{ github.sha }}
+
+      - name: Build and push disk-collector
+        uses: docker/build-push-action@v5
+        with:
+          context: install/sidecar-disk-collector
+          push: true
+          tags: |
+            ghcr.io/yumash/kamrad-disk-collector:${{ steps.tags.outputs.version }}
+            ${{ steps.tags.outputs.is_latest == 'true' && 'ghcr.io/yumash/kamrad-disk-collector:latest' || '' }}
+
+      - name: Build and push sidecar-updater
+        uses: docker/build-push-action@v5
+        with:
+          context: install/sidecar-updater
+          push: true
+          tags: |
+            ghcr.io/yumash/kamrad-sidecar-updater:${{ steps.tags.outputs.version }}
+            ${{ steps.tags.outputs.is_latest == 'true' && 'ghcr.io/yumash/kamrad-sidecar-updater:latest' || '' }}
