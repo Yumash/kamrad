@@ -20,17 +20,14 @@ jobs:
           CHECKED=0
           FAILED_URLS=""
 
-          # Recursively extract all non-null string URLs from every JSON file in collections/
-          URLS=$(jq -r '.. | .url? | select(type == "string")' collections/*.json | sort -u)
+          # Recursively extract all non-null string URLs from every JSON file in collections/ (including subfolders)
+          URLS=$(find collections -name '*.json' -exec jq -r '.. | .url? | select(type == "string")' {} + | sort -u)
 
           while IFS= read -r url; do
             [ -z "$url" ] && continue
             CHECKED=$((CHECKED + 1))
             printf "Checking: %s ... " "$url"
 
-            # Use Range: bytes=0-0 to avoid downloading the full file.
-            # --max-filesize 1 aborts early if the server ignores the Range header
-            # and returns 200 with the full body. The HTTP status is still captured.
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
               --range 0-0 \
               --max-filesize 1 \

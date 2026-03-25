@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Semantic version to label the Docker image under (no "v" prefix, e.g. "1.2.3")'
+        description: 'Semantic version to label the Docker image under (no "v" prefix, e.g. "0.1.0")'
         required: true
         type: string
       tag_latest:
@@ -14,19 +14,8 @@ on:
         default: false
 
 jobs:
-  check_authorization:
-    name: Check authorization to publish new Docker image
-    runs-on: ubuntu-latest
-    outputs:
-      isAuthorized: ${{ steps.check-auth.outputs.is_authorized }}
-    steps:
-      - name: check-auth
-        id: check-auth
-        run: echo "is_authorized=${{ contains(secrets.DEPLOYMENT_AUTHORIZED_USERS, github.triggering_actor) }}" >> $GITHUB_OUTPUT
   build:
     name: Build sidecar-updater image
-    needs: check_authorization
-    if: needs.check_authorization.outputs.isAuthorized == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,6 +35,6 @@ jobs:
           context: install/sidecar-updater
           push: true
           tags: |
-            ghcr.io/crosstalk-solutions/project-nomad-sidecar-updater:${{ inputs.version }}
-            ghcr.io/crosstalk-solutions/project-nomad-sidecar-updater:v${{ inputs.version }}
-            ${{ inputs.tag_latest && 'ghcr.io/crosstalk-solutions/project-nomad-sidecar-updater:latest' || '' }}
+            ghcr.io/yumash/kamrad-sidecar-updater:${{ inputs.version }}
+            ghcr.io/yumash/kamrad-sidecar-updater:v${{ inputs.version }}
+            ${{ inputs.tag_latest && 'ghcr.io/yumash/kamrad-sidecar-updater:latest' || '' }}
