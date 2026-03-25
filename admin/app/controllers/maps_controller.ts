@@ -1,4 +1,5 @@
 import { MapService } from '#services/map_service'
+import { MapExtractService } from '#services/map_extract_service'
 import {
   assertNotPrivateUrl,
   downloadCollectionValidator,
@@ -8,6 +9,8 @@ import {
 } from '#validators/common'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+
+const mapExtractService = new MapExtractService()
 
 @inject()
 export default class MapsController {
@@ -104,5 +107,33 @@ export default class MapsController {
     return {
       message: 'Map file deleted successfully',
     }
+  }
+
+  // --- Map extraction ---
+
+  async extractRegions({ response }: HttpContext) {
+    const regions = mapExtractService.getRegions()
+    return response.json({ regions })
+  }
+
+  async extractStart({ request, response }: HttpContext) {
+    const { regionId } = request.only(['regionId'])
+    if (!regionId || typeof regionId !== 'string') {
+      return response.status(400).json({ error: 'regionId is required' })
+    }
+
+    try {
+      await mapExtractService.extract(regionId)
+      return response.json({ success: true, message: `Extraction started for ${regionId}` })
+    } catch (error) {
+      const status = (error as any).message?.includes('already in progress') ? 409 : 503
+      return response.status(status).json({
+        error: error instanceof Error ? error.message : 'Extraction failed',
+      })
+    }
+  }
+
+  async extractStatus({ response }: HttpContext) {
+    return response.json(mapExtractService.getStatus())
   }
 }

@@ -96,6 +96,19 @@
     "confirmDelete": "Confirm Delete?",
     "confirmDeleteMsg": "Are you sure you want to delete {{filename}}? This action cannot be undone.",
     "noCuratedCollections": "No curated collections available.",
+    "extract": {
+      "heading": "Extract World Region",
+      "description": "Extract any region directly from the ProtoMaps planet file via HTTP. No need to download the entire 120 GB file — only the tiles you need are fetched.",
+      "searchPlaceholder": "Search countries and regions...",
+      "extractButton": "Extract",
+      "extracting": "Extracting...",
+      "starting": "Starting extraction...",
+      "done": "Extraction complete!",
+      "failed": "Extraction failed",
+      "noResults": "No regions found"
+    },
+    "confirmDownload": "Confirm Download?",
+    "confirmDownloadMsg": "Are you sure you want to download {{filename}}?",
     "confirmDownload": "Confirm Download?",
     "confirmDownloadMsg": "Are you sure you want to download {{filename}}? It may take some time for it to be available depending on the file size and your internet connection."
   },

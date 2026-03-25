@@ -16,6 +16,7 @@ import CuratedCollectionCard from '~/components/CuratedCollectionCard'
 import type { CollectionWithStatus } from '../../../types/collections'
 import ActiveDownloads from '~/components/ActiveDownloads'
 import Alert from '~/components/Alert'
+import MapExtractSection from '~/components/MapExtractSection'
 import { useTranslation } from 'react-i18next'
 
 const CURATED_COLLECTIONS_KEY = 'curated-map-collections'
@@ -222,6 +223,9 @@ export default function MapsManager(props: {
             {curatedCollections && curatedCollections.length === 0 && (
               <p className="text-text-muted">{t('maps.noCuratedCollections')}</p>
             )}
+          </div>
+          <div className="mt-12">
+            <MapExtractSection />
           </div>
           <div className="mt-12 mb-6 flex items-center justify-between">
             <StyledSectionHeader title={t('maps.storedFiles')} className="!mb-0" />

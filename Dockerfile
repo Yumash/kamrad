@@ -1,7 +1,14 @@
 FROM node:22-slim AS base
 
-# Install bash & curl for entrypoint script compatibility, graphicsmagick for pdf2pic, and vips-dev & build-base for sharp 
+# Install bash & curl for entrypoint script compatibility, graphicsmagick for pdf2pic, and vips-dev & build-base for sharp
 RUN apt-get update && apt-get install -y bash curl graphicsmagick libvips-dev build-essential
+
+# Download pmtiles CLI for map region extraction
+FROM base AS pmtiles-download
+ARG PMTILES_VERSION=1.30.1
+RUN curl -fsSL "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/go-pmtiles_${PMTILES_VERSION}_Linux_x86_64.tar.gz" \
+    | tar -xz -C /usr/local/bin/ pmtiles \
+    && chmod +x /usr/local/bin/pmtiles
 
 # All deps stage
 FROM base AS deps
@@ -29,20 +36,22 @@ ARG BUILD_DATE
 ARG VCS_REF
 
 # Labels
-LABEL org.opencontainers.image.title="Project N.O.M.A.D" \
-      org.opencontainers.image.description="The Project N.O.M.A.D Official Docker image" \
+LABEL org.opencontainers.image.title="KAMRAD" \
+      org.opencontainers.image.description="КАМРАД — мультиязычный оффлайн-сервер знаний, образования и AI" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.revision="${VCS_REF}" \
-      org.opencontainers.image.vendor="Crosstalk Solutions, LLC" \
-      org.opencontainers.image.documentation="https://github.com/CrosstalkSolutions/project-nomad/blob/main/README.md" \
-      org.opencontainers.image.source="https://github.com/CrosstalkSolutions/project-nomad" \
+      org.opencontainers.image.vendor="Yumash" \
+      org.opencontainers.image.documentation="https://github.com/Yumash/kamrad/blob/main/README.md" \
+      org.opencontainers.image.source="https://github.com/Yumash/kamrad" \
       org.opencontainers.image.licenses="Apache-2.0"
 
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=production-deps /app/node_modules /app/node_modules
 COPY --from=build /app/build /app
+# Copy pmtiles binary for map region extraction
+COPY --from=pmtiles-download /usr/local/bin/pmtiles /usr/local/bin/pmtiles
 # Copy root package.json for version info
 COPY package.json /app/version.json
 

@@ -81,6 +81,9 @@ router
     router.post('/download-remote-preflight', [MapsController, 'downloadRemotePreflight'])
     router.post('/download-collection', [MapsController, 'downloadCollection'])
     router.delete('/:filename', [MapsController, 'delete'])
+    router.get('/extract/regions', [MapsController, 'extractRegions'])
+    router.post('/extract/start', [MapsController, 'extractStart'])
+    router.get('/extract/status', [MapsController, 'extractStatus'])
   })
   .prefix('/api/maps')
 
