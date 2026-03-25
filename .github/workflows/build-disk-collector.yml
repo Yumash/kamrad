@@ -1,21 +1,26 @@
 name: Build Disk Collector Image
 
 on:
+  push:
+    tags:
+      - 'v*'
+    paths:
+      - 'install/sidecar-disk-collector/**'
   workflow_dispatch:
     inputs:
       version:
-        description: 'Semantic version to label the Docker image under (no "v" prefix, e.g. "0.1.0")'
+        description: 'Version to tag (no "v" prefix)'
         required: true
         type: string
       tag_latest:
-        description: 'Also tag this image as :latest?'
+        description: 'Also tag as :latest?'
         required: false
         type: boolean
         default: false
 
 jobs:
   build:
-    name: Build disk-collector image
+    name: Build and push disk-collector image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,18 +28,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+            [[ "$VERSION" != *"-"* ]] && echo "tag_latest=true" >> $GITHUB_OUTPUT || echo "tag_latest=false" >> $GITHUB_OUTPUT
+          else
+            VERSION="${{ inputs.version || '0.0.0-dev' }}"
+            echo "tag_latest=${{ inputs.tag_latest || 'false' }}" >> $GITHUB_OUTPUT
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: install/sidecar-disk-collector
           push: true
           tags: |
-            ghcr.io/yumash/kamrad-disk-collector:${{ inputs.version }}
-            ghcr.io/yumash/kamrad-disk-collector:v${{ inputs.version }}
-            ${{ inputs.tag_latest && 'ghcr.io/yumash/kamrad-disk-collector:latest' || '' }}
+            ghcr.io/yumash/kamrad-disk-collector:${{ steps.version.outputs.version }}
+            ${{ steps.version.outputs.tag_latest == 'true' && 'ghcr.io/yumash/kamrad-disk-collector:latest' || '' }}

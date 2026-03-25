@@ -1,87 +1,35 @@
 name: Release SemVer
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - main
+      - rc
 
 jobs:
   release:
-    name: Release
+    name: Semantic Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: write
-    outputs:
-      didRelease: ${{ steps.semver.outputs.new_release_published }}
-      newVersion: ${{ steps.semver.outputs.new_release_version }}
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install semantic-release plugins
+        run: npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm
 
       - name: semantic-release
-        uses: cycjimmy/semantic-release-action@v3
         id: semver
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-images:
-    name: Build and push Docker images
-    needs: release
-    if: needs.release.outputs.didRelease == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: main
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Determine if latest tag
-        id: check-latest
-        run: |
-          VERSION="${{ needs.release.outputs.newVersion }}"
-          if [[ "$VERSION" == *"-"* ]]; then
-            echo "is_latest=false" >> $GITHUB_OUTPUT
-          else
-            echo "is_latest=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Build and push primary image
-        uses: docker/build-push-action@v5
-        with:
-          push: true
-          tags: |
-            ghcr.io/yumash/kamrad:${{ needs.release.outputs.newVersion }}
-            ghcr.io/yumash/kamrad:v${{ needs.release.outputs.newVersion }}
-            ${{ steps.check-latest.outputs.is_latest == 'true' && 'ghcr.io/yumash/kamrad:latest' || '' }}
-          build-args: |
-            VERSION=${{ needs.release.outputs.newVersion }}
-            VCS_REF=${{ github.sha }}
-
-      - name: Build and push disk-collector
-        uses: docker/build-push-action@v5
-        with:
-          context: install/sidecar-disk-collector
-          push: true
-          tags: |
-            ghcr.io/yumash/kamrad-disk-collector:${{ needs.release.outputs.newVersion }}
-            ${{ steps.check-latest.outputs.is_latest == 'true' && 'ghcr.io/yumash/kamrad-disk-collector:latest' || '' }}
-
-      - name: Build and push sidecar-updater
-        uses: docker/build-push-action@v5
-        with:
-          context: install/sidecar-updater
-          push: true
-          tags: |
-            ghcr.io/yumash/kamrad-sidecar-updater:${{ needs.release.outputs.newVersion }}
-            ${{ steps.check-latest.outputs.is_latest == 'true' && 'ghcr.io/yumash/kamrad-sidecar-updater:latest' || '' }}
+        run: npx semantic-release
