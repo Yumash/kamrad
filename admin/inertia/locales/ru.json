@@ -485,7 +485,22 @@
       "checkForUpdates": "Проверка обновлений",
       "system": "Система",
       "supportProject": "Поддержать проект",
-      "legalNotices": "Правовая информация"
+      "legalNotices": "Правовая информация",
+      "translate": "Переводчик"
+    },
+    "translate": {
+      "title": "Переводчик | КАМРАД",
+      "heading": "Переводчик",
+      "description": "Переводите текст с помощью локальной AI-модели или LibreTranslate. Переводы кешируются для мгновенного повторного использования.",
+      "fromLang": "С языка",
+      "toLang": "На язык (ваш)",
+      "inputLabel": "Текст для перевода",
+      "inputPlaceholder": "Вставьте или введите текст для перевода...",
+      "translating": "Перевод...",
+      "translateButton": "Перевести",
+      "resultLabel": "Перевод",
+      "copy": "Копировать",
+      "clear": "Очистить"
     }
   },
   "chat": {

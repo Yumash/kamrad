@@ -485,7 +485,22 @@
       "checkForUpdates": "Check for Updates",
       "system": "System",
       "supportProject": "Support the Project",
-      "legalNotices": "Legal Notices"
+      "legalNotices": "Legal Notices",
+      "translate": "Translator"
+    },
+    "translate": {
+      "title": "Translator | KAMRAD",
+      "heading": "Translator",
+      "description": "Translate text using your local AI model or LibreTranslate. Translations are cached for instant re-use.",
+      "fromLang": "From",
+      "toLang": "To (your language)",
+      "inputLabel": "Text to translate",
+      "inputPlaceholder": "Paste or type text to translate...",
+      "translating": "Translating...",
+      "translateButton": "Translate",
+      "resultLabel": "Translation",
+      "copy": "Copy",
+      "clear": "Clear"
     }
   },
   "chat": {

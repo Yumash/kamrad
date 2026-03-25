@@ -7,6 +7,7 @@
 |
 */
 import BenchmarkController from '#controllers/benchmark_controller'
+import { TranslationController } from '#controllers/translation_controller'
 import ChatsController from '#controllers/chats_controller'
 import DocsController from '#controllers/docs_controller'
 import DownloadsController from '#controllers/downloads_controller'
@@ -55,6 +56,7 @@ router
     router.get('/zim/remote-explorer', [SettingsController, 'zimRemote'])
     router.get('/benchmark', [SettingsController, 'benchmark'])
     router.get('/support', [SettingsController, 'support'])
+    router.get('/translate', [SettingsController, 'translate'])
   })
   .prefix('/settings')
 
@@ -99,6 +101,11 @@ router
 router.get('/api/health', () => {
   return { status: 'ok' }
 })
+
+// Translation API
+router.post('/api/translate', [TranslationController, 'translate'])
+router.get('/api/translate/providers', [TranslationController, 'providers'])
+router.delete('/api/translate/cache', [TranslationController, 'clearCache'])
 
 router
   .group(() => {

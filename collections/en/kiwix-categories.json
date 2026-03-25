@@ -471,6 +471,31 @@
       ]
     },
     {
+      "name": "Stack Overflow",
+      "slug": "stackoverflow",
+      "icon": "IconBrandStackoverflow",
+      "description": "The world's largest programming Q&A site. Millions of answered questions on every programming topic.",
+      "language": "en",
+      "tiers": [
+        {
+          "name": "Full",
+          "slug": "stackoverflow-full",
+          "description": "Complete Stack Overflow archive with all questions and answers.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "stackoverflow.com_en_all",
+              "version": "2024-10",
+              "title": "Stack Overflow (English)",
+              "description": "Complete Stack Overflow Q&A archive — all questions, answers, and comments",
+              "url": "https://download.kiwix.org/zim/stack_exchange/stackoverflow.com_en_all_2024-10.zim",
+              "size_mb": 95000
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Computing & Technology",
       "slug": "computing",
       "icon": "IconCode",

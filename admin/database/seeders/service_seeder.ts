@@ -7,8 +7,8 @@ import { SERVICE_NAMES } from '../../constants/service_names.js'
 export default class ServiceSeeder extends BaseSeeder {
   // Use environment variable with fallback to production default
   private static NOMAD_STORAGE_ABS_PATH = env.get(
-    'NOMAD_STORAGE_PATH',
-    '/opt/project-nomad/storage'
+    'KAMRAD_STORAGE_PATH',
+    '/opt/kamrad/storage'
   )
   private static DEFAULT_SERVICES: Omit<
     ModelAttributes<Service>,
@@ -154,6 +154,30 @@ export default class ServiceSeeder extends BaseSeeder {
         ExposedPorts: { '8080/tcp': {} },
       }),
       ui_location: '8300',
+      installed: false,
+      installation_status: 'idle',
+      is_dependency_service: false,
+      depends_on: null,
+    },
+    {
+      service_name: SERVICE_NAMES.LIBRETRANSLATE,
+      friendly_name: 'Translator',
+      powered_by: 'LibreTranslate',
+      display_order: 12,
+      description: 'Fast offline translation engine for quick text translation between languages',
+      icon: 'IconLanguage',
+      container_image: 'libretranslate/libretranslate:v1.7.1',
+      source_repo: 'https://github.com/LibreTranslate/LibreTranslate',
+      container_command: null,
+      container_config: JSON.stringify({
+        HostConfig: {
+          RestartPolicy: { Name: 'unless-stopped' },
+          PortBindings: { '5000/tcp': [{ HostPort: '5050' }] },
+        },
+        ExposedPorts: { '5000/tcp': {} },
+        Env: ['LT_LOAD_ONLY=en,ru,de'],
+      }),
+      ui_location: '5050',
       installed: false,
       installation_status: 'idle',
       is_dependency_service: false,

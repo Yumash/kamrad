@@ -58,6 +58,31 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Stack Overflow на русском",
+      "slug": "stackoverflow-ru",
+      "icon": "IconBrandStackoverflow",
+      "description": "Русскоязычный Stack Overflow — вопросы и ответы по программированию.",
+      "language": "ru",
+      "tiers": [
+        {
+          "name": "Полный",
+          "slug": "stackoverflow-ru-full",
+          "description": "Полный архив Stack Overflow на русском.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "ru.stackoverflow.com_mul_all",
+              "version": "2024-10",
+              "title": "Stack Overflow (Русский)",
+              "description": "Полный архив русскоязычного Stack Overflow — все вопросы и ответы",
+              "url": "https://download.kiwix.org/zim/stack_exchange/ru.stackoverflow.com_mul_all_2024-10.zim",
+              "size_mb": 2100
+            }
+          ]
+        }
+      ]
     }
   ]
 }

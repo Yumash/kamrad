@@ -3,6 +3,7 @@ import {
   IconChartBar,
   IconDashboard,
   IconFolder,
+  IconLanguage,
   IconGavel,
   IconHeart,
   IconMapRoute,
@@ -44,6 +45,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
       current: false,
     },
     { name: t('settings.nav.system'), href: '/settings/system', icon: IconSettings, current: false },
+    { name: t('settings.nav.translate'), href: '/settings/translate', icon: IconLanguage, current: false },
     { name: t('settings.nav.supportProject'), href: '/settings/support', icon: IconHeart, current: false },
     { name: t('settings.nav.legalNotices'), href: '/settings/legal', icon: IconGavel, current: false },
   ]

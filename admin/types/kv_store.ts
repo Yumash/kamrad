@@ -10,6 +10,7 @@ export const KV_STORE_SCHEMA = {
   'ui.theme':                   'string',
   'ui.language':                'string',
   'ai.preferredLanguage':       'string',
+  'translation.provider':       'string',
   'ai.assistantCustomName':     'string',
   'gpu.type':                   'string',
 } as const
