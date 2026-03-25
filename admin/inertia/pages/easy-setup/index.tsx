@@ -747,6 +747,12 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
           <p className="text-text-secondary text-lg">{t('easySetup.noMapCollections')}</p>
         </div>
       )}
+      <div className="mt-6 p-4 bg-surface-secondary rounded-lg border border-border-subtle">
+        <p className="text-text-secondary text-sm">
+          🌍 <strong>{t('easySetup.mapsExtractHint')}</strong>{' '}
+          {t('easySetup.mapsExtractHintDesc')}
+        </p>
+      </div>
     </div>
   )
 

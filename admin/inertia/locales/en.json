@@ -180,6 +180,8 @@
     "coreCapabilities": "Core Capabilities",
     "additionalTools": "Additional Tools",
     "noMapCollections": "No map collections available at this time.",
+    "mapsExtractHint": "Need maps for Russia, CIS, Asia, or other regions?",
+    "mapsExtractHintDesc": "After setup, go to Settings → Maps Manager → Extract World Region to download maps for 52 countries including all Russian federal districts, Kazakhstan, Ukraine, and more.",
     "aiModels": "AI Models",
     "aiModelsDesc": "Select models to download for offline AI",
     "size": "Size",
