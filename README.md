@@ -70,6 +70,10 @@ sudo apt-get update && sudo apt-get install -y curl && curl -fsSL https://raw.gi
 - **Без аккаунтов** — работает без регистрации
 - **Интернет по желанию** — нужен только для загрузки контента
 
+## FAQ
+
+Ответы на частые вопросы — см. [FAQ.md](FAQ.md)
+
 ## Лицензия
 
 Apache License 2.0 — см. [LICENSE](LICENSE)
