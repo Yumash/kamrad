@@ -32,6 +32,49 @@ sudo systemctl enable docker
 sudo systemctl start docker
 ```
 
+### 1.1 (Опционально) GPU: NVIDIA Container Toolkit
+
+Если у вас есть NVIDIA GPU и вы хотите использовать его для AI-моделей:
+
+```bash
+# Добавьте репозиторий NVIDIA
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+# Установите
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+
+# Настройте Docker runtime
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+
+# Проверьте
+docker run --rm --gpus all nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi
+```
+
+Если вы видите информацию о GPU — всё работает.
+
+### 1.2 (Опционально) Ollama на хосте
+
+Если Ollama уже установлена на хосте (не в Docker), КАМРАД может использовать её напрямую. Это рекомендуемый подход если у вас уже настроен GPU + модели.
+
+**Проверьте что Ollama работает:**
+```bash
+curl http://localhost:11434/api/tags
+```
+
+**При установке КАМРАД** — пропустите установку Ollama через UI (Settings → Apps). Вместо этого убедитесь, что в `docker-compose.yml` у сервиса `admin` есть:
+```yaml
+extra_hosts:
+  - "host.docker.internal:host-gateway"
+```
+(Уже включено по умолчанию)
+
+КАМРАД автоматически подключится к Ollama на хосте через `host.docker.internal:11434`. Ваши модели и GPU-настройка сохраняются.
+
 ### 2. Создайте директорию
 
 ```bash

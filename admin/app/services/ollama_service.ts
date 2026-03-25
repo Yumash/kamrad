@@ -28,12 +28,24 @@ export class OllamaService {
   private async _initializeOllamaClient() {
     if (!this.ollamaInitPromise) {
       this.ollamaInitPromise = (async () => {
+        // Try Docker container first, then fall back to host Ollama
         const dockerService = new (await import('./docker_service.js')).DockerService()
-        const qdrantUrl = await dockerService.getServiceURL(SERVICE_NAMES.OLLAMA)
-        if (!qdrantUrl) {
-          throw new Error('Ollama service is not installed or running.')
+        let ollamaUrl = await dockerService.getServiceURL(SERVICE_NAMES.OLLAMA)
+
+        if (!ollamaUrl) {
+          // Fallback: check for host-level Ollama (installed outside Docker)
+          const hostUrl = 'http://host.docker.internal:11434'
+          try {
+            const axios = (await import('axios')).default
+            await axios.get(`${hostUrl}/api/tags`, { timeout: 3000 })
+            ollamaUrl = hostUrl
+            logger.info('[OllamaService] Using host-level Ollama at ' + hostUrl)
+          } catch {
+            throw new Error('Ollama service is not installed or running. Install it via Settings → Apps, or run Ollama on the host.')
+          }
         }
-        this.ollama = new Ollama({ host: qdrantUrl })
+
+        this.ollama = new Ollama({ host: ollamaUrl })
       })()
     }
     return this.ollamaInitPromise

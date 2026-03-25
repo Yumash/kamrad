@@ -32,6 +32,46 @@ sudo systemctl enable docker
 sudo systemctl start docker
 ```
 
+### 1.1 (Optional) GPU: NVIDIA Container Toolkit
+
+If you have an NVIDIA GPU and want to use it for AI models:
+
+```bash
+# Add NVIDIA repository
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+  sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+# Install
+sudo apt-get update
+sudo apt-get install -y nvidia-container-toolkit
+
+# Configure Docker runtime
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
+
+# Verify
+docker run --rm --gpus all nvidia/cuda:12.0.0-base-ubuntu22.04 nvidia-smi
+```
+
+### 1.2 (Optional) Host-level Ollama
+
+If Ollama is already installed on the host (not in Docker), KAMRAD can use it directly. This is recommended if you already have GPU + models configured.
+
+**Verify Ollama is running:**
+```bash
+curl http://localhost:11434/api/tags
+```
+
+**During KAMRAD setup** — skip Ollama installation in the UI (Settings → Apps). KAMRAD will automatically connect to the host Ollama via `host.docker.internal:11434`. Your models and GPU configuration are preserved.
+
+The `docker-compose.yml` already includes the required `extra_hosts` setting:
+```yaml
+extra_hosts:
+  - "host.docker.internal:host-gateway"
+```
+
 ### 2. Create directory
 
 ```bash
