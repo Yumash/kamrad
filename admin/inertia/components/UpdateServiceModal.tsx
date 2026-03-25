@@ -4,6 +4,7 @@ import StyledModal from "./StyledModal"
 import { IconArrowUp } from "@tabler/icons-react"
 import api from "~/lib/api"
 import { useTranslation } from 'react-i18next'
+import { getServiceName } from '~/lib/serviceI18n'
 
 
 interface UpdateServiceModalProps {
@@ -38,7 +39,7 @@ export default function UpdateServiceModal({
                 setVersions(result.versions)
             }
         } catch (error) {
-            showError('Failed to load available versions')
+            showError(t('errors.loadVersionsFailed'))
         } finally {
             setLoadingVersions(false)
         }
@@ -63,7 +64,7 @@ export default function UpdateServiceModal({
         >
             <div className="space-y-4">
                 <p className="text-text-primary">
-                    {t('components.updateServiceMsg', { name: record.friendly_name || record.service_name, current: currentTag, selected: selectedVersion })}
+                    {t('components.updateServiceMsg', { name: getServiceName(t, record.service_name, record.friendly_name), current: currentTag, selected: selectedVersion })}
                 </p>
                 <p className="text-sm text-text-muted">
                     {t('components.dataPreserved')}

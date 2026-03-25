@@ -9,6 +9,7 @@
     "backToHome": "Back to Home",
     "next": "Next",
     "close": "Close",
+    "openMenu": "Open menu",
     "search": "Search",
     "download": "Download",
     "install": "Install",
@@ -119,7 +120,20 @@
   "errors": {
     "pageNotFound": "Page not found",
     "pageNotFoundDesc": "This page does not exist.",
-    "serverError": "Server Error"
+    "serverError": "Server Error",
+    "unknown": "Unknown error",
+    "internalError": "An internal error occurred.",
+    "noInternetForUpdates": "You must have an internet connection to check for updates.",
+    "noInternetForInstall": "You must have an internet connection to install services.",
+    "updateCheckFailed": "Failed to dispatch update check",
+    "updateCheckFailedDetails": "Failed to check for updates: {{error}}",
+    "installServiceFailed": "Failed to install service: {{error}}",
+    "serviceActionFailed": "Failed to {{action}} service: {{error}}",
+    "forceReinstallFailed": "Failed to force reinstall service: {{error}}",
+    "updateServiceFailed": "Failed to update service: {{error}}",
+    "loadVersionsFailed": "Failed to load available versions",
+    "fetchRemoteZimFailed": "Failed to fetch remote ZIM files.",
+    "wikipediaSelectionFailed": "An error occurred while changing Wikipedia selection"
   },
   "docs": {
     "title": "Documentation"
@@ -329,6 +343,13 @@
       "dataControlNotice": "You maintain full control over your data. Uninstalling KAMRAD or deleting these directories will permanently remove all associated data.",
       "attribution": "Based on Project N.O.M.A.D. by Crosstalk Solutions LLC"
     },
+    "maps": {
+      "baseAssetsSuccess": "Base map assets downloaded successfully.",
+      "baseAssetsError": "An error occurred while downloading the base map assets. Please try again.",
+      "downloadQueued": "Download has been queued.",
+      "allAlreadyDownloaded": "All resources in the collection \"{{name}}\" have already been downloaded.",
+      "refreshSuccess": "Successfully refreshed map collections."
+    },
     "models": {
       "title": "{{name}} Settings | KAMRAD",
       "description": "Easily manage the {{name}}'s settings and installed models. We recommend starting with smaller models first to see how they perform on your system before moving on to larger ones.",
@@ -464,7 +485,12 @@
       "subscribeHeading": "Want to stay updated with the latest from KAMRAD? Subscribe to receive release notes directly to your inbox. Unsubscribe anytime.",
       "emailPlaceholder": "Your email address",
       "subscribe": "Subscribe",
-      "privacyNote": "We care about your privacy. KAMRAD will never share your email with third parties or send you spam."
+      "privacyNote": "We care about your privacy. KAMRAD will never share your email with third parties or send you spam.",
+      "subscribeSuccess": "Successfully subscribed to release notes!",
+      "subscribeFailed": "Failed to subscribe: {{error}}",
+      "fetchStatusFailed": "Failed to fetch update status",
+      "startUpdateFailed": "Failed to start update",
+      "fetchLogsFailed": "Failed to fetch update logs"
     },
     "support": {
       "title": "Support the Project",
@@ -592,7 +618,18 @@
   },
   "components": {
     "activeDownloads": "Active Downloads",
+    "activeModelDownloads": "Active Model Downloads",
     "noActiveDownloads": "No active downloads",
+    "processingQueue": "Processing Queue",
+    "noFilesProcessing": "No files are currently being processed",
+    "debugInfo": {
+      "title": "Debug Info",
+      "description": "This is non-sensitive system info you can share when reporting issues. No passwords, IPs, or API keys are included.",
+      "loadFailed": "Failed to load debug info. Please try again.",
+      "copied": "Copied!",
+      "copyToClipboard": "Copy to Clipboard",
+      "openGithubIssue": "Open a GitHub Issue"
+    },
     "downloadFailed": "Download failed",
     "estSpeed": "Est. Speed: {{speed}}",
     "downloadComplete": "Download complete",
@@ -641,5 +678,31 @@
     "currentUsage": "Current ({{size}})",
     "exceedsSpace": "Exceeds available space by {{size}}",
     "willRemainFree": "{{size}} will remain free"
+  },
+  "services": {
+    "kamrad_kiwix_server": {
+      "name": "Information Library",
+      "description": "Offline access to Wikipedia, medical references, how-to guides, and encyclopedias"
+    },
+    "kamrad_kolibri": {
+      "name": "Education Platform",
+      "description": "Interactive learning platform with video courses and exercises"
+    },
+    "kamrad_ollama": {
+      "name": "AI Assistant",
+      "description": "Local AI chat that runs entirely on your hardware - no internet required"
+    },
+    "kamrad_flatnotes": {
+      "name": "Notes",
+      "description": "Simple note-taking app with local storage"
+    },
+    "kamrad_cyberchef": {
+      "name": "Data Tools",
+      "description": "Swiss Army knife for data encoding, encryption, and analysis"
+    },
+    "kamrad_libretranslate": {
+      "name": "Translator",
+      "description": "Fast offline translation engine for quick text translation between languages"
+    }
   }
 }

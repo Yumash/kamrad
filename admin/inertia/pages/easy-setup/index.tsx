@@ -129,7 +129,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   const [selectedMapCollections, setSelectedMapCollections] = useState<string[]>([])
   const [selectedAiModels, setSelectedAiModels] = useState<string[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
-  const [showAdditionalTools, setShowAdditionalTools] = useState(false)
+  const [showAdditionalTools, setShowAdditionalTools] = useState(true)
 
   // Category/tier selection state
   const [selectedTiers, setSelectedTiers] = useState<Map<string, SpecTier>>(new Map())

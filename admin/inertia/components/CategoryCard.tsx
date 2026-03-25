@@ -38,7 +38,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
     <div
       className={classNames(
         'flex flex-col bg-desert-green rounded-lg p-6 text-white border shadow-sm hover:shadow-lg transition-shadow cursor-pointer h-80',
-        selectedTier ? 'border-lime-400 border-2' : 'border-desert-green'
+        selectedTier ? 'border-desert-olive-light border-2' : 'border-desert-green'
       )}
       onClick={() => onClick?.(category)}
     >
@@ -50,8 +50,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
           </div>
           {selectedTier ? (
             <div className="flex items-center">
-              <IconCircleCheck className="w-5 h-5 text-lime-400" />
-              <span className="text-lime-400 text-sm ml-1">{selectedTier.name}</span>
+              <IconCircleCheck className="w-5 h-5 text-desert-olive-light" />
+              <span className="text-desert-olive-light text-sm ml-1">{selectedTier.name}</span>
             </div>
           ) : (
             <IconChevronRight className="w-5 h-5 text-white opacity-70" />
@@ -77,9 +77,9 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, selectedTier, onC
                 className={classNames(
                   'text-xs px-2 py-1 rounded',
                   isInstalled
-                    ? 'bg-lime-500/30 text-lime-200'
+                    ? 'bg-desert-olive/30 text-desert-olive-lighter'
                     : 'bg-white/10 text-gray-300',
-                  selectedTier?.slug === tier.slug && 'ring-2 ring-lime-400'
+                  selectedTier?.slug === tier.slug && 'ring-2 ring-desert-olive-light'
                 )}
               >
                 {tier.name}

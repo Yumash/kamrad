@@ -89,7 +89,7 @@ export default function ZimRemoteExplorer() {
         const start = isNaN(pageParsed) ? 0 : pageParsed * 12
         const res = await api.listRemoteZimFiles({ start, count: 12, query: query || undefined })
         if (!res) {
-          throw new Error('Failed to fetch remote ZIM files.')
+          throw new Error(t('errors.fetchRemoteZimFailed'))
         }
         return res.data
       },
@@ -241,14 +241,14 @@ export default function ZimRemoteExplorer() {
         setSelectedWikipedia(null)
       } else {
         addNotification({
-          message: result?.message || 'Failed to change Wikipedia selection',
+          message: result?.message || t('errors.wikipediaSelectionFailed'),
           type: 'error',
         })
       }
     } catch (error) {
       console.error('Error selecting Wikipedia:', error)
       addNotification({
-        message: 'An error occurred while changing Wikipedia selection',
+        message: t('errors.wikipediaSelectionFailed'),
         type: 'error',
       })
     } finally {

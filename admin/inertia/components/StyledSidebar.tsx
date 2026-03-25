@@ -41,9 +41,9 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
           target={item.target}
           className={classNames(
             item.current
-              ? 'bg-desert-green text-white'
-              : 'text-text-primary hover:bg-desert-green-light hover:text-white',
-            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold'
+              ? 'bg-desert-green text-white shadow-sm'
+              : 'text-text-primary hover:bg-desert-green-light/20 hover:text-text-primary',
+            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold transition-colors'
           )}
         >
           {item.icon && <item.icon aria-hidden="true" className="size-6 shrink-0" />}
@@ -101,6 +101,7 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
         type="button"
         className="absolute left-4 top-4 z-50 xl:hidden"
         onClick={() => setSidebarOpen(true)}
+        aria-label={t('common.openMenu')}
       >
         <IconMenu2 aria-hidden="true" className="size-8" />
       </button>

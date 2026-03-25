@@ -53,7 +53,7 @@ export default function MapsManager(props: {
       if (res.success) {
         addNotification({
           type: 'success',
-          message: 'Base map assets downloaded successfully.',
+          message: t('settings.maps.baseAssetsSuccess'),
         })
         router.reload()
       }
@@ -61,7 +61,7 @@ export default function MapsManager(props: {
       console.error('Error downloading base assets:', error)
       addNotification({
         type: 'error',
-        message: 'An error occurred while downloading the base map assets. Please try again.',
+        message: t('settings.maps.baseAssetsError'),
       })
     } finally {
       setDownloading(false)
@@ -74,7 +74,7 @@ export default function MapsManager(props: {
       invalidateDownloads()
       addNotification({
         type: 'success',
-        message: `Download for collection "${record.name}" has been queued.`,
+        message: t('settings.maps.downloadQueued', { name: record.name }),
       })
     } catch (error) {
       console.error('Error downloading collection:', error)
@@ -87,7 +87,7 @@ export default function MapsManager(props: {
       invalidateDownloads()
       addNotification({
         type: 'success',
-        message: 'Download has been queued.',
+        message: t('settings.maps.downloadQueued', { name: '' }),
       })
     } catch (error) {
       console.error('Error downloading custom file:', error)
@@ -124,7 +124,7 @@ export default function MapsManager(props: {
           if (isCollection) {
             if (record.all_installed) {
               addNotification({
-                message: `All resources in the collection "${record.name}" have already been downloaded.`,
+                message: t('settings.maps.allAlreadyDownloaded', { name: record.name }),
                 type: 'info',
               })
               return
@@ -166,7 +166,7 @@ export default function MapsManager(props: {
     mutationFn: () => api.refreshManifests(),
     onSuccess: () => {
       addNotification({
-        message: 'Successfully refreshed map collections.',
+        message: t('settings.maps.refreshSuccess'),
         type: 'success',
       })
       queryClient.invalidateQueries({ queryKey: [CURATED_COLLECTIONS_KEY] })

@@ -21,6 +21,7 @@ import type {
   SpecResource,
   SpecTier,
 } from '../../types/collections.js'
+import KvStore from '#models/kv_store'
 
 const GITHUB_BASE = 'https://raw.githubusercontent.com/Yumash/kamrad/refs/heads/main/collections'
 
@@ -96,10 +97,32 @@ export class CollectionManifestService {
     return this.getCachedSpec<T>(type)
   }
 
+  /**
+   * Fetch a locale-specific spec, falling back to base EN spec.
+   * Does not cache locale-specific specs (they overlay the base).
+   */
+  async getLocaleSpec<T>(type: 'wikipedia' | 'kiwix-categories', validator: any): Promise<T | null> {
+    const locale = await KvStore.getValue('ui.language') || 'en'
+    const manifestType: ManifestType = type === 'kiwix-categories' ? 'zim_categories' : 'wikipedia'
+
+    if (locale !== 'en') {
+      try {
+        const langUrl = getLanguageSpecUrl(locale, type)
+        const response = await axios.get(langUrl, { timeout: 10000 })
+        const validated = await vine.validate({ schema: validator, data: response.data })
+        return validated as T
+      } catch {
+        logger.info(`[CollectionManifestService] No ${type} spec for locale '${locale}', falling back to EN`)
+      }
+    }
+
+    return this.getSpecWithFallback<T>(manifestType)
+  }
+
   // ---- Status computation ----
 
   async getCategoriesWithStatus(): Promise<CategoryWithStatus[]> {
-    const spec = await this.getSpecWithFallback<ZimCategoriesSpec>('zim_categories')
+    const spec = await this.getLocaleSpec<ZimCategoriesSpec>('kiwix-categories', zimCategoriesSpecSchema)
     if (!spec) return []
 
     const installedResources = await InstalledResource.query().where('resource_type', 'zim')
@@ -228,7 +251,7 @@ export class CollectionManifestService {
       for (const file of zimFiles) {
         logger.debug(`Processing ZIM file: ${file.name}`)
         // Skip Wikipedia files (managed by WikipediaSelection model)
-        if (file.name.startsWith('wikipedia_en_')) continue
+        if (file.name.startsWith('wikipedia_') && file.name.match(/^wikipedia_[a-z]{2}_/)) continue
 
         const parsed = CollectionManifestService.parseZimFilename(file.name)
         logger.debug(`Parsed ZIM filename:`, parsed)

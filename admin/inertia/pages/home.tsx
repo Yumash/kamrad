@@ -16,6 +16,7 @@ import { useUpdateAvailable } from '~/hooks/useUpdateAvailable'
 import { useSystemSetting } from '~/hooks/useSystemSetting'
 import Alert from '~/components/Alert'
 import { SERVICE_NAMES } from '../../constants/service_names'
+import { getServiceName, getServiceDescription } from '~/lib/serviceI18n'
 
 interface DashboardItem {
   label: string
@@ -104,13 +105,16 @@ export default function Home(props: {
   props.system.services
     .filter((service) => service.installed && service.ui_location)
     .forEach((service) => {
+      const translatedName = getServiceName(t, service.service_name, service.friendly_name)
+      const translatedDesc = getServiceDescription(t, service.service_name, service.description)
+
       items.push({
-        label: service.service_name === SERVICE_NAMES.OLLAMA && aiAssistantName ? aiAssistantName : (service.friendly_name || service.service_name),
+        label: service.service_name === SERVICE_NAMES.OLLAMA && aiAssistantName ? aiAssistantName : translatedName,
         to: service.ui_location ? getServiceLink(service.ui_location) : '#',
         target: '_blank',
         description:
-          service.description ||
-          t('home.accessApp', { name: service.friendly_name || service.service_name }),
+          translatedDesc ||
+          t('home.accessApp', { name: translatedName }),
         icon: service.icon ? (
           <DynamicIcon icon={service.icon as DynamicIconName} className="!size-12" />
         ) : (
@@ -161,7 +165,7 @@ export default function Home(props: {
 
           return (
             <a key={item.to} href={item.to} target={item.target}>
-              <div className="relative rounded border-desert-green border-2 bg-desert-green hover:bg-transparent hover:text-text-primary text-white transition-colors shadow-sm h-48 flex flex-col items-center justify-center cursor-pointer text-center px-4">
+              <div className="relative rounded-lg border-desert-green border-2 bg-desert-green text-white transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 min-h-48 py-6 flex flex-col items-center justify-center cursor-pointer text-center px-4">
                 {shouldHighlight && (
                   <span className="absolute top-2 right-2 flex items-center justify-center">
                     <span

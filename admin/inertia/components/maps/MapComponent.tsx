@@ -2,9 +2,11 @@ import Map, { FullscreenControl, NavigationControl, MapProvider } from 'react-ma
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Protocol } from 'pmtiles'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { IconMapPin } from '@tabler/icons-react'
 
 export default function MapComponent() {
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Add the PMTiles protocol to maplibre-gl
   useEffect(() => {
@@ -15,10 +17,19 @@ export default function MapComponent() {
     }
   }, [])
 
+  const handleLoad = useCallback(() => setIsLoaded(true), [])
+
   return (
     <MapProvider>
+      {!isLoaded && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-desert-sand">
+          <IconMapPin className="size-12 text-desert-green animate-pulse" />
+          <p className="mt-3 text-text-secondary text-sm font-medium">Loading map...</p>
+        </div>
+      )}
       <Map
         reuseMaps
+        onLoad={handleLoad}
         style={{
           width: '100%',
           height: '100vh',

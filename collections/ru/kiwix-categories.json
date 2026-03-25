@@ -3,82 +3,638 @@
   "categories": [
     {
       "name": "Медицина",
-      "slug": "medicine-ru",
+      "slug": "medicine",
       "icon": "IconStethoscope",
-      "description": "Медицинские справочники и руководства по оказанию первой помощи.",
-      "language": "ru",
+      "description": "Медицинские справочники, руководства и энциклопедии для оказания первой помощи и подготовки к чрезвычайным ситуациям.",
+      "language": "en",
       "tiers": [
         {
           "name": "Базовый",
-          "slug": "medicine-ru-essential",
-          "description": "Основные медицинские справочники. Начните здесь.",
+          "slug": "medicine-essential",
+          "description": "Основные медицинские справочники по первой помощи, лекарствам и неотложной помощи. Начните здесь.",
           "recommended": true,
           "resources": [
             {
-              "id": "wikipedia_ru_medicine",
-              "version": "2025-12",
-              "title": "Медицинские статьи Википедии",
-              "description": "Медицинские и фармакологические статьи русской Википедии",
-              "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_ru_medicine_mini_2025-12.zim",
-              "size_mb": 45
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Справочники",
-      "slug": "reference-ru",
-      "icon": "IconBook",
-      "description": "Энциклопедии и справочные материалы на русском языке.",
-      "language": "ru",
-      "tiers": [
-        {
-          "name": "Базовый",
-          "slug": "reference-ru-essential",
-          "description": "Основные справочные материалы.",
-          "recommended": true,
-          "resources": [
-            {
-              "id": "wikiquote_ru",
-              "version": "2025-12",
-              "title": "Викицитатник",
-              "description": "Коллекция цитат на русском языке",
-              "url": "https://download.kiwix.org/zim/wikiquote/wikiquote_ru_all_nopic_2025-12.zim",
-              "size_mb": 15
+              "id": "zimgit-medicine_en",
+              "version": "2024-08",
+              "title": "Медицинская библиотека",
+              "description": "Книги и руководства по полевой и неотложной медицине",
+              "url": "https://download.kiwix.org/zim/other/zimgit-medicine_en_2024-08.zim",
+              "size_mb": 67
             },
             {
-              "id": "wiktionary_ru",
+              "id": "nhs.uk_en_medicines",
               "version": "2025-12",
-              "title": "Викисловарь",
-              "description": "Русский толковый и переводной словарь",
-              "url": "https://download.kiwix.org/zim/wiktionary/wiktionary_ru_all_nopic_2025-12.zim",
-              "size_mb": 250
+              "title": "Справочник лекарств NHS",
+              "description": "Действие лекарств, дозировки, побочные эффекты и взаимодействия",
+              "url": "https://download.kiwix.org/zim/zimit/nhs.uk_en_medicines_2025-12.zim",
+              "size_mb": 16
+            },
+            {
+              "id": "fas-military-medicine_en",
+              "version": "2025-06",
+              "title": "Военная медицина",
+              "description": "Руководства по тактической и полевой медицине",
+              "url": "https://download.kiwix.org/zim/zimit/fas-military-medicine_en_2025-06.zim",
+              "size_mb": 78
+            },
+            {
+              "id": "wwwnc.cdc.gov_en_all",
+              "version": "2024-11",
+              "title": "Медицинская информация CDC",
+              "description": "Профилактика заболеваний, здоровье путешественников, информация о вспышках",
+              "url": "https://download.kiwix.org/zim/zimit/wwwnc.cdc.gov_en_all_2024-11.zim",
+              "size_mb": 170
+            }
+          ]
+        },
+        {
+          "name": "Стандартный",
+          "slug": "medicine-standard",
+          "description": "Медицинская энциклопедия с подробной информацией о здоровье. Включает всё из Базового.",
+          "includesTier": "medicine-essential",
+          "resources": [
+            {
+              "id": "medlineplus.gov_en_all",
+              "version": "2025-01",
+              "title": "MedlinePlus",
+              "description": "Энциклопедия здоровья — болезни, состояния, лекарства, добавки",
+              "url": "https://download.kiwix.org/zim/zimit/medlineplus.gov_en_all_2025-01.zim",
+              "size_mb": 1800
+            }
+          ]
+        },
+        {
+          "name": "Полный",
+          "slug": "medicine-comprehensive",
+          "description": "Профессиональные медицинские справочники и учебники. Включает всё из Стандартного.",
+          "includesTier": "medicine-standard",
+          "resources": [
+            {
+              "id": "wikipedia_en_medicine_maxi",
+              "version": "2026-01",
+              "title": "Медицина в Википедии",
+              "description": "Медицинские статьи Википедии с изображениями",
+              "url": "https://download.kiwix.org/zim/wikipedia/wikipedia_en_medicine_maxi_2026-01.zim",
+              "size_mb": 2000
+            },
+            {
+              "id": "libretexts.org_en_med",
+              "version": "2025-01",
+              "title": "Медицинские учебники LibreTexts",
+              "description": "Учебники и образовательные материалы по медицине",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_med_2025-01.zim",
+              "size_mb": 1100
+            },
+            {
+              "id": "librepathology_en_all_maxi",
+              "version": "2025-09",
+              "title": "LibrePathology",
+              "description": "Патологический справочник для идентификации заболеваний",
+              "url": "https://download.kiwix.org/zim/other/librepathology_en_all_maxi_2025-09.zim",
+              "size_mb": 76
             }
           ]
         }
       ]
     },
     {
-      "name": "Stack Overflow на русском",
-      "slug": "stackoverflow-ru",
+      "name": "Выживание и подготовка",
+      "slug": "survival",
+      "icon": "IconShieldCheck",
+      "description": "Подготовка к чрезвычайным ситуациям, планирование эвакуации и навыки выживания.",
+      "language": "en",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "survival-essential",
+          "description": "Основы выживания и подготовка к зиме. Начните здесь.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "canadian_prepper_winterprepping_en",
+              "version": "2025-11",
+              "title": "Canadian Prepper: Зимняя подготовка",
+              "description": "Видеоруководства по выживанию зимой и в холодных условиях",
+              "url": "https://download.kiwix.org/zim/videos/canadian_prepper_winterprepping_en_2025-11.zim",
+              "size_mb": 1340
+            },
+            {
+              "id": "canadian_prepper_bugoutroll_en",
+              "version": "2025-08",
+              "title": "Canadian Prepper: Тревожный чемоданчик",
+              "description": "Подбор снаряжения для экстренной эвакуации",
+              "url": "https://download.kiwix.org/zim/videos/canadian_prepper_bugoutroll_en_2025-08.zim",
+              "size_mb": 975
+            }
+          ]
+        },
+        {
+          "name": "Стандартный",
+          "slug": "survival-standard",
+          "description": "Стратегии эвакуации и городское выживание. Включает всё из Базового.",
+          "includesTier": "survival-essential",
+          "resources": [
+            {
+              "id": "canadian_prepper_bugoutconcepts_en",
+              "version": "2025-11",
+              "title": "Canadian Prepper: Концепции эвакуации",
+              "description": "Стратегии и планирование экстренной эвакуации",
+              "url": "https://download.kiwix.org/zim/videos/canadian_prepper_bugoutconcepts_en_2025-11.zim",
+              "size_mb": 2890
+            },
+            {
+              "id": "urban-prepper_en_all",
+              "version": "2025-11",
+              "title": "Urban Prepper",
+              "description": "Комплексная серия видео по городской подготовке к чрезвычайным ситуациям",
+              "url": "https://download.kiwix.org/zim/videos/urban-prepper_en_all_2025-11.zim",
+              "size_mb": 2240
+            }
+          ]
+        },
+        {
+          "name": "Полный",
+          "slug": "survival-comprehensive",
+          "description": "Полная библиотека выживальщика с запасами еды и военной стратегией. Включает всё из Стандартного.",
+          "includesTier": "survival-standard",
+          "resources": [
+            {
+              "id": "canadian_prepper_preppingfood_en",
+              "version": "2025-09",
+              "title": "Canadian Prepper: Запасы еды",
+              "description": "Долгосрочное хранение продуктов и приготовление пищи для выживания",
+              "url": "https://download.kiwix.org/zim/videos/canadian_prepper_preppingfood_en_2025-09.zim",
+              "size_mb": 2160
+            },
+            {
+              "id": "gutenberg_en_lcc-u",
+              "version": "2026-03",
+              "title": "Проект Гутенберг: Военная наука",
+              "description": "Классическая военная стратегия, тактика и полевые руководства",
+              "url": "https://download.kiwix.org/zim/gutenberg/gutenberg_en_lcc-u_2026-03.zim",
+              "size_mb": 1200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Образование и справочники",
+      "slug": "education",
+      "icon": "IconSchool",
+      "description": "Энциклопедии, учебники, обучающие материалы и видео для самообразования.",
+      "language": "en",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "education-essential",
+          "description": "Основные справочные материалы — учебники и образовательный контент.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "wikibooks_en_all_nopic",
+              "version": "2025-10",
+              "title": "Викиучебник",
+              "description": "Учебники по математике, наукам, программированию и другим предметам",
+              "url": "https://download.kiwix.org/zim/wikibooks/wikibooks_en_all_nopic_2025-10.zim",
+              "size_mb": 3100
+            }
+          ]
+        },
+        {
+          "name": "Стандартный",
+          "slug": "education-standard",
+          "description": "Обучающие видео, университетские курсы и учебники STEM. Включает Базовый.",
+          "includesTier": "education-essential",
+          "resources": [
+            {
+              "id": "ted_mul_ted-ed",
+              "version": "2025-07",
+              "title": "TED-Ed",
+              "description": "Образовательные видеоуроки по науке, истории, литературе",
+              "url": "https://download.kiwix.org/zim/ted/ted_mul_ted-ed_2025-07.zim",
+              "size_mb": 5610
+            },
+            {
+              "id": "wikiversity_en_all_maxi",
+              "version": "2025-11",
+              "title": "Викиверситет",
+              "description": "Курсы и учебные материалы для всех уровней",
+              "url": "https://download.kiwix.org/zim/wikiversity/wikiversity_en_all_maxi_2025-11.zim",
+              "size_mb": 2370
+            },
+            {
+              "id": "libretexts.org_en_math",
+              "version": "2025-01",
+              "title": "Математика LibreTexts",
+              "description": "Учебники от алгебры до математического анализа",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_math_2025-01.zim",
+              "size_mb": 831
+            },
+            {
+              "id": "libretexts.org_en_phys",
+              "version": "2025-01",
+              "title": "Физика LibreTexts",
+              "description": "Курсы и учебники по физике",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_phys_2025-01.zim",
+              "size_mb": 560
+            },
+            {
+              "id": "libretexts.org_en_chem",
+              "version": "2025-01",
+              "title": "Химия LibreTexts",
+              "description": "Курсы и учебники по химии",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_chem_2025-01.zim",
+              "size_mb": 2180
+            },
+            {
+              "id": "libretexts.org_en_bio",
+              "version": "2025-01",
+              "title": "Биология LibreTexts",
+              "description": "Курсы и учебники по биологии",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_bio_2025-01.zim",
+              "size_mb": 2240
+            }
+          ]
+        },
+        {
+          "name": "Полный",
+          "slug": "education-comprehensive",
+          "description": "Полная образовательная библиотека с иллюстрированными учебниками и TED-докладами. Включает Стандартный.",
+          "includesTier": "education-standard",
+          "resources": [
+            {
+              "id": "wikibooks_en_all_maxi",
+              "version": "2025-10",
+              "title": "Викиучебник (с изображениями)",
+              "description": "Учебники с иллюстрациями и диаграммами",
+              "url": "https://download.kiwix.org/zim/wikibooks/wikibooks_en_all_maxi_2025-10.zim",
+              "size_mb": 5400
+            },
+            {
+              "id": "ted_mul_ted-conference",
+              "version": "2025-08",
+              "title": "Конференция TED",
+              "description": "Главные доклады TED — идеи, которые стоит распространять",
+              "url": "https://download.kiwix.org/zim/ted/ted_mul_ted-conference_2025-08.zim",
+              "size_mb": 16500
+            },
+            {
+              "id": "libretexts.org_en_human",
+              "version": "2025-01",
+              "title": "Гуманитарные науки LibreTexts",
+              "description": "Литература, философия, история и общественные науки",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_human_2025-01.zim",
+              "size_mb": 3730
+            },
+            {
+              "id": "libretexts.org_en_geo",
+              "version": "2025-01",
+              "title": "Науки о Земле LibreTexts",
+              "description": "Геология, науки о Земле и экология",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_geo_2025-01.zim",
+              "size_mb": 1190
+            },
+            {
+              "id": "libretexts.org_en_eng",
+              "version": "2025-01",
+              "title": "Инженерия LibreTexts",
+              "description": "Инженерные курсы и технические справочники",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_eng_2025-01.zim",
+              "size_mb": 678
+            },
+            {
+              "id": "libretexts.org_en_biz",
+              "version": "2025-01",
+              "title": "Бизнес LibreTexts",
+              "description": "Учебники по бизнесу, экономике и менеджменту",
+              "url": "https://download.kiwix.org/zim/libretexts/libretexts.org_en_biz_2025-01.zim",
+              "size_mb": 840
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ремонт и DIY",
+      "slug": "diy",
+      "icon": "IconTool",
+      "description": "Руководства по ремонту, обустройству дома, столярному делу и обслуживанию транспорта.",
+      "language": "en",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "diy-essential",
+          "description": "Основы ремонта — столярное дело и обслуживание автомобилей.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "woodworking.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Столярное дело — Вопросы и ответы",
+              "description": "Вопросы и ответы по столярному делу и деревообработке",
+              "url": "https://download.kiwix.org/zim/stack_exchange/woodworking.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 99
+            },
+            {
+              "id": "mechanics.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Обслуживание транспорта — Вопросы и ответы",
+              "description": "Вопросы и ответы по ремонту автомобилей и мотоциклов",
+              "url": "https://download.kiwix.org/zim/stack_exchange/mechanics.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 321
+            }
+          ]
+        },
+        {
+          "name": "Стандартный",
+          "slug": "diy-standard",
+          "description": "Обустройство дома с тысячами вопросов и ответов. Включает Базовый.",
+          "includesTier": "diy-essential",
+          "resources": [
+            {
+              "id": "diy.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Обустройство дома — Вопросы и ответы",
+              "description": "Ремонт дома, электрика, сантехника и строительство",
+              "url": "https://download.kiwix.org/zim/stack_exchange/diy.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 1900
+            }
+          ]
+        },
+        {
+          "name": "Полный",
+          "slug": "diy-comprehensive",
+          "description": "Полная библиотека ремонта с пошаговыми инструкциями по электронике и бытовой технике. Включает Стандартный.",
+          "includesTier": "diy-standard",
+          "resources": [
+            {
+              "id": "ifixit_en_all",
+              "version": "2025-12",
+              "title": "Руководства по ремонту iFixit",
+              "description": "Пошаговые инструкции по ремонту электроники, бытовой техники и транспорта",
+              "url": "https://download.kiwix.org/zim/ifixit/ifixit_en_all_2025-12.zim",
+              "size_mb": 3570
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Сельское хозяйство и еда",
+      "slug": "agriculture",
+      "icon": "IconPlant",
+      "description": "Выращивание и приготовление еды — садоводство, кулинария и консервация продуктов.",
+      "language": "en",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "agriculture-essential",
+          "description": "Быстрые рецепты и основы кулинарии на каждый день.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "foss.cooking_en_all",
+              "version": "2025-11",
+              "title": "FOSS Cooking",
+              "description": "Быстрые и простые кулинарные руководства и рецепты",
+              "url": "https://download.kiwix.org/zim/zimit/foss.cooking_en_all_2025-11.zim",
+              "size_mb": 24
+            },
+            {
+              "id": "based.cooking_en_all",
+              "version": "2025-11",
+              "title": "Based.Cooking",
+              "description": "Простые и практичные рецепты от сообщества",
+              "url": "https://download.kiwix.org/zim/zimit/based.cooking_en_all_2025-11.zim",
+              "size_mb": 16
+            }
+          ]
+        },
+        {
+          "name": "Стандартный",
+          "slug": "agriculture-standard",
+          "description": "Знания по садоводству и кулинарная экспертиза. Включает Базовый.",
+          "includesTier": "agriculture-essential",
+          "resources": [
+            {
+              "id": "gardening.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Садоводство — Вопросы и ответы",
+              "description": "Выращивание продуктов, уход за растениями и ландшафтный дизайн",
+              "url": "https://download.kiwix.org/zim/stack_exchange/gardening.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 923
+            },
+            {
+              "id": "cooking.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Кулинария — Вопросы и ответы",
+              "description": "Кулинарные техники, безопасность продуктов и рецепты",
+              "url": "https://download.kiwix.org/zim/stack_exchange/cooking.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 236
+            },
+            {
+              "id": "zimgit-food-preparation_en",
+              "version": "2025-04",
+              "title": "Еда для выживальщиков",
+              "description": "Рецепты и техники консервации и долгосрочного хранения продуктов",
+              "url": "https://download.kiwix.org/zim/other/zimgit-food-preparation_en_2025-04.zim",
+              "size_mb": 98
+            }
+          ]
+        },
+        {
+          "name": "Полный",
+          "slug": "agriculture-comprehensive",
+          "description": "Полная самодостаточность — видео по хозяйству, классические тексты по сельскому хозяйству. Включает Стандартный.",
+          "includesTier": "agriculture-standard",
+          "resources": [
+            {
+              "id": "lrnselfreliance_en_all",
+              "version": "2025-12",
+              "title": "Learning Self-Reliance: Хозяйство",
+              "description": "Пчеловодство, животноводство и устойчивый образ жизни",
+              "url": "https://download.kiwix.org/zim/videos/lrnselfreliance_en_all_2025-12.zim",
+              "size_mb": 3970
+            },
+            {
+              "id": "gutenberg_en_lcc-s",
+              "version": "2026-03",
+              "title": "Проект Гутенберг: Сельское хозяйство",
+              "description": "Классические тексты по земледелию, животноводству и консервации",
+              "url": "https://download.kiwix.org/zim/gutenberg/gutenberg_en_lcc-s_2026-03.zim",
+              "size_mb": 4300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Stack Overflow",
+      "slug": "stackoverflow",
       "icon": "IconBrandStackoverflow",
-      "description": "Русскоязычный Stack Overflow — вопросы и ответы по программированию.",
-      "language": "ru",
+      "description": "Крупнейший сайт вопросов и ответов по программированию. Миллионы ответов на любую тему.",
+      "language": "en",
       "tiers": [
         {
           "name": "Полный",
-          "slug": "stackoverflow-ru-full",
-          "description": "Полный архив Stack Overflow на русском.",
+          "slug": "stackoverflow-full",
+          "description": "Полный архив Stack Overflow со всеми вопросами и ответами.",
           "recommended": true,
           "resources": [
             {
-              "id": "ru.stackoverflow.com_mul_all",
+              "id": "stackoverflow.com_en_all",
               "version": "2024-10",
-              "title": "Stack Overflow (Русский)",
-              "description": "Полный архив русскоязычного Stack Overflow — все вопросы и ответы",
-              "url": "https://download.kiwix.org/zim/stack_exchange/ru.stackoverflow.com_mul_all_2024-10.zim",
-              "size_mb": 2100
+              "title": "Stack Overflow (English)",
+              "description": "Полный архив Stack Overflow — все вопросы, ответы и комментарии",
+              "url": "https://download.kiwix.org/zim/stack_exchange/stackoverflow.com_en_all_2024-10.zim",
+              "size_mb": 95000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Компьютеры и технологии",
+      "slug": "computing",
+      "icon": "IconCode",
+      "description": "Обучение программированию, электронные проекты и техническая документация.",
+      "language": "en",
+      "tiers": [
+        {
+          "name": "Базовый",
+          "slug": "computing-essential",
+          "description": "Научитесь программировать с интерактивными уроками и документацией.",
+          "recommended": true,
+          "resources": [
+            {
+              "id": "freecodecamp_en_all",
+              "version": "2025-11",
+              "title": "freeCodeCamp",
+              "description": "Интерактивные уроки программирования — JavaScript, алгоритмы, структуры данных",
+              "url": "https://download.kiwix.org/zim/freecodecamp/freecodecamp_en_all_2025-11.zim",
+              "size_mb": 8
+            },
+            {
+              "id": "devdocs_en_python",
+              "version": "2026-01",
+              "title": "Документация Python",
+              "description": "Полный справочник языка Python и руководства",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_python_2026-01.zim",
+              "size_mb": 4
+            },
+            {
+              "id": "devdocs_en_javascript",
+              "version": "2026-01",
+              "title": "Документация JavaScript",
+              "description": "Справочник и руководства по JavaScript от MDN",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_javascript_2026-01.zim",
+              "size_mb": 3
+            },
+            {
+              "id": "devdocs_en_html",
+              "version": "2026-01",
+              "title": "Документация HTML",
+              "description": "Справочник HTML элементов и атрибутов от MDN",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_html_2026-01.zim",
+              "size_mb": 2
+            },
+            {
+              "id": "devdocs_en_css",
+              "version": "2026-01",
+              "title": "Документация CSS",
+              "description": "Справочник CSS свойств и селекторов от MDN",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_css_2026-01.zim",
+              "size_mb": 5
+            }
+          ]
+        },
+        {
+          "name": "Стандартный",
+          "slug": "computing-standard",
+          "description": "Проекты с Arduino и Raspberry Pi, дополнительная документация. Включает Базовый.",
+          "includesTier": "computing-essential",
+          "resources": [
+            {
+              "id": "arduino.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Arduino — Вопросы и ответы",
+              "description": "Вопросы и ответы по проектам на Arduino",
+              "url": "https://download.kiwix.org/zim/stack_exchange/arduino.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 247
+            },
+            {
+              "id": "raspberrypi.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Raspberry Pi — Вопросы и ответы",
+              "description": "Вопросы и ответы по проектам на Raspberry Pi",
+              "url": "https://download.kiwix.org/zim/stack_exchange/raspberrypi.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 285
+            },
+            {
+              "id": "devdocs_en_node",
+              "version": "2026-01",
+              "title": "Документация Node.js",
+              "description": "Справочник API Node.js и руководства",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_node_2026-01.zim",
+              "size_mb": 1
+            },
+            {
+              "id": "devdocs_en_react",
+              "version": "2026-02",
+              "title": "Документация React",
+              "description": "Справочник библиотеки React и руководства",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_react_2026-02.zim",
+              "size_mb": 3
+            },
+            {
+              "id": "devdocs_en_git",
+              "version": "2026-01",
+              "title": "Документация Git",
+              "description": "Справочник системы контроля версий Git",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_git_2026-01.zim",
+              "size_mb": 1
+            }
+          ]
+        },
+        {
+          "name": "Полный",
+          "slug": "computing-comprehensive",
+          "description": "Глубокие знания электроники и Q&A по аппаратным проектам. Включает Стандартный.",
+          "includesTier": "computing-standard",
+          "resources": [
+            {
+              "id": "electronics.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Электроника — Вопросы и ответы",
+              "description": "Проектирование схем, компоненты и электротехника",
+              "url": "https://download.kiwix.org/zim/stack_exchange/electronics.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 3800
+            },
+            {
+              "id": "robotics.stackexchange.com_en_all",
+              "version": "2025-12",
+              "title": "Робототехника — Вопросы и ответы",
+              "description": "Проекты робототехники и автоматизации",
+              "url": "https://download.kiwix.org/zim/stack_exchange/robotics.stackexchange.com_en_all_2025-12.zim",
+              "size_mb": 233
+            },
+            {
+              "id": "devdocs_en_docker",
+              "version": "2026-01",
+              "title": "Документация Docker",
+              "description": "Справочник Docker-контейнеров и руководства",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_docker_2026-01.zim",
+              "size_mb": 2
+            },
+            {
+              "id": "devdocs_en_bash",
+              "version": "2026-01",
+              "title": "Документация Linux",
+              "description": "Справочник команд Linux и администрирование",
+              "url": "https://download.kiwix.org/zim/devdocs/devdocs_en_bash_2026-01.zim",
+              "size_mb": 1
             }
           ]
         }

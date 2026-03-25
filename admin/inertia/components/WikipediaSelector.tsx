@@ -94,7 +94,7 @@ const WikipediaSelector: React.FC<WikipediaSelectorProps> = ({
                 isInstalled
                   ? 'border-desert-green bg-desert-green/10'
                   : isSelected
-                    ? 'border-lime-500 bg-lime-50'
+                    ? 'border-desert-olive bg-desert-olive/10'
                     : 'border-border-subtle bg-surface-primary hover:border-border-default'
               )}
             >
@@ -107,18 +107,18 @@ const WikipediaSelector: React.FC<WikipediaSelectorProps> = ({
                   </span>
                 )}
                 {isPending && !isInstalled && (
-                  <span className="text-xs bg-lime-500 text-white px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-desert-olive text-white px-2 py-0.5 rounded-full">
                     {t('components.selected')}
                   </span>
                 )}
                 {isCurrentDownloading && (
-                  <span className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span className="text-xs bg-desert-tan text-white px-2 py-0.5 rounded-full flex items-center gap-1">
                     <IconDownload size={12} />
                     {t('components.downloading')}
                   </span>
                 )}
                 {isCurrentFailed && (
-                  <span className="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span className="text-xs bg-desert-red text-white px-2 py-0.5 rounded-full flex items-center gap-1">
                     <IconAlertTriangle size={12} />
                     {t('components.failed')}
                   </span>
@@ -137,7 +137,7 @@ const WikipediaSelector: React.FC<WikipediaSelectorProps> = ({
                       isSelected
                         ? isInstalled
                           ? 'border-desert-green bg-desert-green'
-                          : 'border-lime-500 bg-lime-500'
+                          : 'border-desert-olive bg-desert-olive/100'
                         : 'border-border-default'
                     )}
                   >

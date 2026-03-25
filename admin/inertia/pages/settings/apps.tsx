@@ -18,6 +18,7 @@ import { BROADCAST_CHANNELS } from '../../../constants/broadcast'
 import { IconArrowUp, IconCheck, IconDownload } from '@tabler/icons-react'
 import UpdateServiceModal from '~/components/UpdateServiceModal'
 import { useTranslation } from 'react-i18next'
+import { getServiceName, getServiceDescription } from '~/lib/serviceI18n'
 
 function extractTag(containerImage: string): string {
   if (!containerImage) return ''
@@ -62,17 +63,17 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
   async function handleCheckUpdates() {
     try {
       if (!isOnline) {
-        showError('You must have an internet connection to check for updates.')
+        showError(t('errors.noInternetForUpdates'))
         return
       }
       setCheckingUpdates(true)
       const response = await api.checkServiceUpdates()
       if (!response?.success) {
-        throw new Error('Failed to dispatch update check')
+        throw new Error(t('errors.updateCheckFailed'))
       }
     } catch (error) {
       console.error('Error checking for updates:', error)
-      showError(`Failed to check for updates: ${error.message || 'Unknown error'}`)
+      showError(t('errors.updateCheckFailedDetails', { error: error.message || t('errors.unknown') }))
       setCheckingUpdates(false)
     }
   }
@@ -93,7 +94,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
         icon={<IconDownload className="h-12 w-12 text-desert-green" />}
       >
         <p className="text-text-primary">
-          {t('settings.apps.installServiceMsg', { name: service.friendly_name || service.service_name })}
+          {t('settings.apps.installServiceMsg', { name: getServiceName(t, service.service_name, service.friendly_name) })}
         </p>
       </StyledModal>,
       'install-service-modal'
@@ -103,21 +104,21 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
   async function installService(serviceName: string) {
     try {
       if (!isOnline) {
-        showError('You must have an internet connection to install services.')
+        showError(t('errors.noInternetForInstall'))
         return
       }
 
       setIsInstalling(true)
       const response = await api.installService(serviceName)
       if (!response) {
-        throw new Error('An internal error occurred while trying to install the service.')
+        throw new Error(t('errors.internalError'))
       }
       if (!response.success) {
         throw new Error(response.message)
       }
     } catch (error) {
       console.error('Error installing service:', error)
-      showError(`Failed to install service: ${error.message || 'Unknown error'}`)
+      showError(t('errors.installServiceFailed', { error: error.message || t('errors.unknown') }))
     } finally {
       setIsInstalling(false)
     }
@@ -128,7 +129,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
       setLoading(true)
       const response = await api.affectService(record.service_name, action)
       if (!response) {
-        throw new Error('An internal error occurred while trying to affect the service.')
+        throw new Error(t('errors.internalError'))
       }
       if (!response.success) {
         throw new Error(response.message)
@@ -142,7 +143,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
       }, 3000)
     } catch (error) {
       console.error(`Error affecting service ${record.service_name}:`, error)
-      showError(`Failed to ${action} service: ${error.message || 'Unknown error'}`)
+      showError(t('errors.serviceActionFailed', { action, error: error.message || t('errors.unknown') }))
     }
   }
 
@@ -151,7 +152,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
       setLoading(true)
       const response = await api.forceReinstallService(record.service_name)
       if (!response) {
-        throw new Error('An internal error occurred while trying to force reinstall the service.')
+        throw new Error(t('errors.internalError'))
       }
       if (!response.success) {
         throw new Error(response.message)
@@ -165,7 +166,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
       }, 3000)
     } catch (error) {
       console.error(`Error force reinstalling service ${record.service_name}:`, error)
-      showError(`Failed to force reinstall service: ${error.message || 'Unknown error'}`)
+      showError(t('errors.forceReinstallFailed', { error: error.message || t('errors.unknown') }))
     }
   }
 
@@ -189,7 +190,7 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
             }
           } catch (error) {
             console.error(`Error updating service ${record.service_name}:`, error)
-            showError(`Failed to update service: ${error.message || 'Unknown error'}`)
+            showError(t('errors.updateServiceFailed', { error: error.message || t('errors.unknown') }))
             setLoading(false)
           }
         }}
@@ -359,8 +360,8 @@ export default function SettingsPage(props: { system: { services: ServiceSlim[] 
                   render(record) {
                     return (
                       <div className="flex flex-col">
-                        <p>{record.friendly_name || record.service_name}</p>
-                        <p className="text-sm text-text-muted">{record.description}</p>
+                        <p>{getServiceName(t, record.service_name, record.friendly_name)}</p>
+                        <p className="text-sm text-text-muted">{getServiceDescription(t, record.service_name, record.description)}</p>
                       </div>
                     )
                   },

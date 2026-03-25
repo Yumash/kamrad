@@ -42,10 +42,10 @@ const CuratedCollectionCard: React.FC<CuratedCollectionCardProps> = ({ collectio
           {collection.all_installed && (
             <div className="flex items-center">
               <IconCircleCheck
-                className="w-5 h-5 text-lime-400 ml-2"
+                className="w-5 h-5 text-desert-olive-light ml-2"
                 title={t('components.allItemsDownloaded')}
               />
-              <p className="text-lime-400 text-sm ml-1">{t('components.allItemsDownloaded')}</p>
+              <p className="text-desert-olive-light text-sm ml-1">{t('components.allItemsDownloaded')}</p>
             </div>
           )}
         </div>

@@ -32,9 +32,14 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   }
 
   return (
-    <div className={className}>
-      <div className="ui active inverted dimmer">
-        <div className="ui text loader">{!iconOnly && <span>{text || t('common.loading')}</span>}</div>
+    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm ${className || ''}`}>
+      <div className="flex flex-col items-center justify-center bg-surface-primary rounded-lg p-8 shadow-lg">
+        <div className="w-10 h-10 border-[3px] border-desert-green border-t-transparent rounded-full animate-spin"></div>
+        {!iconOnly && (
+          <div className="text-text-primary mt-3 font-medium">
+            {text || t('common.loading')}
+          </div>
+        )}
       </div>
     </div>
   )

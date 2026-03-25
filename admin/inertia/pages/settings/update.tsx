@@ -252,7 +252,7 @@ export default function SystemUpdatePage(props: { system: Props }) {
       try {
         const response = await api.getSystemUpdateStatus()
         if (!response) {
-          throw new Error('Failed to fetch update status')
+          throw new Error(t('settings.update.fetchStatusFailed'))
         }
         setUpdateStatus(response)
 
@@ -293,11 +293,11 @@ export default function SystemUpdatePage(props: { system: Props }) {
       setIsUpdating(true)
       const response = await api.startSystemUpdate()
       if (!response || !response.success) {
-        throw new Error('Failed to start update')
+        throw new Error(t('settings.update.startUpdateFailed'))
       }
     } catch (err: any) {
       setIsUpdating(false)
-      setError(err.response?.data?.error || err.message || 'Failed to start update')
+      setError(err.response?.data?.error || err.message || t('settings.update.startUpdateFailed'))
     }
   }
 
@@ -305,12 +305,12 @@ export default function SystemUpdatePage(props: { system: Props }) {
     try {
       const response = await api.getSystemUpdateLogs()
       if (!response) {
-        throw new Error('Failed to fetch update logs')
+        throw new Error(t('settings.update.fetchLogsFailed'))
       }
       setLogs(response.logs)
       setShowLogs(true)
     } catch (err) {
-      setError('Failed to fetch update logs')
+      setError(t('settings.update.fetchLogsFailed'))
     }
   }
 
@@ -378,19 +378,19 @@ export default function SystemUpdatePage(props: { system: Props }) {
     mutationFn: (email: string) => api.subscribeToReleaseNotes(email),
     onSuccess: (data) => {
       if (data && data.success) {
-        addNotification({ type: 'success', message: 'Successfully subscribed to release notes!' })
+        addNotification({ type: 'success', message: t('settings.update.subscribeSuccess') })
         setEmail('')
       } else {
         addNotification({
           type: 'error',
-          message: `Failed to subscribe: ${data?.message || 'Unknown error'}`,
+          message: t('settings.update.subscribeFailed', { error: data?.message || t('errors.unknown') }),
         })
       }
     },
     onError: (error: any) => {
       addNotification({
         type: 'error',
-        message: `Error subscribing to release notes: ${error.message || 'Unknown error'}`,
+        message: t('settings.update.subscribeFailed', { error: error.message || t('errors.unknown') }),
       })
     },
   })

@@ -24,8 +24,9 @@ import WikipediaSelection from '#models/wikipedia_selection'
 import InstalledResource from '#models/installed_resource'
 import { RunDownloadJob } from '#jobs/run_download_job'
 import { SERVICE_NAMES } from '../../constants/service_names.js'
-import { CollectionManifestService } from './collection_manifest_service.js'
+import { CollectionManifestService, getLanguageSpecUrl } from './collection_manifest_service.js'
 import type { CategoryWithStatus } from '../../types/collections.js'
+import KvStore from '#models/kv_store'
 
 const ZIM_MIME_TYPES = ['application/x-zim', 'application/x-openzim', 'application/octet-stream']
 const WIKIPEDIA_OPTIONS_URL = 'https://raw.githubusercontent.com/Yumash/kamrad/refs/heads/main/collections/wikipedia.json'
@@ -252,7 +253,7 @@ export class ZimService {
   async downloadRemoteSuccessCallback(urls: string[], restart = true) {
     // Check if any URL is a Wikipedia download and handle it
     for (const url of urls) {
-      if (url.includes('wikipedia_en_')) {
+      if (url.includes('/wikipedia/wikipedia_')) {
         await this.onWikipediaDownloadComplete(url, true)
       }
     }
@@ -296,7 +297,7 @@ export class ZimService {
     // Create InstalledResource entries for downloaded files
     for (const url of urls) {
       // Skip Wikipedia files (managed separately)
-      if (url.includes('wikipedia_en_')) continue
+      if (url.includes('/wikipedia/wikipedia_')) continue
 
       const filename = url.split('/').pop()
       if (!filename) continue
@@ -362,8 +363,24 @@ export class ZimService {
 
   async getWikipediaOptions(): Promise<WikipediaOption[]> {
     try {
-      const response = await axios.get(WIKIPEDIA_OPTIONS_URL)
-      const data = response.data
+      const locale = await KvStore.getValue('ui.language') || 'en'
+
+      // Try language-specific URL first, fallback to base EN
+      let data: any
+      if (locale !== 'en') {
+        try {
+          const langUrl = getLanguageSpecUrl(locale, 'wikipedia')
+          const response = await axios.get(langUrl, { timeout: 10000 })
+          data = response.data
+        } catch {
+          logger.info(`[ZimService] No Wikipedia options for locale '${locale}', falling back to EN`)
+        }
+      }
+
+      if (!data) {
+        const response = await axios.get(WIKIPEDIA_OPTIONS_URL, { timeout: 10000 })
+        data = response.data
+      }
 
       const validated = await vine.validate({
         schema: wikipediaOptionsFileSchema,
@@ -537,7 +554,7 @@ export class ZimService {
       // We need to find what was previously installed
       const existingFiles = await this.list()
       const wikipediaFiles = existingFiles.files.filter((f) =>
-        f.name.startsWith('wikipedia_en_') && f.name !== selection.filename
+        f.name.startsWith('wikipedia_') && f.name !== selection.filename
       )
 
       for (const oldFile of wikipediaFiles) {
