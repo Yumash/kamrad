@@ -6,13 +6,12 @@ import AppLayout from '~/layouts/AppLayout'
 import StyledButton from '~/components/StyledButton'
 import api from '~/lib/api'
 import { ServiceSlim } from '../../../types/services'
-import CuratedCollectionCard from '~/components/CuratedCollectionCard'
 import CategoryCard from '~/components/CategoryCard'
 import TierSelectionModal from '~/components/TierSelectionModal'
 import WikipediaSelector from '~/components/WikipediaSelector'
 import LoadingSpinner from '~/components/LoadingSpinner'
 import Alert from '~/components/Alert'
-import { IconCheck, IconChevronDown, IconChevronUp, IconCpu, IconBooks, IconMapPin } from '@tabler/icons-react'
+import { IconCheck, IconChevronDown, IconChevronUp, IconCpu, IconBooks } from '@tabler/icons-react'
 import StorageProjectionBar from '~/components/StorageProjectionBar'
 import { useNotifications } from '~/context/NotificationContext'
 import useInternetStatus from '~/hooks/useInternetStatus'
@@ -208,17 +207,18 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
   const lang = (i18n.language as 'ru' | 'en') || 'en'
 
-  // Region group definitions
-  const REGION_GROUPS = useMemo(() => [
-    { key: 'russia', prefixes: ['ru-'], i18nKey: 'easySetup.russia' },
-    { key: 'cis', prefixes: ['kz', 'ua', 'by', 'ge', 'am', 'az', 'uz', 'kg', 'tj'], i18nKey: 'easySetup.cis' },
-    { key: 'europe', prefixes: ['fr', 'gb', 'it', 'es', 'pt', 'nl', 'be', 'pl', 'cz', 'se', 'no', 'fi', 'dk', 'gr', 'tr'], i18nKey: 'easySetup.europe' },
-    { key: 'middleEastAfrica', prefixes: ['il', 'ae', 'eg', 'za', 'ng', 'ke'], i18nKey: 'easySetup.middleEastAfrica' },
-    { key: 'asia', prefixes: ['cn', 'jp', 'kr', 'in', 'th', 'vn', 'id'], i18nKey: 'easySetup.asia' },
-    { key: 'americasOceania', prefixes: ['br', 'mx', 'ar', 'ca', 'au', 'nz'], i18nKey: 'easySetup.americasOceania' },
+  // Region group definitions (includes both extract regions and curated collections)
+  const MAP_GROUPS = useMemo(() => [
+    { key: 'global', prefixes: [] as string[], curatedSlugs: ['global-overview'], i18nKey: 'easySetup.globalOverview', isToggle: true },
+    { key: 'russia', prefixes: ['ru-'], curatedSlugs: [] as string[], i18nKey: 'easySetup.russia', isToggle: false },
+    { key: 'cis', prefixes: ['kz', 'ua', 'by', 'ge', 'am', 'az', 'uz', 'kg', 'tj'], curatedSlugs: [] as string[], i18nKey: 'easySetup.cis', isToggle: false },
+    { key: 'europe', prefixes: ['fr', 'gb', 'it', 'es', 'pt', 'nl', 'be', 'pl', 'cz', 'se', 'no', 'fi', 'dk', 'gr'], curatedSlugs: ['germany', 'central-europe'], i18nKey: 'easySetup.europe', isToggle: false },
+    { key: 'middleEastAfrica', prefixes: ['tr', 'il', 'ae', 'eg', 'za', 'ng', 'ke'], curatedSlugs: [] as string[], i18nKey: 'easySetup.middleEastAfrica', isToggle: false },
+    { key: 'asia', prefixes: ['cn', 'jp', 'kr', 'in', 'th', 'vn', 'id'], curatedSlugs: [] as string[], i18nKey: 'easySetup.asia', isToggle: false },
+    { key: 'americasOceania', prefixes: ['br', 'mx', 'ar', 'ca', 'au', 'nz'], curatedSlugs: ['pacific-region', 'mountain-region', 'midwest-region', 'south-region', 'northeast-region'], i18nKey: 'easySetup.americasOceania', isToggle: false },
   ], [])
 
-  const getGroupRegions = (group: typeof REGION_GROUPS[number]) => {
+  const getGroupRegions = (group: typeof MAP_GROUPS[number]) => {
     if (!extractRegions) return []
     return extractRegions.filter((r) => {
       if (group.key === 'russia') {
@@ -228,15 +228,40 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     })
   }
 
+  const getGroupCurated = (group: typeof MAP_GROUPS[number]) => {
+    if (!mapCollections || !group.curatedSlugs || group.curatedSlugs.length === 0) return []
+    return mapCollections.filter((c) => group.curatedSlugs.includes(c.slug))
+  }
+
+  const getGroupItemCount = (group: typeof MAP_GROUPS[number]) => {
+    return getGroupRegions(group).length + getGroupCurated(group).length
+  }
+
+  const getGroupSelectedCount = (group: typeof MAP_GROUPS[number]) => {
+    const regionIds = getGroupRegions(group).map((r) => r.id)
+    const curatedSlugs = getGroupCurated(group).map((c) => c.slug)
+    const selectedRegionCount = regionIds.filter((id) => selectedExtractRegions.includes(id)).length
+    const selectedCuratedCount = curatedSlugs.filter((s) => selectedMapCollections.includes(s)).length
+    return selectedRegionCount + selectedCuratedCount
+  }
+
+  const isGroupAllSelected = (group: typeof MAP_GROUPS[number]) => {
+    const total = getGroupItemCount(group)
+    return total > 0 && getGroupSelectedCount(group) === total
+  }
+
   const toggleRegionGroup = (groupKey: string) => {
-    const group = REGION_GROUPS.find((g) => g.key === groupKey)
+    const group = MAP_GROUPS.find((g) => g.key === groupKey)
     if (!group) return
     const groupRegionIds = getGroupRegions(group).map((r) => r.id)
-    const allSelected = groupRegionIds.every((id) => selectedExtractRegions.includes(id))
+    const groupCuratedSlugs = getGroupCurated(group).map((c) => c.slug)
+    const allSelected = isGroupAllSelected(group)
     if (allSelected) {
       setSelectedExtractRegions((prev) => prev.filter((id) => !groupRegionIds.includes(id)))
+      setSelectedMapCollections((prev) => prev.filter((s) => !groupCuratedSlugs.includes(s)))
     } else {
       setSelectedExtractRegions((prev) => [...new Set([...prev, ...groupRegionIds])])
+      setSelectedMapCollections((prev) => [...new Set([...prev, ...groupCuratedSlugs])])
     }
   }
 
@@ -790,153 +815,223 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     )
   }
 
-  const renderStep2 = () => (
-    <div className="space-y-6">
-      <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step2Title')}</h2>
-        <p className="text-text-secondary">
-          {t('easySetup.step2Desc')}
-        </p>
-      </div>
-      {isLoadingMaps ? (
-        <div className="flex justify-center py-12">
-          <LoadingSpinner />
+  const renderStep2 = () => {
+    const isLoading = isLoadingMaps
+    const totalSelected = selectedMapCollections.length + selectedExtractRegions.length
+
+    return (
+      <div className="space-y-6">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step2Title')}</h2>
+          <p className="text-text-secondary">
+            {t('easySetup.step2Desc')}
+          </p>
         </div>
-      ) : mapCollections && mapCollections.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mapCollections.map((collection) => (
-            <div
-              key={collection.slug}
-              onClick={() =>
-                isOnline && !collection.all_installed && toggleMapCollection(collection.slug)
-              }
-              className={classNames(
-                'relative',
-                selectedMapCollections.includes(collection.slug) &&
-                'ring-4 ring-desert-green rounded-lg',
-                collection.all_installed && 'opacity-75',
-                !isOnline && 'opacity-50 cursor-not-allowed'
-              )}
-            >
-              <CuratedCollectionCard collection={collection} />
-              {selectedMapCollections.includes(collection.slug) && (
-                <div className="absolute top-2 right-2 bg-desert-green rounded-full p-1">
-                  <IconCheck size={32} className="text-white" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-text-secondary text-lg">{t('easySetup.noMapCollections')}</p>
-        </div>
-      )}
-      {/* Regional Map Extract Section */}
-      {extractRegions && extractRegions.length > 0 && (
-        <div className="mt-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-full bg-surface-primary border border-border-subtle flex items-center justify-center shadow-sm">
-              <IconMapPin className="w-6 h-6 text-text-primary" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-text-primary">{t('easySetup.regionMaps')}</h3>
-              <p className="text-sm text-text-muted">{t('easySetup.regionMapsDesc')}</p>
-            </div>
+
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <LoadingSpinner />
           </div>
-          {selectedExtractRegions.length > 0 && (
-            <p className="text-sm text-desert-green font-medium mb-3 ml-13">
-              {t('easySetup.regionsSelected', { count: selectedExtractRegions.length })}
-            </p>
-          )}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            {REGION_GROUPS.map((group) => {
+        ) : (
+          <div className="space-y-3">
+            {MAP_GROUPS.map((group) => {
               const groupRegions = getGroupRegions(group)
-              if (groupRegions.length === 0) return null
-              const groupRegionIds = groupRegions.map((r) => r.id)
-              const selectedCount = groupRegionIds.filter((id) => selectedExtractRegions.includes(id)).length
-              const allSelected = selectedCount === groupRegionIds.length
+              const groupCurated = getGroupCurated(group)
+              const totalItems = groupRegions.length + groupCurated.length
+
+              // Skip groups with no items
+              if (totalItems === 0) return null
+
+              const selectedCount = getGroupSelectedCount(group)
+              const allSelected = isGroupAllSelected(group)
               const isExpanded = expandedRegionGroups.includes(group.key)
 
-              return (
-                <div
-                  key={group.key}
-                  className={classNames(
-                    'rounded-lg border-2 transition-all overflow-hidden',
-                    allSelected
-                      ? 'border-desert-green bg-desert-green/5'
-                      : selectedCount > 0
-                        ? 'border-desert-green/50 bg-surface-primary'
-                        : 'border-desert-stone-light bg-surface-primary hover:border-desert-green/30',
-                    !isOnline && 'opacity-50 cursor-not-allowed'
-                  )}
-                >
+              // Global overview: render as a simple toggle row, not an accordion
+              if (group.isToggle) {
+                const collection = groupCurated[0]
+                if (!collection) return null
+                const isSelected = selectedMapCollections.includes(collection.slug)
+                const totalSizeMb = collection.resources.reduce((sum, r) => sum + r.size_mb, 0)
+
+                return (
                   <div
-                    className="p-4 cursor-pointer"
-                    onClick={() => isOnline && toggleRegionGroup(group.key)}
+                    key={group.key}
+                    onClick={() => isOnline && !collection.all_installed && toggleMapCollection(collection.slug)}
+                    className={classNames(
+                      'rounded-lg border transition-all p-4 cursor-pointer',
+                      isSelected
+                        ? 'border-desert-green bg-desert-green/5'
+                        : 'border-border-subtle bg-surface-primary hover:border-desert-green/30',
+                      collection.all_installed && 'opacity-60 cursor-default',
+                      !isOnline && 'opacity-50 cursor-not-allowed'
+                    )}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div
                           className={classNames(
-                            'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors',
-                            allSelected
+                            'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors flex-shrink-0',
+                            isSelected
                               ? 'bg-desert-green border-desert-green'
-                              : selectedCount > 0
-                                ? 'bg-desert-green/30 border-desert-green'
-                                : 'border-desert-stone bg-transparent'
+                              : 'border-desert-stone bg-transparent'
                           )}
                         >
-                          {(allSelected || selectedCount > 0) && (
-                            <IconCheck size={14} className="text-white" />
-                          )}
+                          {isSelected && <IconCheck size={14} className="text-white" />}
                         </div>
                         <div>
                           <h4 className="font-semibold text-text-primary">{t(group.i18nKey)}</h4>
-                          <p className="text-xs text-text-muted">
-                            {selectedCount > 0
-                              ? `${selectedCount} / ${groupRegions.length}`
-                              : `${groupRegions.length} ${lang === 'ru' ? 'регионов' : 'regions'}`}
-                          </p>
+                          <p className="text-xs text-text-muted">{collection.name}</p>
                         </div>
                       </div>
-                      <button
-                        className="p-1 text-text-muted hover:text-text-primary transition-colors"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          toggleExpandGroup(group.key)
-                        }}
-                      >
-                        {isExpanded ? <IconChevronUp size={18} /> : <IconChevronDown size={18} />}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {totalSizeMb > 0 && (
+                          <span className="text-xs text-text-muted">
+                            {totalSizeMb >= 1024
+                              ? `${(totalSizeMb / 1024).toFixed(1)} GB`
+                              : `${totalSizeMb} MB`}
+                          </span>
+                        )}
+                        {collection.all_installed && (
+                          <span className="text-xs bg-desert-green/20 text-desert-green px-2 py-0.5 rounded-full">
+                            {t('settings.apps.installed')}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
+                )
+              }
+
+              // Accordion group
+              return (
+                <div
+                  key={group.key}
+                  className={classNames(
+                    'rounded-lg border transition-all overflow-hidden',
+                    allSelected
+                      ? 'border-desert-green bg-desert-green/5'
+                      : selectedCount > 0
+                        ? 'border-desert-green/50 bg-surface-primary'
+                        : 'border-border-subtle bg-surface-primary',
+                    !isOnline && 'opacity-50 cursor-not-allowed'
+                  )}
+                >
+                  {/* Group header */}
+                  <div
+                    className="px-4 py-3 cursor-pointer flex items-center justify-between"
+                    onClick={() => isOnline && toggleExpandGroup(group.key)}
+                  >
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      {/* Select all checkbox */}
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (isOnline) toggleRegionGroup(group.key)
+                        }}
+                        className={classNames(
+                          'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors flex-shrink-0 cursor-pointer',
+                          allSelected
+                            ? 'bg-desert-green border-desert-green'
+                            : selectedCount > 0
+                              ? 'bg-desert-green/30 border-desert-green'
+                              : 'border-desert-stone bg-transparent hover:border-desert-green/50'
+                        )}
+                      >
+                        {(allSelected || selectedCount > 0) && (
+                          <IconCheck size={14} className="text-white" />
+                        )}
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="font-semibold text-text-primary">{t(group.i18nKey)}</h4>
+                      </div>
+                      {/* Count badge */}
+                      <span className={classNames(
+                        'text-xs px-2 py-0.5 rounded-full flex-shrink-0',
+                        selectedCount > 0
+                          ? 'bg-desert-green/20 text-desert-green'
+                          : 'bg-surface-secondary text-text-muted'
+                      )}>
+                        {selectedCount > 0
+                          ? `${selectedCount} / ${totalItems}`
+                          : totalItems}
+                      </span>
+                    </div>
+                    <div className="ml-2 text-text-muted flex-shrink-0">
+                      {isExpanded ? <IconChevronUp size={18} /> : <IconChevronDown size={18} />}
+                    </div>
+                  </div>
+
+                  {/* Expanded content */}
                   {isExpanded && (
                     <div className="px-4 pb-3 border-t border-border-subtle">
-                      <div className="space-y-1 mt-2 max-h-48 overflow-y-auto">
-                        {groupRegions.map((region) => (
-                          <label
-                            key={region.id}
-                            className="flex items-center gap-2 py-1 px-2 rounded hover:bg-surface-secondary cursor-pointer text-sm"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedExtractRegions.includes(region.id)}
-                              onChange={() => isOnline && toggleExtractRegion(region.id)}
-                              disabled={!isOnline}
-                              className="rounded border-desert-stone text-desert-green focus:ring-desert-green"
-                            />
-                            <span className="text-text-primary">{region.name[lang]}</span>
-                            {region.estimated_size_mb > 0 && (
-                              <span className="text-text-muted text-xs ml-auto">
-                                {region.estimated_size_mb >= 1024
-                                  ? `${(region.estimated_size_mb / 1024).toFixed(1)} GB`
-                                  : `${region.estimated_size_mb} MB`}
-                              </span>
-                            )}
-                          </label>
-                        ))}
+                      <div className="space-y-0.5 mt-2 max-h-64 overflow-y-auto">
+                        {/* Curated collections in this group */}
+                        {groupCurated.map((collection) => {
+                          const isSelected = selectedMapCollections.includes(collection.slug)
+                          const totalSizeMb = collection.resources.reduce((sum, r) => sum + r.size_mb, 0)
+                          return (
+                            <label
+                              key={`curated-${collection.slug}`}
+                              className={classNames(
+                                'flex items-center gap-2 py-1.5 px-2 rounded cursor-pointer text-sm',
+                                isSelected ? 'bg-desert-green/10' : 'hover:bg-surface-secondary'
+                              )}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => isOnline && !collection.all_installed && toggleMapCollection(collection.slug)}
+                                disabled={!isOnline || collection.all_installed}
+                                className="rounded border-desert-stone text-desert-green focus:ring-desert-green"
+                              />
+                              <span className="text-text-primary">{collection.name}</span>
+                              {totalSizeMb > 0 && (
+                                <span className="text-text-muted text-xs ml-auto flex-shrink-0">
+                                  {totalSizeMb >= 1024
+                                    ? `${(totalSizeMb / 1024).toFixed(1)} GB`
+                                    : `${totalSizeMb} MB`}
+                                </span>
+                              )}
+                              {collection.all_installed && (
+                                <span className="text-xs text-desert-green ml-1 flex-shrink-0">
+                                  {t('settings.apps.installed')}
+                                </span>
+                              )}
+                            </label>
+                          )
+                        })}
+                        {/* Extract regions in this group */}
+                        {groupRegions.map((region) => {
+                          const isSelected = selectedExtractRegions.includes(region.id)
+                          return (
+                            <label
+                              key={`extract-${region.id}`}
+                              className={classNames(
+                                'flex items-center gap-2 py-1.5 px-2 rounded cursor-pointer text-sm',
+                                isSelected ? 'bg-desert-green/10' : 'hover:bg-surface-secondary'
+                              )}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onChange={() => isOnline && toggleExtractRegion(region.id)}
+                                disabled={!isOnline}
+                                className="rounded border-desert-stone text-desert-green focus:ring-desert-green"
+                              />
+                              <span className="text-text-primary">{region.name[lang] || region.name.en}</span>
+                              <span className="text-text-muted text-xs italic ml-1">(extract)</span>
+                              {region.estimated_size_mb > 0 && (
+                                <span className="text-text-muted text-xs ml-auto flex-shrink-0">
+                                  {region.estimated_size_mb >= 1024
+                                    ? `${(region.estimated_size_mb / 1024).toFixed(1)} GB`
+                                    : `${region.estimated_size_mb} MB`}
+                                </span>
+                              )}
+                            </label>
+                          )
+                        })}
                       </div>
                     </div>
                   )}
@@ -944,15 +1039,19 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
               )
             })}
           </div>
-          <div className="mt-4 p-3 bg-surface-secondary rounded-lg border border-border-subtle">
+        )}
+
+        {/* Extract note */}
+        {(selectedExtractRegions.length > 0 || totalSelected > 0) && (
+          <div className="p-3 bg-surface-secondary rounded-lg border border-border-subtle">
             <p className="text-text-secondary text-sm">
               {t('easySetup.extractNote')}
             </p>
           </div>
-        </div>
-      )}
-    </div>
-  )
+        )}
+      </div>
+    )
+  }
 
   const renderStep3 = () => {
     // Check if AI or Information capabilities are selected OR already installed

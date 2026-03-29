@@ -236,6 +236,7 @@
     "middleEastAfrica": "Middle East & Africa",
     "asia": "Asia",
     "americasOceania": "Americas & Oceania",
+    "globalOverview": "Global Overview",
     "extractNote": "Map extraction runs one region at a time. After setup, continue from Settings \u2192 Map Manager."
   },
   "settings": {
