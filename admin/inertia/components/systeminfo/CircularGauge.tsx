@@ -61,7 +61,7 @@ export default function CircularGauge({
   const offset = circumference - (displayValue / 100) * circumference
 
   const getColor = () => {
-    // For benchmarks: higher scores = better = green
+    // Higher scores = better = green
     if (value >= 75) return 'desert-green'
     if (value >= 50) return 'desert-olive'
     if (value >= 25) return 'desert-orange'

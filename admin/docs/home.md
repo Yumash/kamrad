@@ -37,11 +37,6 @@ Navigate and explore maps without an internet connection. Download regions you n
 
 **[Open Maps →](/maps)**
 
-### Benchmark Your Hardware
-Run a System Benchmark to see how your hardware performs and compare your NOMAD Score with the community leaderboard.
-
-**[Open Benchmark →](/settings/benchmark)**
-
 ---
 
 ## Getting Started
@@ -64,7 +59,6 @@ Or explore the **[Getting Started Guide](/docs/getting-started)** for a walkthro
 | Add Wikipedia/reference content | [Content Explorer →](/settings/zim/remote-explorer) |
 | Manage installed content | [Content Manager →](/settings/zim) |
 | Download map regions | [Maps Manager →](/settings/maps) |
-| Run a benchmark | [System Benchmark →](/settings/benchmark) |
 | Check for updates | [System Update →](/settings/update) |
 | View system status | [System Info →](/settings/system) |
 

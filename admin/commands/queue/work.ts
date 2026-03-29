@@ -4,7 +4,6 @@ import { Worker } from 'bullmq'
 import queueConfig from '#config/queue'
 import { RunDownloadJob } from '#jobs/run_download_job'
 import { DownloadModelJob } from '#jobs/download_model_job'
-import { RunBenchmarkJob } from '#jobs/run_benchmark_job'
 import { EmbedFileJob } from '#jobs/embed_file_job'
 import { CheckUpdateJob } from '#jobs/check_update_job'
 import { CheckServiceUpdatesJob } from '#jobs/check_service_updates_job'
@@ -111,14 +110,12 @@ export default class QueueWork extends BaseCommand {
 
     handlers.set(RunDownloadJob.key, new RunDownloadJob())
     handlers.set(DownloadModelJob.key, new DownloadModelJob())
-    handlers.set(RunBenchmarkJob.key, new RunBenchmarkJob())
     handlers.set(EmbedFileJob.key, new EmbedFileJob())
     handlers.set(CheckUpdateJob.key, new CheckUpdateJob())
     handlers.set(CheckServiceUpdatesJob.key, new CheckServiceUpdatesJob())
 
     queues.set(RunDownloadJob.key, RunDownloadJob.queue)
     queues.set(DownloadModelJob.key, DownloadModelJob.queue)
-    queues.set(RunBenchmarkJob.key, RunBenchmarkJob.queue)
     queues.set(EmbedFileJob.key, EmbedFileJob.queue)
     queues.set(CheckUpdateJob.key, CheckUpdateJob.queue)
     queues.set(CheckServiceUpdatesJob.key, CheckServiceUpdatesJob.queue)
@@ -134,7 +131,6 @@ export default class QueueWork extends BaseCommand {
     const concurrencyMap: Record<string, number> = {
       [RunDownloadJob.queue]: 3,
       [DownloadModelJob.queue]: 2, // Lower concurrency for resource-intensive model downloads
-      [RunBenchmarkJob.queue]: 1, // Run benchmarks one at a time for accurate results
       [EmbedFileJob.queue]: 2, // Lower concurrency for embedding jobs, can be resource intensive
       [CheckUpdateJob.queue]: 1, // No need to run more than one update check at a time
       default: 3,

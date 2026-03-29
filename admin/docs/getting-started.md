@@ -159,21 +159,6 @@ N.O.M.A.D. includes a dedicated Wikipedia content management tool for browsing a
 
 **Note:** Selecting a different Wikipedia package replaces the previously downloaded version. Only one Wikipedia selection is active at a time.
 
-### System Benchmark
-
-![System Benchmark with NOMAD Score and Builder Tag](/docs/benchmark.png)
-
-Test your hardware performance and see how your NOMAD build stacks up against the community.
-
-**How to use it:**
-1. Go to **[System Benchmark →](/settings/benchmark)**
-2. Choose a benchmark type: Full, System Only, or AI Only
-3. View your NOMAD Score (a weighted composite of CPU, memory, disk, and AI performance)
-4. Create a Builder Tag (your NOMAD-themed identity, like "Tactical-Llama-1234")
-5. Share your results with the [community leaderboard](https://benchmark.projectnomad.us)
-
-**Note:** Only Full Benchmarks with AI data can be shared to the community leaderboard.
-
 ### Keeping Things Updated
 
 While you have internet, periodically check for updates:

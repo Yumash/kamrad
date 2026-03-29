@@ -9,8 +9,6 @@ import type { CategoryWithStatus, CollectionWithStatus, ContentUpdateCheckResult
 import { catchInternal } from './util'
 import { NomadOllamaModel, OllamaChatRequest } from '../../types/ollama'
 import { ChatResponse, ModelResponse } from 'ollama'
-import BenchmarkResult from '#models/benchmark_result'
-import { BenchmarkType, RunBenchmarkResponse, SubmitBenchmarkResponse, UpdateBuilderTagResponse } from '../../types/benchmark'
 
 class API {
   private client: AxiosInstance
@@ -314,20 +312,6 @@ class API {
     }
   }
 
-  async getBenchmarkResults() {
-    return catchInternal(async () => {
-      const response = await this.client.get<{ results: BenchmarkResult[], total: number }>('/benchmark/results')
-      return response.data
-    })()
-  }
-
-  async getLatestBenchmarkResult() {
-    return catchInternal(async () => {
-      const response = await this.client.get<{ result: BenchmarkResult | null }>('/benchmark/results/latest')
-      return response.data
-    })()
-  }
-
   async getChatSessions() {
     return catchInternal(async () => {
       const response = await this.client.get<
@@ -563,16 +547,6 @@ class API {
     })()
   }
 
-  async runBenchmark(type: BenchmarkType, sync: boolean = false) {
-    return catchInternal(async () => {
-      const response = await this.client.post<RunBenchmarkResponse>(
-        `/benchmark/run${sync ? '?sync=true' : ''}`,
-        { benchmark_type: type },
-      )
-      return response.data
-    })()
-  }
-
   async startSystemUpdate() {
     return catchInternal(async () => {
       const response = await this.client.post<{ success: boolean; message: string }>(
@@ -580,23 +554,6 @@ class API {
       )
       return response.data
     })()
-  }
-
-  async submitBenchmark(benchmark_id: string, anonymous: boolean) {
-    try {
-      const response = await this.client.post<SubmitBenchmarkResponse>('/benchmark/submit', { benchmark_id, anonymous })
-      return response.data
-    } catch (error: any) {
-      // For 409 Conflict errors, throw a specific error that the UI can handle
-      if (error.response?.status === 409) {
-        const err = new Error(error.response?.data?.error || 'This benchmark has already been submitted to the repository')
-          ; (err as any).status = 409
-        throw err
-      }
-      // For other errors, extract the message and throw
-      const errorMessage = error.response?.data?.error || error.message || 'Failed to submit benchmark'
-      throw new Error(errorMessage)
-    }
   }
 
   async subscribeToReleaseNotes(email: string) {
@@ -639,16 +596,6 @@ class API {
         jobId?: string
         message?: string
       }>('/zim/wikipedia/select', { optionId })
-      return response.data
-    })()
-  }
-
-  async updateBuilderTag(benchmark_id: string, builder_tag: string) {
-    return catchInternal(async () => {
-      const response = await this.client.post<UpdateBuilderTagResponse>(
-        '/benchmark/builder-tag',
-        { benchmark_id, builder_tag }
-      )
       return response.data
     })()
   }

@@ -85,11 +85,6 @@ You can also remove documents from the Knowledge Base when they're no longer nee
 
 NOMAD documentation is automatically added to the Knowledge Base when the AI Assistant is installed.
 
-### What is the System Benchmark?
-The System Benchmark tests your hardware performance and generates a NOMAD Score — a weighted composite of CPU, memory, disk, and AI performance. You can create a Builder Tag (a NOMAD-themed identity like "Tactical-Llama-1234") and share your results with the [community leaderboard](https://benchmark.projectnomad.us).
-
-Go to **[System Benchmark →](/settings/benchmark)** to run one.
-
 ### What is the Early Access Channel?
 The Early Access Channel lets you opt in to receive release candidate builds with the latest features and improvements before they hit stable releases. You can enable or disable it from **Settings → Check for Updates**. Early access builds may contain bugs — if you prefer stability, stay on the stable channel.
 
@@ -132,7 +127,7 @@ N.O.M.A.D. automatically detects NVIDIA GPUs when the NVIDIA Container Toolkit i
 
 N.O.M.A.D. will detect the GPU during installation and configure the AI to use it automatically. You'll see "NVIDIA container runtime detected" in the installation progress.
 
-**Tip:** Run a [System Benchmark](/settings/benchmark) before and after to see the difference. GPU-accelerated systems typically see 100+ tokens per second vs 10-15 on CPU only.
+**Tip:** GPU-accelerated systems typically see 100+ tokens per second vs 10-15 on CPU only.
 
 ### I added/changed my GPU but AI is still slow
 
@@ -163,15 +158,6 @@ If a document upload appears stuck in the Knowledge Base:
 2. Large documents take time to process — wait a few minutes
 3. Try uploading a smaller document to verify the system is working
 4. Check **Settings → System** for any error messages
-
-### Benchmark won't submit to leaderboard
-
-To share results with the community leaderboard:
-- You must run a **Full Benchmark** (not System Only or AI Only)
-- The benchmark must include AI results (AI Assistant must be installed and working)
-- Your score must be higher than any previous submission from the same hardware
-
-If submission fails, check the error message for details.
 
 ### "Service unavailable" or connection errors
 
