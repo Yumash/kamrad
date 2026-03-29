@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import useDownloads from '~/hooks/useDownloads'
 import useOllamaModelDownloads from '~/hooks/useOllamaModelDownloads'
 import useServiceInstallationActivity from '~/hooks/useServiceInstallationActivity'
-import { IconDownload, IconChevronDown, IconLoader2 } from '@tabler/icons-react'
+import { IconDownload, IconChevronDown, IconLoader2, IconCheck } from '@tabler/icons-react'
 import { extractFileName } from '~/lib/util'
 import classNames from 'classnames'
 
@@ -51,15 +51,21 @@ export default function ActivityPanel() {
       recentInstalls.set(event.service_name, event)
     }
   }
-  // Filter out completed/done services
+  // Split into active and recently completed
   const activeInstalls = Array.from(recentInstalls.values()).filter(
     (e) => !['done', 'completed', 'error', 'already-installed'].includes(e.type)
   )
+  const recentlyCompleted = Array.from(recentInstalls.values()).filter((e) => {
+    if (!['done', 'completed'].includes(e.type)) return false
+    const age = now - new Date(e.timestamp).getTime()
+    return age < 30000 // show completed for 30s
+  })
 
   const totalActive = activeDownloads.length + activeModels.length + activeInstalls.length
+  const totalVisible = totalActive + recentlyCompleted.length
 
   // Hide when nothing is happening
-  if (totalActive === 0) return null
+  if (totalVisible === 0) return null
 
   const activeCount =
     activeDownloads.filter((d) => d.status === 'active').length +
@@ -125,6 +131,16 @@ export default function ActivityPanel() {
                 <p className="text-text-muted mt-0.5 truncate">{event.message || event.type}</p>
               </div>
             ))}
+            {/* Recently completed installs */}
+            {recentlyCompleted.map((event) => (
+              <div key={`done-${event.service_name}`} className="text-xs p-2 rounded bg-desert-green/10">
+                <div className="flex items-center gap-2">
+                  <IconCheck size={14} className="text-desert-green" />
+                  <span className="text-text-primary font-medium">{event.service_name}</span>
+                  <span className="text-desert-green ml-auto">{t('common.done') || '✓'}</span>
+                </div>
+              </div>
+            ))}
             {/* Model downloads */}
             {activeModels.map((dl) => (
               <div
@@ -165,7 +181,7 @@ export default function ActivityPanel() {
         style={activeCount > 0 ? { animationDuration: '2s' } : undefined}
       >
         <IconDownload size={18} />
-        <span className="text-sm font-medium">{totalActive}</span>
+        <span className="text-sm font-medium">{totalVisible}</span>
         {failedCount > 0 && (
           <span className="bg-red-500 text-white text-xs rounded-full px-1.5">{failedCount}</span>
         )}
