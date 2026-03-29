@@ -665,5 +665,10 @@
       "name": "Translator",
       "description": "Fast offline translation engine for quick text translation between languages"
     }
+  },
+  "activity": {
+    "title": "Active Operations",
+    "failed": "Failed",
+    "downloading": "Downloading..."
   }
 }

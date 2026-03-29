@@ -14,6 +14,7 @@ import {
 } from '@tabler/icons-react'
 import { usePage } from '@inertiajs/react'
 import { useTranslation } from 'react-i18next'
+import ActivityPanel from '~/components/ActivityPanel'
 import StyledSidebar from '~/components/StyledSidebar'
 import { getServiceLink } from '~/lib/navigation'
 import useServiceInstalledStatus from '~/hooks/useServiceInstalledStatus'
@@ -63,6 +64,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
           {children}
         </main>
       </div>
+      <ActivityPanel />
     </div>
   )
 }

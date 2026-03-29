@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from '~/components/Footer'
+import ActivityPanel from '~/components/ActivityPanel'
 import ChatButton from '~/components/chat/ChatButton'
 import ChatModal from '~/components/chat/ChatModal'
 import useServiceInstalledStatus from '~/hooks/useServiceInstalledStatus'
@@ -30,6 +31,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <hr className="text-desert-green font-semibold h-[1.5px] bg-desert-green border-none" />
       <div className="flex-1 w-full bg-desert">{children}</div>
       <Footer />
+      <ActivityPanel />
 
       {aiAssistantInstalled && (
         <>
