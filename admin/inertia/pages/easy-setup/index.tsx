@@ -419,6 +419,8 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
       try {
         await Promise.all(selectedServices.map((s) => api.installService(s)))
         addNotification({ type: 'success', message: t('easySetup.appsInstalling') })
+        // Reload page props so installedServices updates after install kicks off
+        router.reload({ only: ['system'] })
       } catch (err) {
         console.warn('Some services failed to start installing:', err)
       }
