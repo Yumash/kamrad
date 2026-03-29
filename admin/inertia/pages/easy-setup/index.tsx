@@ -196,7 +196,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     estimated_size_mb: number
   }
 
-  const { data: extractRegions } = useQuery({
+  const { data: extractRegions, isLoading: isLoadingExtractRegions } = useQuery({
     queryKey: ['map-extract-regions'],
     queryFn: async () => {
       const res = await api.get('/api/maps/extract/regions')
@@ -209,13 +209,13 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
   // Region group definitions (includes both extract regions and curated collections)
   const MAP_GROUPS = useMemo(() => [
-    { key: 'global', prefixes: [] as string[], curatedSlugs: ['global-overview'], i18nKey: 'easySetup.globalOverview', isToggle: true },
+    { key: 'global', prefixes: [] as string[], curatedSlugs: ['global'], i18nKey: 'easySetup.globalOverview', isToggle: true },
     { key: 'russia', prefixes: ['ru-'], curatedSlugs: [] as string[], i18nKey: 'easySetup.russia', isToggle: false },
     { key: 'cis', prefixes: ['kz', 'ua', 'by', 'ge', 'am', 'az', 'uz', 'kg', 'tj'], curatedSlugs: [] as string[], i18nKey: 'easySetup.cis', isToggle: false },
     { key: 'europe', prefixes: ['fr', 'gb', 'it', 'es', 'pt', 'nl', 'be', 'pl', 'cz', 'se', 'no', 'fi', 'dk', 'gr'], curatedSlugs: ['germany', 'central-europe'], i18nKey: 'easySetup.europe', isToggle: false },
     { key: 'middleEastAfrica', prefixes: ['tr', 'il', 'ae', 'eg', 'za', 'ng', 'ke'], curatedSlugs: [] as string[], i18nKey: 'easySetup.middleEastAfrica', isToggle: false },
     { key: 'asia', prefixes: ['cn', 'jp', 'kr', 'in', 'th', 'vn', 'id'], curatedSlugs: [] as string[], i18nKey: 'easySetup.asia', isToggle: false },
-    { key: 'americasOceania', prefixes: ['br', 'mx', 'ar', 'ca', 'au', 'nz'], curatedSlugs: ['pacific-region', 'mountain-region', 'midwest-region', 'south-region', 'northeast-region'], i18nKey: 'easySetup.americasOceania', isToggle: false },
+    { key: 'americasOceania', prefixes: ['br', 'mx', 'ar', 'ca', 'au', 'nz'], curatedSlugs: ['pacific', 'mountain', 'west-south-central', 'east-south-central', 'south-atlantic', 'west-north-central', 'east-north-central', 'mid-atlantic', 'new-england'], i18nKey: 'easySetup.americasOceania', isToggle: false },
   ], [])
 
   const getGroupRegions = (group: typeof MAP_GROUPS[number]) => {
@@ -816,7 +816,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   }
 
   const renderStep2 = () => {
-    const isLoading = isLoadingMaps
+    const isLoading = isLoadingMaps || isLoadingExtractRegions
     const totalSelected = selectedMapCollections.length + selectedExtractRegions.length
 
     return (
