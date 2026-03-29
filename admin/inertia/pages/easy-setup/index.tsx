@@ -384,7 +384,17 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     return false
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (currentStep === 1 && selectedServices.length > 0) {
+      setIsProcessing(true)
+      try {
+        await Promise.all(selectedServices.map((s) => api.installService(s)))
+        addNotification({ type: 'success', message: t('easySetup.appsInstalling') })
+      } catch (err) {
+        console.warn('Some services failed to start installing:', err)
+      }
+      setIsProcessing(false)
+    }
     if (currentStep < 4) {
       setCurrentStep((prev) => (prev + 1) as WizardStep)
     }
@@ -408,11 +418,6 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     setIsProcessing(true)
 
     try {
-      // All of these ops don't actually wait for completion, they just kick off the process, so we can run them in parallel without awaiting each one sequentially
-      const installPromises = selectedServices.map((serviceName) => api.installService(serviceName))
-
-      await Promise.all(installPromises)
-
       // Download collections, category tiers, and AI models
       const categoryTierPromises: Promise<any>[] = []
       selectedTiers.forEach((tier, categorySlug) => {
