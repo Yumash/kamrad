@@ -14,7 +14,7 @@ export default function ThemeToggle({ compact = false }: ThemeToggleProps) {
   return (
     <button
       onClick={toggleTheme}
-      className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium transition-all
+      className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium transition-all cursor-pointer
                  text-desert-stone hover:text-desert-green hover:bg-desert-green-light/20
                  border border-transparent hover:border-desert-green-light/30"
       aria-label={isDark ? t('theme.switchToDay') : t('theme.switchToNight')}
