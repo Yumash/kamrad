@@ -222,6 +222,7 @@
     "noInternetProceed": "You'll need an internet connection to proceed. Please connect to the internet and try again.",
     "internetRequired": "You must have an internet connection to complete the setup.",
     "appsInstalling": "Applications are being installed...",
+    "appsInstalled": "Applications installed",
     "setupCompleted": "Setup wizard completed! Your selections are being processed.",
     "setupError": "An error occurred during setup. Some items may not have been processed.",
     "selectionSummary": "{{capabilities}} capabilities, {{maps}} map regions, {{categories}} content categories, {{models}} AI models selected",

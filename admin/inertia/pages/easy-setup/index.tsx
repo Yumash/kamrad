@@ -22,6 +22,8 @@ import classNames from 'classnames'
 import type { CategoryWithStatus, SpecTier, SpecResource } from '../../../types/collections'
 import { resolveTierResources } from '~/lib/collections'
 import { SERVICE_NAMES } from '../../../constants/service_names'
+import useServiceInstallationActivity from '~/hooks/useServiceInstallationActivity'
+import { IconLoader2, IconCircleCheck } from '@tabler/icons-react'
 
 // Capability definitions - maps user-friendly categories to services
 interface Capability {
@@ -130,6 +132,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   const [selectedAiModels, setSelectedAiModels] = useState<string[]>([])
   const [isProcessing, setIsProcessing] = useState(false)
   const [showAdditionalTools, setShowAdditionalTools] = useState(true)
+  const installActivity = useServiceInstallationActivity()
 
   // Category/tier selection state
   const [selectedTiers, setSelectedTiers] = useState<Map<string, SpecTier>>(new Map())
@@ -816,12 +819,67 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     )
   }
 
+  // Install status banner — shows per-service latest status from SSE
+  const renderInstallBanner = () => {
+    const now = Date.now()
+    const latestPerService = new Map<string, { type: string; message: string; timestamp: string }>()
+    for (const event of installActivity) {
+      const age = now - new Date(event.timestamp).getTime()
+      if (age < 300000) {
+        latestPerService.set(event.service_name, event)
+      }
+    }
+    if (latestPerService.size === 0) return null
+
+    const entries = Array.from(latestPerService.entries())
+    const allDone = entries.every(([, e]) => ['done', 'completed', 'already-installed'].includes(e.type))
+    const anyActive = entries.some(([, e]) => !['done', 'completed', 'error', 'already-installed'].includes(e.type))
+
+    return (
+      <div className={classNames(
+        'rounded-lg border p-4 mb-6',
+        allDone ? 'border-desert-green/30 bg-desert-green/5' : 'border-desert-orange/30 bg-desert-orange/5'
+      )}>
+        <div className="flex items-center gap-2 mb-2">
+          {anyActive ? (
+            <IconLoader2 size={18} className="text-desert-orange animate-spin" />
+          ) : (
+            <IconCircleCheck size={18} className="text-desert-green" />
+          )}
+          <h4 className="text-sm font-semibold text-text-primary">
+            {anyActive ? t('easySetup.appsInstalling') : t('easySetup.appsInstalled')}
+          </h4>
+        </div>
+        <div className="space-y-1">
+          {entries.map(([serviceName, event]) => {
+            const isDone = ['done', 'completed', 'already-installed'].includes(event.type)
+            const isError = event.type === 'error'
+            return (
+              <div key={serviceName} className="flex items-center gap-2 text-xs">
+                {isDone ? (
+                  <IconCircleCheck size={14} className="text-desert-green flex-shrink-0" />
+                ) : isError ? (
+                  <span className="text-red-500 flex-shrink-0">✗</span>
+                ) : (
+                  <IconLoader2 size={14} className="text-desert-orange animate-spin flex-shrink-0" />
+                )}
+                <span className="text-text-primary font-medium">{serviceName.replace('kamrad_', '')}</span>
+                <span className="text-text-muted">{event.type}</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
   const renderStep2 = () => {
     const isLoading = isLoadingMaps || isLoadingExtractRegions
     const totalSelected = selectedMapCollections.length + selectedExtractRegions.length
 
     return (
       <div className="space-y-6">
+        {renderInstallBanner()}
         <div className="text-center mb-6">
           <h2 className="text-3xl font-bold text-text-primary mb-2">{t('easySetup.step2Title')}</h2>
           <p className="text-text-secondary">
