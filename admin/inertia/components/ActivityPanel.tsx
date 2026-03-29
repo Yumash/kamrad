@@ -47,7 +47,7 @@ export default function ActivityPanel() {
   const recentInstalls = new Map<string, { service_name: string; type: string; message: string; timestamp: string }>()
   for (const event of installActivity) {
     const age = now - new Date(event.timestamp).getTime()
-    if (age < 60000) {
+    if (age < 300000) {
       recentInstalls.set(event.service_name, event)
     }
   }
