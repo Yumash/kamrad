@@ -225,7 +225,17 @@
     "setupError": "An error occurred during setup. Some items may not have been processed.",
     "selectionSummary": "{{capabilities}} capabilities, {{maps}} map regions, {{categories}} content categories, {{models}} AI models selected",
     "cancelGoHome": "Cancel & Go to Home",
-    "completeSetup": "Complete Setup"
+    "completeSetup": "Complete Setup",
+    "regionMaps": "Regional Maps",
+    "regionMapsDesc": "Extract maps for specific countries and regions",
+    "regionsSelected": "{{count}} regions selected",
+    "russia": "Russia",
+    "cis": "CIS Countries",
+    "europe": "Europe",
+    "middleEastAfrica": "Middle East & Africa",
+    "asia": "Asia",
+    "americasOceania": "Americas & Oceania",
+    "extractNote": "Map extraction runs one region at a time. After setup, continue from Settings \u2192 Map Manager."
   },
   "settings": {
     "title": "Settings",

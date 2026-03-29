@@ -289,7 +289,7 @@ export class OllamaService {
       }
       const fullUrl = new URL(KAMRAD_MODELS_API_PATH, baseUrl).toString()
 
-      const response = await axios.get(fullUrl)
+      const response = await axios.get(fullUrl, { timeout: 15000 })
       if (!response.data || !Array.isArray(response.data.models)) {
         logger.warn(
           `[OllamaService] Invalid response format when fetching available models: ${JSON.stringify(response.data)}`

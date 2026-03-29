@@ -66,6 +66,7 @@ export class ZimService {
         ...(query ? { q: query } : {}),
       },
       responseType: 'text',
+      timeout: 15000,
     })
 
     const data = res.data

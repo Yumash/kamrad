@@ -12,7 +12,7 @@ import TierSelectionModal from '~/components/TierSelectionModal'
 import WikipediaSelector from '~/components/WikipediaSelector'
 import LoadingSpinner from '~/components/LoadingSpinner'
 import Alert from '~/components/Alert'
-import { IconCheck, IconChevronDown, IconChevronUp, IconCpu, IconBooks } from '@tabler/icons-react'
+import { IconCheck, IconChevronDown, IconChevronUp, IconCpu, IconBooks, IconMapPin } from '@tabler/icons-react'
 import StorageProjectionBar from '~/components/StorageProjectionBar'
 import { useNotifications } from '~/context/NotificationContext'
 import useInternetStatus from '~/hooks/useInternetStatus'
@@ -119,7 +119,7 @@ const CURATED_CATEGORIES_KEY = 'curated-categories'
 const WIKIPEDIA_STATE_KEY = 'wikipedia-state'
 
 export default function EasySetupWizard(props: { system: { services: ServiceSlim[] } }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { aiAssistantName } = usePage<{ aiAssistantName: string }>().props
   const CORE_CAPABILITIES = buildCoreCapabilities(aiAssistantName, t)
   const ADDITIONAL_TOOLS = buildAdditionalTools(t)
@@ -139,6 +139,10 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   // Wikipedia selection state
   const [selectedWikipedia, setSelectedWikipedia] = useState<string | null>(null)
 
+  // Extract region selection state
+  const [selectedExtractRegions, setSelectedExtractRegions] = useState<string[]>([])
+  const [expandedRegionGroups, setExpandedRegionGroups] = useState<string[]>([])
+
   const { addNotification } = useNotifications()
   const { isOnline } = useInternetStatus()
   const queryClient = useQueryClient()
@@ -147,6 +151,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   const anySelectionMade =
     selectedServices.length > 0 ||
     selectedMapCollections.length > 0 ||
+    selectedExtractRegions.length > 0 ||
     selectedTiers.size > 0 ||
     selectedAiModels.length > 0 ||
     (selectedWikipedia !== null && selectedWikipedia !== 'none')
@@ -182,6 +187,70 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     queryFn: () => api.getWikipediaState(),
     refetchOnWindowFocus: false,
   })
+
+  // Fetch extract regions for step 2
+  interface MapRegion {
+    id: string
+    name: { ru: string; en: string }
+    country: string
+    bbox: [number, number, number, number]
+    estimated_size_mb: number
+  }
+
+  const { data: extractRegions } = useQuery({
+    queryKey: ['map-extract-regions'],
+    queryFn: async () => {
+      const res = await api.get('/api/maps/extract/regions')
+      return res.data.regions as MapRegion[]
+    },
+    refetchOnWindowFocus: false,
+  })
+
+  const lang = (i18n.language as 'ru' | 'en') || 'en'
+
+  // Region group definitions
+  const REGION_GROUPS = useMemo(() => [
+    { key: 'russia', prefixes: ['ru-'], i18nKey: 'easySetup.russia' },
+    { key: 'cis', prefixes: ['kz', 'ua', 'by', 'ge', 'am', 'az', 'uz', 'kg', 'tj'], i18nKey: 'easySetup.cis' },
+    { key: 'europe', prefixes: ['fr', 'gb', 'it', 'es', 'pt', 'nl', 'be', 'pl', 'cz', 'se', 'no', 'fi', 'dk', 'gr', 'tr'], i18nKey: 'easySetup.europe' },
+    { key: 'middleEastAfrica', prefixes: ['il', 'ae', 'eg', 'za', 'ng', 'ke'], i18nKey: 'easySetup.middleEastAfrica' },
+    { key: 'asia', prefixes: ['cn', 'jp', 'kr', 'in', 'th', 'vn', 'id'], i18nKey: 'easySetup.asia' },
+    { key: 'americasOceania', prefixes: ['br', 'mx', 'ar', 'ca', 'au', 'nz'], i18nKey: 'easySetup.americasOceania' },
+  ], [])
+
+  const getGroupRegions = (group: typeof REGION_GROUPS[number]) => {
+    if (!extractRegions) return []
+    return extractRegions.filter((r) => {
+      if (group.key === 'russia') {
+        return r.id.startsWith('ru-')
+      }
+      return group.prefixes.some((p) => r.id === p || r.id.startsWith(p + '-'))
+    })
+  }
+
+  const toggleRegionGroup = (groupKey: string) => {
+    const group = REGION_GROUPS.find((g) => g.key === groupKey)
+    if (!group) return
+    const groupRegionIds = getGroupRegions(group).map((r) => r.id)
+    const allSelected = groupRegionIds.every((id) => selectedExtractRegions.includes(id))
+    if (allSelected) {
+      setSelectedExtractRegions((prev) => prev.filter((id) => !groupRegionIds.includes(id)))
+    } else {
+      setSelectedExtractRegions((prev) => [...new Set([...prev, ...groupRegionIds])])
+    }
+  }
+
+  const toggleExtractRegion = (regionId: string) => {
+    setSelectedExtractRegions((prev) =>
+      prev.includes(regionId) ? prev.filter((id) => id !== regionId) : [...prev, regionId]
+    )
+  }
+
+  const toggleExpandGroup = (groupKey: string) => {
+    setExpandedRegionGroups((prev) =>
+      prev.includes(groupKey) ? prev.filter((k) => k !== groupKey) : [...prev, groupKey]
+    )
+  }
 
   // All services for display purposes
   const allServices = props.system.services
@@ -358,6 +427,16 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
 
       await Promise.all(downloadPromises)
 
+      // Start extract for selected regions (one at a time, kick off the first one)
+      if (selectedExtractRegions.length > 0) {
+        try {
+          await api.post('/api/maps/extract/start', { regionId: selectedExtractRegions[0] })
+          // Remaining regions need to be continued from Settings > Maps Manager
+        } catch (extractErr) {
+          console.warn('Extract start failed:', extractErr)
+        }
+      }
+
       // Select Wikipedia option if one was chosen
       if (selectedWikipedia && selectedWikipedia !== wikipediaState?.currentSelection?.optionId) {
         await api.selectWikipedia(selectedWikipedia)
@@ -393,12 +472,13 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [currentStep])
 
-  // Refresh manifests on mount to ensure we have latest data
-  useEffect(() => {
-    if (!refreshManifests.isPending) {
-      refreshManifests.mutate()
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  // NOTE: Manifest refresh on mount was removed because each useQuery
+  // (mapCollections, categories, wikipediaState) already calls
+  // getLocaleSpec -> getSpecWithFallback -> fetchAndCacheSpec,
+  // which fetches the latest spec from GitHub.  Firing refreshManifests
+  // here duplicated those fetches and then invalidated the queries,
+  // causing a second round of redundant requests — up to 7 GitHub
+  // fetches instead of the 2-3 that are actually needed.
 
   // Set Easy Setup as visited when user lands on this page
   useEffect(() => {
@@ -747,12 +827,125 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
           <p className="text-text-secondary text-lg">{t('easySetup.noMapCollections')}</p>
         </div>
       )}
-      <div className="mt-6 p-4 bg-surface-secondary rounded-lg border border-border-subtle">
-        <p className="text-text-secondary text-sm">
-          🌍 <strong>{t('easySetup.mapsExtractHint')}</strong>{' '}
-          {t('easySetup.mapsExtractHintDesc')}
-        </p>
-      </div>
+      {/* Regional Map Extract Section */}
+      {extractRegions && extractRegions.length > 0 && (
+        <div className="mt-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-full bg-surface-primary border border-border-subtle flex items-center justify-center shadow-sm">
+              <IconMapPin className="w-6 h-6 text-text-primary" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-text-primary">{t('easySetup.regionMaps')}</h3>
+              <p className="text-sm text-text-muted">{t('easySetup.regionMapsDesc')}</p>
+            </div>
+          </div>
+          {selectedExtractRegions.length > 0 && (
+            <p className="text-sm text-desert-green font-medium mb-3 ml-13">
+              {t('easySetup.regionsSelected', { count: selectedExtractRegions.length })}
+            </p>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {REGION_GROUPS.map((group) => {
+              const groupRegions = getGroupRegions(group)
+              if (groupRegions.length === 0) return null
+              const groupRegionIds = groupRegions.map((r) => r.id)
+              const selectedCount = groupRegionIds.filter((id) => selectedExtractRegions.includes(id)).length
+              const allSelected = selectedCount === groupRegionIds.length
+              const isExpanded = expandedRegionGroups.includes(group.key)
+
+              return (
+                <div
+                  key={group.key}
+                  className={classNames(
+                    'rounded-lg border-2 transition-all overflow-hidden',
+                    allSelected
+                      ? 'border-desert-green bg-desert-green/5'
+                      : selectedCount > 0
+                        ? 'border-desert-green/50 bg-surface-primary'
+                        : 'border-desert-stone-light bg-surface-primary hover:border-desert-green/30',
+                    !isOnline && 'opacity-50 cursor-not-allowed'
+                  )}
+                >
+                  <div
+                    className="p-4 cursor-pointer"
+                    onClick={() => isOnline && toggleRegionGroup(group.key)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={classNames(
+                            'w-5 h-5 rounded border-2 flex items-center justify-center transition-colors',
+                            allSelected
+                              ? 'bg-desert-green border-desert-green'
+                              : selectedCount > 0
+                                ? 'bg-desert-green/30 border-desert-green'
+                                : 'border-desert-stone bg-transparent'
+                          )}
+                        >
+                          {(allSelected || selectedCount > 0) && (
+                            <IconCheck size={14} className="text-white" />
+                          )}
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-text-primary">{t(group.i18nKey)}</h4>
+                          <p className="text-xs text-text-muted">
+                            {selectedCount > 0
+                              ? `${selectedCount} / ${groupRegions.length}`
+                              : `${groupRegions.length} ${lang === 'ru' ? 'регионов' : 'regions'}`}
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        className="p-1 text-text-muted hover:text-text-primary transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          toggleExpandGroup(group.key)
+                        }}
+                      >
+                        {isExpanded ? <IconChevronUp size={18} /> : <IconChevronDown size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                  {isExpanded && (
+                    <div className="px-4 pb-3 border-t border-border-subtle">
+                      <div className="space-y-1 mt-2 max-h-48 overflow-y-auto">
+                        {groupRegions.map((region) => (
+                          <label
+                            key={region.id}
+                            className="flex items-center gap-2 py-1 px-2 rounded hover:bg-surface-secondary cursor-pointer text-sm"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedExtractRegions.includes(region.id)}
+                              onChange={() => isOnline && toggleExtractRegion(region.id)}
+                              disabled={!isOnline}
+                              className="rounded border-desert-stone text-desert-green focus:ring-desert-green"
+                            />
+                            <span className="text-text-primary">{region.name[lang]}</span>
+                            {region.estimated_size_mb > 0 && (
+                              <span className="text-text-muted text-xs ml-auto">
+                                {region.estimated_size_mb >= 1024
+                                  ? `${(region.estimated_size_mb / 1024).toFixed(1)} GB`
+                                  : `${region.estimated_size_mb} MB`}
+                              </span>
+                            )}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+          <div className="mt-4 p-3 bg-surface-secondary rounded-lg border border-border-subtle">
+            <p className="text-text-secondary text-sm">
+              {t('easySetup.extractNote')}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 
@@ -955,6 +1148,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
     const hasSelections =
       selectedServices.length > 0 ||
       selectedMapCollections.length > 0 ||
+      selectedExtractRegions.length > 0 ||
       selectedTiers.size > 0 ||
       selectedAiModels.length > 0 ||
       (selectedWikipedia !== null && selectedWikipedia !== 'none')
@@ -1014,6 +1208,30 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                     )
                   })}
                 </ul>
+              </div>
+            )}
+
+            {selectedExtractRegions.length > 0 && (
+              <div className="bg-surface-primary rounded-lg border-2 border-desert-stone-light p-6">
+                <h3 className="text-xl font-semibold text-text-primary mb-4">
+                  {t('easySetup.regionMaps')} ({selectedExtractRegions.length})
+                </h3>
+                <ul className="space-y-2">
+                  {selectedExtractRegions.map((regionId) => {
+                    const region = extractRegions?.find((r) => r.id === regionId)
+                    return (
+                      <li key={regionId} className="flex items-center">
+                        <IconCheck size={20} className="text-desert-green mr-2" />
+                        <span className="text-text-primary">{region ? region.name[lang] : regionId}</span>
+                      </li>
+                    )
+                  })}
+                </ul>
+                {selectedExtractRegions.length > 1 && (
+                  <p className="text-xs text-text-muted mt-3">
+                    {t('easySetup.extractNote')}
+                  </p>
+                )}
               </div>
             )}
 
@@ -1156,7 +1374,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
                     capabilities: [...CORE_CAPABILITIES, ...ADDITIONAL_TOOLS].filter((cap) =>
                       cap.services.some((s) => selectedServices.includes(s))
                     ).length,
-                    maps: selectedMapCollections.length,
+                    maps: selectedMapCollections.length + selectedExtractRegions.length,
                     categories: selectedTiers.size,
                     models: selectedAiModels.length,
                   })}
