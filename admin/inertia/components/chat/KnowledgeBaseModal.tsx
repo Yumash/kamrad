@@ -22,8 +22,9 @@ function sourceToDisplayName(source: string): string {
   return parts[parts.length - 1]
 }
 
-export default function KnowledgeBaseModal({ aiAssistantName = "AI Assistant", onClose }: KnowledgeBaseModalProps) {
+export default function KnowledgeBaseModal({ aiAssistantName, onClose }: KnowledgeBaseModalProps) {
   const { t } = useTranslation()
+  const resolvedAiAssistantName = aiAssistantName ?? t('common.aiAssistant')
   const { addNotification } = useNotifications()
   const [files, setFiles] = useState<File[]>([])
   const [confirmDeleteSource, setConfirmDeleteSource] = useState<string | null>(null)
@@ -163,10 +164,10 @@ export default function KnowledgeBaseModal({ aiAssistantName = "AI Assistant", o
                   </div>
                   <div>
                     <p className="font-medium text-desert-stone-dark">
-                      {t('chat.kbIntegrationTitle', { name: aiAssistantName })}
+                      {t('chat.kbIntegrationTitle', { name: resolvedAiAssistantName })}
                     </p>
                     <p className="text-sm text-desert-stone">
-                      {t('chat.kbIntegrationDesc', { name: aiAssistantName })}
+                      {t('chat.kbIntegrationDesc', { name: resolvedAiAssistantName })}
                     </p>
                   </div>
                 </div>
@@ -192,7 +193,7 @@ export default function KnowledgeBaseModal({ aiAssistantName = "AI Assistant", o
                       {t('chat.infoLibraryTitle')}
                     </p>
                     <p className="text-sm text-desert-stone">
-                      {t('chat.infoLibraryDesc', { name: aiAssistantName })}
+                      {t('chat.infoLibraryDesc', { name: resolvedAiAssistantName })}
                     </p>
                   </div>
                 </div>

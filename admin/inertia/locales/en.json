@@ -43,7 +43,11 @@
     "poweredBy": "Powered by {{name}}",
     "goToSettings": "Go to Settings",
     "forceRefreshCollections": "Force Refresh Collections",
-    "checkForUpdates": "Check for Updates"
+    "checkForUpdates": "Check for Updates",
+    "moreInfo": "More information",
+    "dismissAlert": "Dismiss alert",
+    "noRecordsFound": "No records found",
+    "aiAssistant": "AI Assistant"
   },
   "nav": {
     "home": "Home",
@@ -557,7 +561,9 @@
     "syncStorage": "Sync Storage",
     "fileName": "File Name",
     "removeFromKB": "Remove from knowledge base?",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "reasoning": "Reasoning",
+    "thoughtFor": "Thought for {{seconds}}s"
   },
   "components": {
     "activeDownloads": "Active Downloads",

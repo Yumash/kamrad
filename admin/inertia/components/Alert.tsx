@@ -1,4 +1,5 @@
 import * as Icons from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next'
 import classNames from '~/lib/classNames'
 import DynamicIcon from './DynamicIcon'
 import StyledButton, { StyledButtonProps } from './StyledButton'
@@ -27,6 +28,8 @@ export default function Alert({
   buttonProps,
   ...props
 }: AlertProps) {
+  const { t } = useTranslation()
+
   const getDefaultIcon = (): keyof typeof Icons => {
     switch (type) {
       case 'warning':
@@ -202,7 +205,7 @@ export default function Alert({
               type === 'success' ? 'focus:ring-desert-olive' : '',
               type === 'info' ? 'focus:ring-desert-stone' : ''
             )}
-            aria-label="Dismiss alert"
+            aria-label={t('common.dismissAlert')}
           >
             <DynamicIcon icon="IconX" className="size-4" />
           </button>

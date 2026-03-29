@@ -43,7 +43,11 @@
     "poweredBy": "На базе {{name}}",
     "goToSettings": "Перейти в настройки",
     "forceRefreshCollections": "Обновить коллекции",
-    "checkForUpdates": "Проверить обновления"
+    "checkForUpdates": "Проверить обновления",
+    "moreInfo": "Подробнее",
+    "dismissAlert": "Закрыть уведомление",
+    "noRecordsFound": "Записи не найдены",
+    "aiAssistant": "AI-ассистент"
   },
   "nav": {
     "home": "Главная",
@@ -557,7 +561,9 @@
     "syncStorage": "Синхронизировать хранилище",
     "fileName": "Имя файла",
     "removeFromKB": "Удалить из базы знаний?",
-    "deleting": "Удаление..."
+    "deleting": "Удаление...",
+    "reasoning": "Рассуждение",
+    "thoughtFor": "Думал {{seconds}}с"
   },
   "components": {
     "activeDownloads": "Активные загрузки",
