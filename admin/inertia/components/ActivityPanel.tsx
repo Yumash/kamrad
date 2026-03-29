@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import useDownloads from '~/hooks/useDownloads'
 import useOllamaModelDownloads from '~/hooks/useOllamaModelDownloads'
-import { IconDownload, IconChevronDown } from '@tabler/icons-react'
+import useServiceInstallationActivity from '~/hooks/useServiceInstallationActivity'
+import { IconDownload, IconChevronDown, IconLoader2 } from '@tabler/icons-react'
 import { extractFileName } from '~/lib/util'
 import classNames from 'classnames'
 
@@ -10,6 +11,7 @@ export default function ActivityPanel() {
   const { t } = useTranslation()
   const { data: downloads } = useDownloads({})
   const { downloads: modelDownloads } = useOllamaModelDownloads()
+  const installActivity = useServiceInstallationActivity()
   const [isExpanded, setIsExpanded] = useState(false)
   const collapseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -39,14 +41,30 @@ export default function ActivityPanel() {
   // Combine all active operations
   const activeDownloads = (downloads || []).filter((d) => d.status !== undefined)
   const activeModels = (modelDownloads || []).filter((d) => d.percent < 100 || d.error)
-  const totalActive = activeDownloads.length + activeModels.length
+
+  // Get latest install status per service (from SSE events in last 60s)
+  const now = Date.now()
+  const recentInstalls = new Map<string, { service_name: string; type: string; message: string; timestamp: string }>()
+  for (const event of installActivity) {
+    const age = now - new Date(event.timestamp).getTime()
+    if (age < 60000) {
+      recentInstalls.set(event.service_name, event)
+    }
+  }
+  // Filter out completed/done services
+  const activeInstalls = Array.from(recentInstalls.values()).filter(
+    (e) => !['done', 'completed', 'error', 'already-installed'].includes(e.type)
+  )
+
+  const totalActive = activeDownloads.length + activeModels.length + activeInstalls.length
 
   // Hide when nothing is happening
   if (totalActive === 0) return null
 
   const activeCount =
     activeDownloads.filter((d) => d.status === 'active').length +
-    activeModels.filter((d) => !d.error).length
+    activeModels.filter((d) => !d.error).length +
+    activeInstalls.length
   const failedCount =
     activeDownloads.filter((d) => d.status === 'failed').length +
     activeModels.filter((d) => d.error).length
@@ -95,6 +113,16 @@ export default function ActivityPanel() {
                     />
                   </div>
                 )}
+              </div>
+            ))}
+            {/* Service installations */}
+            {activeInstalls.map((event) => (
+              <div key={event.service_name} className="text-xs p-2 rounded bg-surface-secondary">
+                <div className="flex items-center gap-2">
+                  <IconLoader2 size={14} className="text-desert-green animate-spin" />
+                  <span className="text-text-primary font-medium">{event.service_name}</span>
+                </div>
+                <p className="text-text-muted mt-0.5 truncate">{event.message || event.type}</p>
               </div>
             ))}
             {/* Model downloads */}
