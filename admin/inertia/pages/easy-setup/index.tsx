@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState, useMemo } from 'react'
@@ -199,7 +200,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
   const { data: extractRegions, isLoading: isLoadingExtractRegions } = useQuery({
     queryKey: ['map-extract-regions'],
     queryFn: async () => {
-      const res = await api.get('/api/maps/extract/regions')
+      const res = await axios.get('/api/maps/extract/regions')
       return res.data.regions as MapRegion[]
     },
     refetchOnWindowFocus: false,
@@ -460,7 +461,7 @@ export default function EasySetupWizard(props: { system: { services: ServiceSlim
       // Start extract for selected regions (one at a time, kick off the first one)
       if (selectedExtractRegions.length > 0) {
         try {
-          await api.post('/api/maps/extract/start', { regionId: selectedExtractRegions[0] })
+          await axios.post('/api/maps/extract/start', { regionId: selectedExtractRegions[0] })
           // Remaining regions need to be continued from Settings > Maps Manager
         } catch (extractErr) {
           console.warn('Extract start failed:', extractErr)
