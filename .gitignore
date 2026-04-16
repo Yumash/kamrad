@@ -42,10 +42,12 @@ admin/public/assets
 # Admin specific development files
 admin/storage
 
-# Frai framework (local only)
-.frai/
+# TAUSIK framework (local data)
+.tausik/
 .claude/
-.claude-lib/
 CLAUDE.md
 AGENTS.md
 .mcp.json
+skills.json
+.claude-project/
+
