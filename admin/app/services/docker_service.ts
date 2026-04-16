@@ -6,7 +6,9 @@ import transmit from '@adonisjs/transmit/services/main'
 import { doResumableDownloadWithRetry } from '../utils/downloads.js'
 import { join } from 'path'
 import { ZIM_STORAGE_PATH } from '../utils/fs.js'
+import { KiwixLibraryService } from './kiwix_library_service.js'
 import { SERVICE_NAMES } from '../../constants/service_names.js'
+import { KIWIX_LIBRARY_CMD } from '../../constants/kiwix.js'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 // import { readdir } from 'fs/promises'
@@ -18,6 +20,9 @@ export class DockerService {
   public docker: Docker
   private activeInstallations: Set<string> = new Set()
   public static NOMAD_NETWORK = 'kamrad_default'
+
+  private _servicesStatusCache: { data: { service_name: string; status: string }[]; expiresAt: number } | null = null
+  private _servicesStatusInflight: Promise<{ service_name: string; status: string }[]> | null = null
 
   constructor() {
     // Support both Linux (production) and Windows (development with Docker Desktop)
@@ -56,6 +61,7 @@ export class DockerService {
       const dockerContainer = this.docker.getContainer(container.Id)
       if (action === 'stop') {
         await dockerContainer.stop()
+        this.invalidateServicesStatusCache()
         return {
           success: true,
           message: `Service ${serviceName} stopped successfully`,
@@ -63,7 +69,18 @@ export class DockerService {
       }
 
       if (action === 'restart') {
+        if (serviceName === SERVICE_NAMES.KIWIX) {
+          const isLegacy = await this.isKiwixOnLegacyConfig()
+          if (isLegacy) {
+            logger.info('[DockerService] Kiwix on legacy glob config — running migration instead of restart.')
+            await this.migrateKiwixToLibraryMode()
+            this.invalidateServicesStatusCache()
+            return { success: true, message: 'Kiwix migrated to library mode successfully.' }
+          }
+        }
+
         await dockerContainer.restart()
+        this.invalidateServicesStatusCache()
 
         return {
           success: true,
@@ -80,6 +97,7 @@ export class DockerService {
         }
 
         await dockerContainer.start()
+        this.invalidateServicesStatusCache()
 
         return {
           success: true,
@@ -102,13 +120,36 @@ export class DockerService {
 
   /**
    * Fetches the status of all Docker containers related to Nomad services. (those prefixed with 'nomad_')
+   * Results are cached for 5 seconds and concurrent callers share a single in-flight request,
+   * preventing Docker socket congestion during rapid page navigation.
    */
-  async getServicesStatus(): Promise<
-    {
-      service_name: string
-      status: string
-    }[]
-  > {
+  async getServicesStatus(): Promise<{ service_name: string; status: string }[]> {
+    const now = Date.now()
+    if (this._servicesStatusCache && now < this._servicesStatusCache.expiresAt) {
+      return this._servicesStatusCache.data
+    }
+    if (this._servicesStatusInflight) return this._servicesStatusInflight
+
+    this._servicesStatusInflight = this._fetchServicesStatus().then((data) => {
+      this._servicesStatusCache = { data, expiresAt: Date.now() + 5000 }
+      this._servicesStatusInflight = null
+      return data
+    }).catch((err) => {
+      this._servicesStatusInflight = null
+      throw err
+    })
+    return this._servicesStatusInflight
+  }
+
+  /**
+   * Invalidates the services status cache. Call after any container state change.
+   */
+  invalidateServicesStatusCache() {
+    this._servicesStatusCache = null
+    this._servicesStatusInflight = null
+  }
+
+  private async _fetchServicesStatus(): Promise<{ service_name: string; status: string }[]> {
     try {
       const containers = await this.docker.listContainers({ all: true })
       const containerMap = new Map<string, Docker.ContainerInfo>()
@@ -347,6 +388,7 @@ export class DockerService {
       service.installed = false
       service.installation_status = 'installing'
       await service.save()
+      this.invalidateServicesStatusCache()
 
       // Step 5: Recreate the container
       this._broadcast(serviceName, 'recreating', `Recreating container...`)
@@ -500,6 +542,20 @@ export class DockerService {
         }
       }
 
+      // Service-specific env injection (e.g. Ollama cloud/flash-attention settings)
+      const extraEnv: string[] = []
+      if (service.service_name === SERVICE_NAMES.OLLAMA) {
+        const cloudEnabled = await KVStore.getValue('ai.ollamaCloudEnabled')
+        if (cloudEnabled !== true) {
+          extraEnv.push('OLLAMA_NO_CLOUD=1')
+        }
+        const flashAttention = await KVStore.getValue('ai.ollamaFlashAttention')
+        if (flashAttention !== false) {
+          extraEnv.push('OLLAMA_FLASH_ATTENTION=1')
+        }
+      }
+      const mergedEnv = [...(containerConfig?.Env ?? []), ...extraEnv]
+
       this._broadcast(
         service.service_name,
         'creating',
@@ -512,7 +568,7 @@ export class DockerService {
         HostConfig: gpuHostConfig,
         ...(containerConfig?.WorkingDir && { WorkingDir: containerConfig.WorkingDir }),
         ...(containerConfig?.ExposedPorts && { ExposedPorts: containerConfig.ExposedPorts }),
-        ...(containerConfig?.Env && { Env: containerConfig.Env }),
+        ...(mergedEnv.length > 0 && { Env: mergedEnv }),
         ...(service.container_command ? { Cmd: service.container_command.split(' ') } : {}),
         // Ensure container is attached to the Nomad docker network in production
         ...(process.env.NODE_ENV === 'production' && {
@@ -539,6 +595,7 @@ export class DockerService {
       service.installed = true
       service.installation_status = 'idle'
       await service.save()
+      this.invalidateServicesStatusCache()
 
       // Remove from active installs tracking
       this.activeInstallations.delete(service.service_name)
@@ -648,13 +705,114 @@ export class DockerService {
         'preinstall',
         `Downloaded Wikipedia ZIM file to ${filepath}`
       )
-    } catch (error) {
+
+      // Generate the initial kiwix library XML before the container is created
+      const kiwixLibraryService = new KiwixLibraryService()
+      await kiwixLibraryService.rebuildFromDisk()
+      this._broadcast(SERVICE_NAMES.KIWIX, 'preinstall', 'Generated kiwix library XML.')
+    } catch (error: any) {
       this._broadcast(
         SERVICE_NAMES.KIWIX,
         'preinstall-error',
         `Failed to download Wikipedia ZIM file: ${error.message}`
       )
       throw new Error(`Pre-install action failed: ${error.message}`)
+    }
+  }
+
+  /**
+   * Checks whether the running kiwix container is using the legacy glob-pattern command
+   * (`*.zim --address=all`) rather than the library-file command.
+   */
+  async isKiwixOnLegacyConfig(): Promise<boolean> {
+    try {
+      const containers = await this.docker.listContainers({ all: true })
+      const info = containers.find((c) => c.Names.includes(`/${SERVICE_NAMES.KIWIX}`))
+      if (!info) return false
+
+      const inspected = await this.docker.getContainer(info.Id).inspect()
+      const cmd: string[] = inspected.Config?.Cmd ?? []
+      return cmd.some((arg) => arg.includes('*.zim'))
+    } catch (err: any) {
+      logger.warn(`[DockerService] Could not inspect kiwix container: ${err.message}`)
+      return false
+    }
+  }
+
+  /**
+   * Migrates the kiwix container from legacy glob mode (`*.zim`) to library mode.
+   * Non-destructive: ZIM files and volumes are preserved.
+   */
+  async migrateKiwixToLibraryMode(): Promise<void> {
+    if (this.activeInstallations.has(SERVICE_NAMES.KIWIX)) {
+      logger.warn('[DockerService] Kiwix migration already in progress, skipping.')
+      return
+    }
+
+    this.activeInstallations.add(SERVICE_NAMES.KIWIX)
+
+    try {
+      this._broadcast(SERVICE_NAMES.KIWIX, 'migrating', 'Migrating kiwix to library mode...')
+      const kiwixLibraryService = new KiwixLibraryService()
+      await kiwixLibraryService.rebuildFromDisk()
+      this._broadcast(SERVICE_NAMES.KIWIX, 'migrating', 'Built kiwix library XML from existing ZIM files.')
+
+      const containers = await this.docker.listContainers({ all: true })
+      const containerInfo = containers.find((c) => c.Names.includes(`/${SERVICE_NAMES.KIWIX}`))
+      if (containerInfo) {
+        const oldContainer = this.docker.getContainer(containerInfo.Id)
+        if (containerInfo.State === 'running') {
+          await oldContainer.stop({ t: 10 }).catch((e: any) =>
+            logger.warn(`[DockerService] Kiwix stop warning during migration: ${e.message}`)
+          )
+        }
+        await oldContainer.remove({ force: true }).catch((e: any) =>
+          logger.warn(`[DockerService] Kiwix remove warning during migration: ${e.message}`)
+        )
+      }
+
+      const service = await Service.query().where('service_name', SERVICE_NAMES.KIWIX).first()
+      if (!service) {
+        throw new Error('Kiwix service record not found in DB during migration')
+      }
+
+      service.container_command = KIWIX_LIBRARY_CMD
+      service.installed = false
+      service.installation_status = 'installing'
+      await service.save()
+
+      const containerConfig = this._parseContainerConfig(service.container_config)
+
+      this._broadcast(SERVICE_NAMES.KIWIX, 'migrating', 'Recreating kiwix container with library mode config...')
+      const newContainer = await this.docker.createContainer({
+        Image: service.container_image,
+        name: service.service_name,
+        HostConfig: containerConfig?.HostConfig ?? {},
+        ...(containerConfig?.ExposedPorts && { ExposedPorts: containerConfig.ExposedPorts }),
+        Cmd: KIWIX_LIBRARY_CMD.split(' '),
+        ...(process.env.NODE_ENV === 'production' && {
+          NetworkingConfig: {
+            EndpointsConfig: {
+              [DockerService.NOMAD_NETWORK]: {},
+            },
+          },
+        }),
+      })
+
+      await newContainer.start()
+
+      service.installed = true
+      service.installation_status = 'idle'
+      await service.save()
+      this.activeInstallations.delete(SERVICE_NAMES.KIWIX)
+
+      this._broadcast(SERVICE_NAMES.KIWIX, 'migrated', 'Kiwix successfully migrated to library mode.')
+      logger.info('[DockerService] Kiwix migration to library mode complete.')
+    } catch (err: any) {
+      this.activeInstallations.delete(SERVICE_NAMES.KIWIX)
+      this._broadcast(SERVICE_NAMES.KIWIX, 'migration-error', `Migration failed: ${err.message}`)
+      logger.error(`[DockerService] Kiwix migration failed: ${err.message}`)
+      throw err
     }
   }
 
