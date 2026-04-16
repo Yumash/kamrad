@@ -430,8 +430,10 @@ export class MapService implements IMapService {
     }
   }
 
-  /*
-   * Gets the appropriate public URL for a map asset depending on environment
+  /**
+   * Gets the appropriate public URL for a map asset depending on environment. The host and protocol that the user
+   * is accessing the maps from must match the host and protocol used in the generated URLs, otherwise maps will fail to load.
+   * Handles all of: null, full URL (http://example.com:8080), host:port (example.com:8080), bare hostname (example.com).
    */
   private getPublicFileBaseUrl(specifiedHost: string | null, childPath: string, protocol: string = 'http'): string {
     function getHost() {
@@ -446,8 +448,25 @@ export class MapService implements IMapService {
       }
     }
 
-    const host = specifiedHost || getHost()
-    const withProtocol = host.startsWith('http') ? host : `${protocol}://${host}`
+    function specifiedHostOrDefault() {
+      if (specifiedHost === null) {
+        return getHost()
+      }
+      // Try as a full URL first (e.g. "http://example.com:8080")
+      try {
+        const specifiedUrl = new URL(specifiedHost)
+        if (specifiedUrl.host) return specifiedUrl.host
+      } catch {}
+      // Try as a bare host or host:port (e.g. "kamrad-box:8080", "192.168.1.1:8080", "example.com")
+      try {
+        const specifiedUrl = new URL(`http://${specifiedHost}`)
+        if (specifiedUrl.host) return specifiedUrl.host
+      } catch {}
+      return getHost()
+    }
+
+    const host = specifiedHostOrDefault()
+    const withProtocol = `${protocol}://${host}`
     const baseUrlPath =
       process.env.NODE_ENV === 'production' ? childPath : urlJoin(this.mapStoragePath, childPath)
 

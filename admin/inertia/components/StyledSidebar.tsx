@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react'
 import classNames from '~/lib/classNames'
 import { IconArrowLeft, IconBug } from '@tabler/icons-react'
-import { usePage } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 import { UsePageProps } from '../../types/system'
 import { IconMenu2, IconX } from '@tabler/icons-react'
 import ThemeToggle from '~/components/ThemeToggle'
@@ -34,21 +34,29 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
   }, [])
 
   const ListItem = (item: SidebarItem) => {
+    const className = classNames(
+      item.current
+        ? 'bg-desert-green text-white shadow-sm'
+        : 'text-text-primary hover:bg-desert-green-light/20 hover:text-text-primary',
+      'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold transition-colors'
+    )
+    const content = (
+      <>
+        {item.icon && <item.icon aria-hidden="true" className="size-6 shrink-0" />}
+        {item.name}
+      </>
+    )
     return (
       <li key={item.name}>
-        <a
-          href={item.href}
-          target={item.target}
-          className={classNames(
-            item.current
-              ? 'bg-desert-green text-white shadow-sm'
-              : 'text-text-primary hover:bg-desert-green-light/20 hover:text-text-primary',
-            'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold transition-colors'
-          )}
-        >
-          {item.icon && <item.icon aria-hidden="true" className="size-6 shrink-0" />}
-          {item.name}
-        </a>
+        {item.target === '_blank' ? (
+          <a href={item.href} target="_blank" rel="noopener noreferrer" className={className}>
+            {content}
+          </a>
+        ) : (
+          <Link href={item.href} className={className}>
+            {content}
+          </Link>
+        )}
       </li>
     )
   }
@@ -62,13 +70,13 @@ const StyledSidebar: React.FC<StyledSidebarProps> = ({ title, items }) => {
             <img src="/kamrad_logo.png" alt="KAMRAD Logo" className="h-12 w-12" />
             <h1 className="ml-3 text-lg font-semibold text-text-primary">{title}</h1>
           </div>
-          <a
+          <Link
             href="/home"
             className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium text-desert-green hover:bg-desert-green hover:text-white transition-colors"
             title={t('common.backToHome')}
           >
             <IconArrowLeft aria-hidden="true" className="size-5" />
-          </a>
+          </Link>
         </div>
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="-mx-2 space-y-1">

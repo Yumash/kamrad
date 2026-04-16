@@ -1,5 +1,5 @@
 import MapsLayout from '~/layouts/MapsLayout'
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import { useTranslation } from 'react-i18next'
 import MapComponent from '~/components/maps/MapComponent'
 import StyledButton from '~/components/StyledButton'
@@ -43,9 +43,7 @@ export default function Maps(props: {
                 variant: 'secondary',
                 children: t('maps.goToMapSettings'),
                 icon: 'IconSettings',
-                onClick: () => {
-                  window.location.href = '/settings/maps'
-                },
+                onClick: () => router.visit('/settings/maps'),
               }}
             />
           </div>

@@ -6,7 +6,7 @@ import {
   IconSettings,
   IconWifiOff,
 } from '@tabler/icons-react'
-import { Head, usePage } from '@inertiajs/react'
+import { Head, Link, router, usePage } from '@inertiajs/react'
 import { useTranslation } from 'react-i18next'
 import AppLayout from '~/layouts/AppLayout'
 import { getServiceLink } from '~/lib/navigation'
@@ -151,9 +151,7 @@ export default function Home(props: {
                 variant: 'primary',
                 children: t('common.goToSettings'),
                 icon: 'IconSettings',
-                onClick: () => {
-                  window.location.href = '/settings/update'
-                },
+                onClick: () => router.visit('/settings/update'),
               }}
             />
           </div>
@@ -165,31 +163,39 @@ export default function Home(props: {
           const shouldHighlight = isEasySetup && shouldHighlightEasySetup
           const isSystemUtility = item.displayOrder >= 50
 
-          return (
-            <a key={item.to} href={item.to} target={item.target}>
-              <div className={classNames(
-                "relative rounded-lg border-2 transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 min-h-40 py-6 flex flex-col items-center justify-center cursor-pointer text-center px-4",
-                isSystemUtility
-                  ? "bg-surface-elevated border-border-default text-text-primary"
-                  : "bg-desert-green border-desert-green text-white"
-              )}>
-                {shouldHighlight && (
-                  <span className="absolute top-2 right-2 flex items-center justify-center">
-                    <span
-                      className="animate-ping absolute inline-flex w-16 h-6 rounded-full bg-desert-orange-light opacity-75"
-                      style={{ animationDuration: '1.5s' }}
-                    ></span>
-                    <span className="relative inline-flex items-center rounded-full px-2.5 py-1 bg-desert-orange-light text-xs font-semibold text-white shadow-sm">
-                      {t('common.startHere')}
-                    </span>
+          const tileContent = (
+            <div className={classNames(
+              "relative rounded-lg border-2 transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 min-h-40 py-6 flex flex-col items-center justify-center cursor-pointer text-center px-4",
+              isSystemUtility
+                ? "bg-surface-elevated border-border-default text-text-primary"
+                : "bg-desert-green border-desert-green text-white"
+            )}>
+              {shouldHighlight && (
+                <span className="absolute top-2 right-2 flex items-center justify-center">
+                  <span
+                    className="animate-ping absolute inline-flex w-16 h-6 rounded-full bg-desert-orange-light opacity-75"
+                    style={{ animationDuration: '1.5s' }}
+                  ></span>
+                  <span className="relative inline-flex items-center rounded-full px-2.5 py-1 bg-desert-orange-light text-xs font-semibold text-white shadow-sm">
+                    {t('common.startHere')}
                   </span>
-                )}
-                <div className={classNames("flex items-center justify-center mb-2", isSystemUtility && "text-desert-green")}>{item.icon}</div>
-                <h3 className="font-bold text-2xl">{item.label}</h3>
-                {item.poweredBy && <p className="text-sm opacity-80">{t('common.poweredBy', { name: item.poweredBy })}</p>}
-                <p className="xl:text-lg mt-2">{item.description}</p>
-              </div>
+                </span>
+              )}
+              <div className={classNames("flex items-center justify-center mb-2", isSystemUtility && "text-desert-green")}>{item.icon}</div>
+              <h3 className="font-bold text-2xl">{item.label}</h3>
+              {item.poweredBy && <p className="text-sm opacity-80">{t('common.poweredBy', { name: item.poweredBy })}</p>}
+              <p className="xl:text-lg mt-2">{item.description}</p>
+            </div>
+          )
+
+          return item.target === '_blank' ? (
+            <a key={item.to} href={item.to} target="_blank" rel="noopener noreferrer">
+              {tileContent}
             </a>
+          ) : (
+            <Link key={item.to} href={item.to}>
+              {tileContent}
+            </Link>
           )
         })}
       </div>
