@@ -1,7 +1,6 @@
-import * as Icons from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next'
 import classNames from '~/lib/classNames'
-import DynamicIcon from './DynamicIcon'
+import DynamicIcon, { DynamicIconName } from './DynamicIcon'
 import StyledButton, { StyledButtonProps } from './StyledButton'
 
 export type AlertProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -11,7 +10,7 @@ export type AlertProps = React.HTMLAttributes<HTMLDivElement> & {
   children?: React.ReactNode
   dismissible?: boolean
   onDismiss?: () => void
-  icon?: keyof typeof Icons
+  icon?: DynamicIconName
   variant?: 'standard' | 'bordered' | 'solid'
   buttonProps?: StyledButtonProps
 }
@@ -30,7 +29,7 @@ export default function Alert({
 }: AlertProps) {
   const { t } = useTranslation()
 
-  const getDefaultIcon = (): keyof typeof Icons => {
+  const getDefaultIcon = (): DynamicIconName => {
     switch (type) {
       case 'warning':
         return 'IconAlertTriangle'

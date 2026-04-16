@@ -18,4 +18,7 @@ export default defineConfig({
       '~/': `${getDirname(import.meta.url)}/inertia/`,
     },
   },
+  server: {
+    allowedHosts: true // Dev only. Override with `__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` if needed.
+  }
 })

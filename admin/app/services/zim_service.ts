@@ -25,6 +25,7 @@ import InstalledResource from '#models/installed_resource'
 import { RunDownloadJob } from '#jobs/run_download_job'
 import { SERVICE_NAMES } from '../../constants/service_names.js'
 import { CollectionManifestService, getLanguageSpecUrl } from './collection_manifest_service.js'
+import { KiwixLibraryService } from './kiwix_library_service.js'
 import type { CategoryWithStatus } from '../../types/collections.js'
 import KvStore from '#models/kv_store'
 
@@ -259,6 +260,15 @@ export class ZimService {
       }
     }
 
+    // Update the kiwix library XML after all downloaded ZIMs are in place.
+    // Rebuilding once from disk avoids repeated XML parse/write cycles and races.
+    const kiwixLibraryService = new KiwixLibraryService()
+    try {
+      await kiwixLibraryService.rebuildFromDisk()
+    } catch (err) {
+      logger.error('[ZimService] Failed to rebuild kiwix library from disk:', err)
+    }
+
     if (restart) {
       // Check if there are any remaining ZIM download jobs before restarting
       const { QueueService } = await import('./queue_service.js')
@@ -285,13 +295,19 @@ export class ZimService {
       if (hasRemainingZimJobs) {
         logger.info('[ZimService] Skipping container restart - more ZIM downloads pending')
       } else {
-        // Restart KIWIX container to pick up new ZIM file
-        logger.info('[ZimService] No more ZIM downloads pending - restarting KIWIX container')
-        await this.dockerService
-          .affectContainer(SERVICE_NAMES.KIWIX, 'restart')
-          .catch((error) => {
-            logger.error(`[ZimService] Failed to restart KIWIX container:`, error) // Don't stop the download completion, just log the error.
-          })
+        // Library mode: --monitorLibrary picks up the XML change automatically — no restart.
+        const isLegacy = await this.dockerService.isKiwixOnLegacyConfig()
+        if (!isLegacy) {
+          logger.info('[ZimService] Kiwix in library mode — XML updated, no restart needed.')
+        } else {
+          // Legacy config: restart (affectContainer triggers migration to library mode)
+          logger.info('[ZimService] No more ZIM downloads pending - restarting KIWIX container')
+          await this.dockerService
+            .affectContainer(SERVICE_NAMES.KIWIX, 'restart')
+            .catch((error) => {
+              logger.error(`[ZimService] Failed to restart KIWIX container:`, error)
+            })
+        }
       }
     }
 
@@ -348,6 +364,12 @@ export class ZimService {
     }
 
     await deleteFileIfExists(fullPath)
+
+    // Remove from kiwix library XML so --monitorLibrary stops serving the deleted file
+    const kiwixLibraryService = new KiwixLibraryService()
+    await kiwixLibraryService.removeBook(fileName).catch((err) => {
+      logger.error(`[ZimService] Failed to remove ${fileName} from kiwix library:`, err)
+    })
 
     // Clean up InstalledResource entry
     const parsed = CollectionManifestService.parseZimFilename(fileName)

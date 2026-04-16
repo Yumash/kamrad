@@ -27,6 +27,7 @@ export default function KnowledgeBaseModal({ aiAssistantName, onClose }: Knowled
   const resolvedAiAssistantName = aiAssistantName ?? t('common.aiAssistant')
   const { addNotification } = useNotifications()
   const [files, setFiles] = useState<File[]>([])
+  const [isUploading, setIsUploading] = useState(false)
   const [confirmDeleteSource, setConfirmDeleteSource] = useState<string | null>(null)
   const fileUploaderRef = useRef<React.ComponentRef<typeof FileUploader>>(null)
   const { openModal, closeModal } = useModals()
@@ -40,22 +41,6 @@ export default function KnowledgeBaseModal({ aiAssistantName, onClose }: Knowled
 
   const uploadMutation = useMutation({
     mutationFn: (file: File) => api.uploadDocument(file),
-    onSuccess: (data) => {
-      addNotification({
-        type: 'success',
-        message: data?.message || t('chat.documentUploaded'),
-      })
-      setFiles([])
-      if (fileUploaderRef.current) {
-        fileUploaderRef.current.clear()
-      }
-    },
-    onError: (error: any) => {
-      addNotification({
-        type: 'error',
-        message: error?.message || t('chat.uploadFailed'),
-      })
-    },
   })
 
   const deleteMutation = useMutation({
@@ -87,9 +72,34 @@ export default function KnowledgeBaseModal({ aiAssistantName, onClose }: Knowled
     },
   })
 
-  const handleUpload = () => {
-    if (files.length > 0) {
-      uploadMutation.mutate(files[0])
+  const handleUpload = async () => {
+    if (files.length === 0) return
+    setIsUploading(true)
+    let successCount = 0
+    const failedNames: string[] = []
+
+    for (const file of files) {
+      try {
+        await uploadMutation.mutateAsync(file)
+        successCount++
+      } catch {
+        failedNames.push(file.name)
+      }
+    }
+
+    setIsUploading(false)
+    setFiles([])
+    fileUploaderRef.current?.clear()
+    queryClient.invalidateQueries({ queryKey: ['embed-jobs'] })
+
+    if (successCount > 0) {
+      addNotification({
+        type: 'success',
+        message: t('chat.filesQueued', { count: successCount }),
+      })
+    }
+    for (const name of failedNames) {
+      addNotification({ type: 'error', message: t('chat.uploadFailedFor', { name }) })
     }
   }
 
@@ -135,7 +145,7 @@ export default function KnowledgeBaseModal({ aiAssistantName, onClose }: Knowled
               <FileUploader
                 ref={fileUploaderRef}
                 minFiles={1}
-                maxFiles={1}
+                maxFiles={5}
                 onUpload={(uploadedFiles) => {
                   setFiles(Array.from(uploadedFiles))
                 }}
@@ -146,8 +156,8 @@ export default function KnowledgeBaseModal({ aiAssistantName, onClose }: Knowled
                   size="lg"
                   icon="IconUpload"
                   onClick={handleUpload}
-                  disabled={files.length === 0 || uploadMutation.isPending}
-                  loading={uploadMutation.isPending}
+                  disabled={files.length === 0 || isUploading}
+                  loading={isUploading}
                 >
                   {t('chat.upload')}
                 </StyledButton>
@@ -212,8 +222,8 @@ export default function KnowledgeBaseModal({ aiAssistantName, onClose }: Knowled
                 size="md"
                 icon='IconRefresh'
                 onClick={handleConfirmSync}
-                disabled={syncMutation.isPending || uploadMutation.isPending}
-                loading={syncMutation.isPending || uploadMutation.isPending}
+                disabled={syncMutation.isPending || isUploading}
+                loading={syncMutation.isPending || isUploading}
               >
                 {t('chat.syncStorage')}
               </StyledButton>

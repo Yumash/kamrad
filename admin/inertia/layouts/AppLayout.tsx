@@ -6,7 +6,7 @@ import ChatButton from '~/components/chat/ChatButton'
 import ChatModal from '~/components/chat/ChatModal'
 import useServiceInstalledStatus from '~/hooks/useServiceInstalledStatus'
 import { SERVICE_NAMES } from '../../constants/service_names'
-import { Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { IconArrowLeft } from '@tabler/icons-react'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -17,7 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       <div className="p-2 flex gap-2 flex-col items-center justify-center cursor-pointer relative"
-        onClick={() => (window.location.href = '/home')}
+        onClick={() => router.visit('/home')}
       >
         {window.location.pathname !== '/home' && (
           <Link href="/home" className="absolute top-3 left-4 flex items-center" onClick={(e) => e.stopPropagation()}>
