@@ -1,5 +1,77 @@
 # Changelog / Журнал изменений
 
+## [0.3.0] - 2026-04-17
+
+### RU — Синхронизация с Project N.O.M.A.D. v1.31.0 + улучшения UX
+
+Портированы 14 релевантных коммитов из upstream Crosstalk-Solutions/project-nomad v1.31.0 без merge — сохранены kamrad-брендинг, русская локализация и install-скрипты.
+
+#### Новое
+- **Карты: шкала расстояния** — внизу карты показывается текущий масштаб
+- **Карты: метки локаций** — клик по карте → пин с выбором цвета (6 цветов) и названием. Панель «Сохранённые места» с fly-to навигацией
+- **Карты: переключатель км/мили** — сохраняется в `localStorage`
+- **Библиотека знаний: zero-downtime обновление** — Kiwix работает в library mode с `--monitorLibrary`. При скачивании нового ZIM (Википедия, медицина, выживание и т.д.) Библиотека не выключается, контент появляется сразу
+- **Автомиграция legacy-установок Kiwix** — существующие kamrad-установки автоматически перейдут на library mode при первом рестарте сервиса
+- **AI Settings: тумблер облачных фич Ollama** — по умолчанию выключен (прокидывает `OLLAMA_NO_CLOUD=1`). KAMRAD остаётся offline-first
+- **AI Settings: тумблер Flash Attention** — по умолчанию включён, оптимизация памяти для длинных контекстов
+- **AI Settings: секция «Установленные модели»** — список установленных AI-моделей с размером и кнопкой удаления
+- **KnowledgeBase: загрузка до 5 файлов по 100MB** (было 1 файл до 10MB). Массовая загрузка с агрегированными уведомлениями
+
+#### Изменено
+- **Навигация:** переход между страницами через `Link`/`router.visit` вместо `window.location.href` — нет полной перезагрузки, быстрее
+- **Производительность:** gzip-сжатие на всех API-маршрутах (можно отключить через `DISABLE_COMPRESSION=true`)
+- **Производительность:** Docker list запросы кэшируются 5 секунд, aiAssistantName — 60 секунд, DB connection pool настроен (2-15 соединений, 10 сек таймаут)
+- **Бандл:** `@tabler/icons-react` больше не импортируется целиком — только используемые иконки через `lib/icons.ts`
+- **Карты:** корректный парсинг хостов (полный URL, host:port, голое имя) в `getPublicFileBaseUrl`
+
+#### Инфраструктура
+- Миграция фреймворка **Frai → TAUSIK** (Kibertum/tausik-core v1.1.1 как git submodule)
+- Новые DB-миграции: `map_markers`, `migrate_kiwix_to_library_mode`
+- API endpoints: `GET/POST /api/maps/markers`, `PATCH/DELETE /api/maps/markers/:id`
+- Зависимости подняты: `@types/dockerode` 3→4, `fast-xml-parser` 5.5.7, `pmtiles` 4.4.0, `tailwindcss` 4.2.1, `yaml` 2.8.3, добавлен `compression`
+
+#### Отложено
+- Downloads cancel для больших файлов (d7e3d92) — требует upstream `bac53e2` (большой рефакторинг `run_download_job.ts`)
+- Release notes, FAQ, CONTRIBUTING из upstream
+- Все изменения `install/*` — сохраняется наш `install_kamrad.sh`
+
+---
+
+### EN — Sync with Project N.O.M.A.D. v1.31.0 + UX improvements
+
+Ported 14 relevant commits from upstream Crosstalk-Solutions/project-nomad v1.31.0 without merge — preserved kamrad branding, Russian localization, and install scripts.
+
+#### Added
+- **Maps: distance scale bar** — current map scale shown at bottom
+- **Maps: location markers** — click to drop a pin with color picker (6 colors) and name. "Saved Locations" panel with fly-to navigation
+- **Maps: km/miles toggle** — persists in `localStorage`
+- **Knowledge Library: zero-downtime updates** — Kiwix runs in library mode with `--monitorLibrary`. New ZIM downloads appear instantly without restarting the container
+- **Auto-migration of legacy Kiwix installs** — existing kamrad deployments upgrade to library mode on first Kiwix restart
+- **AI Settings: Ollama Cloud toggle** — off by default (`OLLAMA_NO_CLOUD=1`). KAMRAD stays offline-first
+- **AI Settings: Flash Attention toggle** — on by default, memory optimization for long contexts
+- **AI Settings: "Installed Models" section** — table of installed AI models with disk size and delete action
+- **KnowledgeBase: 5 files up to 100MB per upload** (was 1 file × 10MB). Bulk upload with aggregated notifications
+
+#### Changed
+- **Navigation:** `Link`/`router.visit` instead of `window.location.href` — no full page reloads
+- **Performance:** gzip compression on all API routes (can be disabled via `DISABLE_COMPRESSION=true`)
+- **Performance:** Docker list cached for 5s, aiAssistantName for 60s, DB pool tuned (2-15 conns, 10s timeout)
+- **Bundle:** `@tabler/icons-react` manual import-map via `lib/icons.ts` — smaller bundle
+- **Maps:** robust hostname parsing (full URL, host:port, bare hostname)
+
+#### Infrastructure
+- Migrated **Frai → TAUSIK** framework (Kibertum/tausik-core v1.1.1 as git submodule)
+- New DB migrations: `map_markers`, `migrate_kiwix_to_library_mode`
+- API endpoints: `GET/POST /api/maps/markers`, `PATCH/DELETE /api/maps/markers/:id`
+- Dependencies bumped: `@types/dockerode` 3→4, `fast-xml-parser` 5.5.7, `pmtiles` 4.4.0, `tailwindcss` 4.2.1, `yaml` 2.8.3, added `compression`
+
+#### Deferred
+- Large file download cancellation (d7e3d92) — depends on upstream `bac53e2` (major `run_download_job.ts` refactor)
+- Upstream release notes, FAQ, CONTRIBUTING
+- All `install/*` changes — kept our `install_kamrad.sh`
+
+---
+
 ## [0.2.0] - 2026-03-25
 
 ### RU — Локальный переводчик, карты Европы, расширенные коллекции
