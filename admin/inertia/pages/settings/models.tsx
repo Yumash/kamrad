@@ -17,6 +17,7 @@ import StyledSectionHeader from '~/components/StyledSectionHeader'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Input from '~/components/inputs/Input'
 import { IconSearch, IconRefresh } from '@tabler/icons-react'
+import { formatBytes } from '~/lib/util'
 import useDebounce from '~/hooks/useDebounce'
 import ActiveModelDownloads from '~/components/ActiveModelDownloads'
 import { useSystemInfo } from '~/hooks/useSystemInfo'
@@ -26,7 +27,7 @@ export default function ModelsPage(props: {
   models: {
     availableModels: NomadOllamaModel[]
     installedModels: ModelResponse[]
-    settings: { chatSuggestionsEnabled: boolean; aiAssistantCustomName: string }
+    settings: { chatSuggestionsEnabled: boolean; aiAssistantCustomName: string; ollamaCloudEnabled: boolean; ollamaFlashAttention: boolean }
   }
 }) {
   const { t } = useTranslation()
@@ -96,6 +97,12 @@ export default function ModelsPage(props: {
   )
   const [aiAssistantCustomName, setAiAssistantCustomName] = useState(
     props.models.settings.aiAssistantCustomName
+  )
+  const [ollamaCloudEnabled, setOllamaCloudEnabled] = useState(
+    props.models.settings.ollamaCloudEnabled
+  )
+  const [ollamaFlashAttention, setOllamaFlashAttention] = useState(
+    props.models.settings.ollamaFlashAttention
   )
 
   const [query, setQuery] = useState('')
@@ -281,8 +288,82 @@ export default function ModelsPage(props: {
                   })
                 }
               />
+              <Switch
+                checked={ollamaCloudEnabled}
+                onChange={(newVal) => {
+                  setOllamaCloudEnabled(newVal)
+                  updateSettingMutation.mutate({ key: 'ai.ollamaCloudEnabled', value: newVal })
+                }}
+                label={t('settings.models.ollamaCloud')}
+                description={t('settings.models.ollamaCloudDesc')}
+              />
+              <Switch
+                checked={ollamaFlashAttention}
+                onChange={(newVal) => {
+                  setOllamaFlashAttention(newVal)
+                  updateSettingMutation.mutate({ key: 'ai.ollamaFlashAttention', value: newVal })
+                }}
+                label={t('settings.models.flashAttention')}
+                description={t('settings.models.flashAttentionDesc')}
+              />
             </div>
           </div>
+
+          <StyledSectionHeader title={t('settings.models.installedModels')} className="mt-12 mb-4" />
+          <div className="bg-surface-primary rounded-lg border-2 border-border-subtle p-6">
+            {props.models.installedModels.length === 0 ? (
+              <p className="text-text-muted">{t('settings.models.noInstalledModels')}</p>
+            ) : (
+              <table className="min-w-full divide-y divide-border-subtle">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                      {t('settings.models.colModel')}
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                      {t('settings.models.colParameters')}
+                    </th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
+                      {t('settings.models.colDiskSize')}
+                    </th>
+                    <th className="px-4 py-3 text-right text-xs font-medium text-text-muted uppercase tracking-wider">
+                      {t('settings.models.colAction')}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border-subtle">
+                  {props.models.installedModels.map((model) => (
+                    <tr key={model.name} className="hover:bg-surface-secondary">
+                      <td className="px-4 py-3">
+                        <span className="text-sm font-medium text-text-primary">{model.name}</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-sm text-text-secondary">
+                          {model.details?.parameter_size || t('common.notAvailable')}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-sm text-text-secondary">
+                          {formatBytes(model.size)}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <StyledButton
+                          variant="danger"
+                          size="sm"
+                          onClick={() => confirmDeleteModel(model.name)}
+                          icon="IconTrash"
+                        >
+                          {t('common.delete')}
+                        </StyledButton>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
           <ActiveModelDownloads withHeader />
 
           <StyledSectionHeader title={t('settings.models.models')} className="mt-12 mb-4" />

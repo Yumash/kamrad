@@ -12,6 +12,8 @@ export const KV_STORE_SCHEMA = {
   'ai.preferredLanguage':       'string',
   'translation.provider':       'string',
   'ai.assistantCustomName':     'string',
+  'ai.ollamaCloudEnabled':      'boolean',
+  'ai.ollamaFlashAttention':    'boolean',
   'gpu.type':                   'string',
 } as const
 
